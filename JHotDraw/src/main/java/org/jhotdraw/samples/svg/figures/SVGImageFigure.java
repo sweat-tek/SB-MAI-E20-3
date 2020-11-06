@@ -118,14 +118,6 @@ public class SVGImageFigure extends SVGAttributedFigure implements SVGFigure, Im
         }
     }
 
-    protected void drawFill(Graphics2D g) {
-
-    }
-
-    protected void drawStroke(Graphics2D g) {
-
-    }
-
     // SHAPE AND BOUNDS
     public double getX() {
         return rectangle.x;

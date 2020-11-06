@@ -72,7 +72,7 @@ public class QuadTreeDrawing extends AbstractDrawing {
             Collection<Figure> toDraw = sort(c);
             draw(g, toDraw);
         } else {
-            draw(g, children);
+            draw(g);
         }
     }
 
@@ -324,15 +324,5 @@ public class QuadTreeDrawing extends AbstractDrawing {
             invalidate();
             fireAreaInvalidated(e.getInvalidatedArea());
         }
-    }
-
-    @Override
-    protected void drawFill(Graphics2D g) {
-        //throw new UnsupportedOperationException("Not supported yet.");
-    }
-
-    @Override
-    protected void drawStroke(Graphics2D g) {
-        // throw new UnsupportedOperationException("Not supported yet.");
     }
 }
