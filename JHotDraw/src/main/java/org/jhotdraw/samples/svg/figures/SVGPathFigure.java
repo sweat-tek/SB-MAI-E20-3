@@ -126,10 +126,6 @@ public class SVGPathFigure extends AbstractAttributedCompositeFigure implements 
         }
     }
 
-    protected void drawChildren(Graphics2D g) {
-    // empty
-    }
-
     public void drawFill(Graphics2D g) {
         g.fill(getPath());
     }

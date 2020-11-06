@@ -112,7 +112,7 @@ public class BezierFigure extends AbstractAttributedFigure {
     // COMPOSITE FIGURES
     // CLONING
     // EVENT HANDLING
-    protected void drawStroke(Graphics2D g) {
+    public void drawStroke(Graphics2D g) {
         if (isClosed()) {
             double grow = AttributeKeys.getPerpendicularDrawGrowth(this);
             if (grow == 0d) {
@@ -153,7 +153,7 @@ public class BezierFigure extends AbstractAttributedFigure {
         }
     }
     
-    protected void drawFill(Graphics2D g) {
+    public void drawFill(Graphics2D g) {
         if (isClosed() || FILL_OPEN_PATH.get(this)) {
             double grow = AttributeKeys.getPerpendicularFillGrowth(this);
             if (grow == 0d) {

@@ -249,14 +249,4 @@ public class DefaultDrawing
         that.canvasSize = (this.canvasSize == null) ? null : (Dimension2DDouble) this.canvasSize.clone();
         return that;
     }
-
-    @Override
-    protected void drawFill(Graphics2D g) {
-        //  throw new UnsupportedOperationException("Not supported yet.");
-    }
-
-    @Override
-    protected void drawStroke(Graphics2D g) {
-        //  throw new UnsupportedOperationException("Not supported yet.");
-    }
 }

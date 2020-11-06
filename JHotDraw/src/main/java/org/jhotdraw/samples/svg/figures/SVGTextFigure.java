@@ -68,16 +68,13 @@ public class SVGTextFigure
         setText(text);
         SVGAttributeKeys.setDefaults(this);
     }
-    
-    // DRAWING
-    protected void drawText(java.awt.Graphics2D g) {
-    }
-    protected void drawFill(Graphics2D g) {
+
+    public void drawFill(Graphics2D g) {
         g.fill(getTextShape());
     }
 
     @FeatureEntryPoint(JHotDrawFeatures.TEXT_TOOL)
-    protected void drawStroke(Graphics2D g) {
+    public void drawStroke(Graphics2D g) {
         g.draw(getTextShape());
     }
     
