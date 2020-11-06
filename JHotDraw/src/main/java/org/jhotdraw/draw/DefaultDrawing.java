@@ -57,17 +57,17 @@ public class DefaultDrawing
 
     @Override
     @FeatureEntryPoint(JHotDrawFeatures.CANVAS)
-    public void draw(Graphics2D g) {
+    public void draw(Graphics2D graphics2D) {
         synchronized (getLock()) {
             ensureSorted();
             ArrayList<Figure> toDraw = new ArrayList<Figure>(getChildren().size());
-            Rectangle clipRect = g.getClipBounds();
+            Rectangle clipRect = graphics2D.getClipBounds();
             for (Figure f : getChildren()) {
                 if (f.getDrawingArea().intersects(clipRect)) {
                     toDraw.add(f);
                 }
             }
-            draw(g, toDraw);
+            draw(graphics2D, toDraw);
         }
     }
 

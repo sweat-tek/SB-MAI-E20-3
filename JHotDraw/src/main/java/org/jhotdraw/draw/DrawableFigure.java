@@ -3,33 +3,32 @@ package org.jhotdraw.draw;
 import org.jhotdraw.geom.Dimension2DDouble;
 
 import java.awt.*;
-import java.util.List;
 
 import static org.jhotdraw.draw.AttributeKeys.*;
 import static org.jhotdraw.draw.AttributeKeys.TEXT_COLOR;
 
 public interface DrawableFigure extends Figure {
     @Override
-    default void draw(Graphics2D g) {
+    default void draw(Graphics2D graphics2D) {
         if (AttributeKeys.FILL_COLOR.get(this) != null) {
-            g.setColor(AttributeKeys.FILL_COLOR.get(this));
-            drawFill(g);
+            graphics2D.setColor(AttributeKeys.FILL_COLOR.get(this));
+            drawFill(graphics2D);
         }
         if (STROKE_COLOR.get(this) != null && STROKE_WIDTH.get(this) > 0d) {
-            g.setStroke(AttributeKeys.getStroke(this));
-            g.setColor(STROKE_COLOR.get(this));
+            graphics2D.setStroke(AttributeKeys.getStroke(this));
+            graphics2D.setColor(STROKE_COLOR.get(this));
 
-            drawStroke(g);
+            drawStroke(graphics2D);
         }
         if (TEXT_COLOR.get(this) != null) {
             if (TEXT_SHADOW_COLOR.get(this) != null &&
                     TEXT_SHADOW_OFFSET.get(this) != null) {
                 Dimension2DDouble d = TEXT_SHADOW_OFFSET.get(this);
-                g.translate(d.width, d.height);
-                g.setColor(TEXT_SHADOW_COLOR.get(this));
-                g.translate(-d.width, -d.height);
+                graphics2D.translate(d.width, d.height);
+                graphics2D.setColor(TEXT_SHADOW_COLOR.get(this));
+                graphics2D.translate(-d.width, -d.height);
             }
-            g.setColor(TEXT_COLOR.get(this));
+            graphics2D.setColor(TEXT_COLOR.get(this));
         }
     }
 
@@ -39,7 +38,7 @@ public interface DrawableFigure extends Figure {
      * the TEXT_COLOR attribute before calling this method.
      * If the TEXT_COLOR attribute is null, this method is not called.
      */
-    default void drawStroke(java.awt.Graphics2D g){
+    default void drawStroke(java.awt.Graphics2D graphics2D){
         throw new UnsupportedOperationException();
     }
 
@@ -49,7 +48,7 @@ public interface DrawableFigure extends Figure {
      * object with the FILL_COLOR attribute before calling this method.
      * If the FILL_COLOR attribute is null, this method is not called.
      */
-    default void drawFill(java.awt.Graphics2D g){
+    default void drawFill(java.awt.Graphics2D graphics2D){
         throw new UnsupportedOperationException();
     }
 }
