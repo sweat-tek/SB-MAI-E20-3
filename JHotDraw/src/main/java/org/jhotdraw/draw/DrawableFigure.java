@@ -34,18 +34,6 @@ public interface DrawableFigure extends Figure {
     }
 
     /**
-     * Same as draw, but also calls draw on the parameter children
-     * @param g the graphic that should be drawn and passed to the draw method of the children
-     * @param children the children that draw should be called on (with g as argument)
-     */
-    default void drawGraphicWithChildren(Graphics2D g, List<Figure> children){
-        for (Figure child : children) {
-            child.draw(g);
-        }
-        this.draw(g);
-    }
-
-    /**
      * This method is called by method draw() to draw the text of the figure
      * . AbstractAttributedFigure configures the Graphics2D object with
      * the TEXT_COLOR attribute before calling this method.

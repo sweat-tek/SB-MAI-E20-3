@@ -119,8 +119,13 @@ public abstract class AbstractAttributedCompositeFigure extends AbstractComposit
         }
     }
 
+    /**
+     * Same as draw, but also calls draw on the parameter children
+     * @param g the graphic that should be drawn and passed to the draw method of the children
+     */
     public void drawFigure(Graphics2D g) {
-        this.drawGraphicWithChildren(g, getChildren());
+        getChildren().forEach(child -> child.draw(g));
+        this.draw(g);
     }
 
     public Stroke getStroke() {
