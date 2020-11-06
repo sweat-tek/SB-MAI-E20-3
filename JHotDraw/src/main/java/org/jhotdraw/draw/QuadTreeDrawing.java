@@ -65,14 +65,14 @@ public class QuadTreeDrawing extends AbstractDrawing {
     }
 
     @Override
-    public void draw(Graphics2D g) {
-        Rectangle2D clipBounds = g.getClipBounds();
+    public void draw(Graphics2D graphics2D) {
+        Rectangle2D clipBounds = graphics2D.getClipBounds();
         if (clipBounds != null) {
             Collection<Figure> c = quadTree.findIntersects(clipBounds);
             Collection<Figure> toDraw = sort(c);
-            draw(g, toDraw);
+            draw(graphics2D, toDraw);
         } else {
-            draw(g);
+            draw(graphics2D);
         }
     }
 

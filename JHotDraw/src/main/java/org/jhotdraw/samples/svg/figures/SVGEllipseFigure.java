@@ -58,16 +58,16 @@ public class SVGEllipseFigure extends SVGAttributedFigure implements SVGFigure {
     }
 
     // DRAWING
-    public void drawFill(Graphics2D g) {
+    public void drawFill(Graphics2D graphics2D) {
         if (ellipse.width > 0 && ellipse.height > 0) {
-            g.fill(ellipse);
+            graphics2D.fill(ellipse);
         }
     }
 
     @FeatureEntryPoint(JHotDrawFeatures.ELLIPSE_TOOL)
-    public void drawStroke(Graphics2D g) {
+    public void drawStroke(Graphics2D graphics2D) {
         if (ellipse.width > 0 && ellipse.height > 0) {
-            g.draw(ellipse);
+            graphics2D.draw(ellipse);
         }
     }
     // SHAPE AND BOUNDS

@@ -64,14 +64,14 @@ public class SVGTextAreaFigure extends SVGAttributedFigure
     }
     // DRAWING
 
-    public void drawFill(Graphics2D g) {
-        g.fill(getTextShape());
-        g.draw(new Rectangle2D.Double(getBounds().x, getBounds().y, getPreferredTextSize(changingDepth).width, getPreferredTextSize(changingDepth).height));
+    public void drawFill(Graphics2D graphics2D) {
+        graphics2D.fill(getTextShape());
+        graphics2D.draw(new Rectangle2D.Double(getBounds().x, getBounds().y, getPreferredTextSize(changingDepth).width, getPreferredTextSize(changingDepth).height));
     }
 
     @FeatureEntryPoint(JHotDrawFeatures.TEXT_AREA_TOOL)
-    public void drawStroke(Graphics2D g) {
-        g.draw(getTextShape());
+    public void drawStroke(Graphics2D graphics2D) {
+        graphics2D.draw(getTextShape());
     }
     // SHAPE AND BOUNDS
 
