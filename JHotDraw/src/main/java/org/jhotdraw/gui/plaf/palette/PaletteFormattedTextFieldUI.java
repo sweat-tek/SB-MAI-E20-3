@@ -15,6 +15,9 @@ package org.jhotdraw.gui.plaf.palette;
 
 import java.awt.*;
 import java.awt.geom.Line2D;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 import javax.swing.*;
 import javax.swing.border.Border;
 import javax.swing.plaf.*;
@@ -29,6 +32,8 @@ import javax.swing.text.*;
  */
 public class PaletteFormattedTextFieldUI extends BasicFormattedTextFieldUI {
     private Color errorIndicatorForeground;
+    private static final Map<Integer, SwingConstantsPD> ALIGN = new HashMap<>();
+
 
     /**
      * Creates a UI for a JTextField.
@@ -71,66 +76,76 @@ public class PaletteFormattedTextFieldUI extends BasicFormattedTextFieldUI {
              * @return the allocation that the superclass should use.
              */
             protected Shape adjustAllocationXX(Shape a) {
-                if (a != null) {
-                    Rectangle bounds = a.getBounds();
-                    int vspan = (int) getPreferredSpan(Y_AXIS);
-                    int hspan = (int) getPreferredSpan(X_AXIS);
-                    if (bounds.height != vspan) {
-                        int slop = bounds.height - vspan;
-                        bounds.y += slop / 2;
-                        bounds.height -= slop;
-                    }
+                int vspan = (int) getPreferredSpan(Y_AXIS);
+                int hspan = (int) getPreferredSpan(X_AXIS);
+                Rectangle bounds = a.getBounds();
+                if (a != null && bounds.height != vspan) {
+                    int slop = bounds.height - vspan;
+                    bounds.y += slop / 2;
+                    bounds.height -= slop;
+                }
 
-                    // horizontal adjustments
-                    Component c = getContainer();
-                    if (c instanceof JTextField) {
-                        JTextField field = (JTextField) c;
-                        BoundedRangeModel vis = field.getHorizontalVisibility();
-                        int max = Math.max(hspan, bounds.width);
-                        int value = vis.getValue();
-                        int extent = Math.min(max, bounds.width - 1);
-                        if ((value + extent) > max) {
-                            value = max - extent;
-                        }
-                        vis.setRangeProperties(value, extent, vis.getMinimum(),
-                                max, false);
-                        if (hspan < bounds.width) {
-                            // horizontally align the interior
-                            int slop = bounds.width - 1 - hspan;
+                // horizontal adjustments
+                Component c = getContainer();
+                JTextField field = (JTextField) c;
+                BoundedRangeModel vis = field.getHorizontalVisibility();
+                int max = Math.max(hspan, bounds.width);
+                int value = vis.getValue();
+                int extent = Math.min(max, bounds.width - 1);
+                if (c instanceof JTextField && (value + extent) > max) {
+                    value = max - extent;
 
-                            int align = ((JTextField) c).getHorizontalAlignment();
-                            if (true /*((JComponent) c).isLeftToRight()*/) {
-                                if (align == LEADING) {
-                                    align = LEFT;
-                                } else if (align == TRAILING) {
-                                    align = RIGHT;
-                                }
-                            } else {
-                                if (align == LEADING) {
-                                    align = RIGHT;
-                                } else if (align == TRAILING) {
-                                    align = LEFT;
-                                }
-                            }
+                    vis.setRangeProperties(value, extent, vis.getMinimum(),
+                            max, false);
+                    if (hspan < bounds.width) {
+                        // horizontally align the interior
+                        int slop = bounds.width - 1 - hspan;
 
-                            switch (align) {
-                                case SwingConstants.CENTER:
-                                    bounds.x += slop / 2;
-                                    bounds.width -= slop;
-                                    break;
-                                case SwingConstants.RIGHT:
-                                    bounds.x += slop;
-                                    bounds.width -= slop;
-                                    break;
-                            }
+                        int align = ((JTextField) c).getHorizontalAlignment();
+                        if (true /*((JComponent) c).isLeftToRight()*/ && align == LEADING) {
+
+                            align = LEFT;
+
+                        } else if (true /*((JComponent) c).isLeftToRight()*/ && align == TRAILING) {
+
+                            align = RIGHT;
+
                         } else {
-                            // adjust the allocation to match the bounded range.
-                            bounds.width = hspan;
-                            bounds.x -= vis.getValue();
+//                               align = (align == LEADING) ?  RIGHT :  LEFT; 
+                            align = (align == LEADING) ? RIGHT : (align == TRAILING) ? LEFT : 100;
+
+//                                if (align == LEADING) {
+//                                    align = RIGHT;
+//                                } else if (align == TRAILING) {
+//                                    align = LEFT;
+//                                }
                         }
+
+                        
+//                        switch (align) {
+//                            case SwingConstants.CENTER:
+//                                bounds.x += slop / 2;
+//                                bounds.width -= slop;
+//                                break;
+//                            case SwingConstants.RIGHT:
+//                                bounds.x += slop;
+//                                bounds.width -= slop;
+//                                break;
+//                        }   
+//                  
+              
+             
+                 getSwingConstants(align, bounds,slop);
+                 
+                        
+                    } else {
+                        // adjust the allocation to match the bounded range.
+                        bounds.width = hspan;
+                        bounds.x -= vis.getValue();
                     }
                     return bounds;
                 }
+
                 return null;
             }
 
@@ -141,22 +156,83 @@ public class PaletteFormattedTextFieldUI extends BasicFormattedTextFieldUI {
                 if (!editor.isEditValid()) {
                     Rectangle r = (Rectangle) a;
                     g.setColor(errorIndicatorForeground);
-                    g.setStroke(new BasicStroke(2.5f, BasicStroke.CAP_BUTT, BasicStroke.JOIN_BEVEL, 0, new float[]{3f,3f},0.5f));
-                    g.draw(new Line2D.Float(r.x, r.y+r.height-0.5f, r.x+r.width-1,r.y+r.height-0.5f));
-                    }
-                    super.paint(g, a);
+                    g.setStroke(new BasicStroke(2.5f, BasicStroke.CAP_BUTT, BasicStroke.JOIN_BEVEL, 0, new float[]{3f, 3f}, 0.5f));
+                    g.draw(new Line2D.Float(r.x, r.y + r.height - 0.5f, r.x + r.width - 1, r.y + r.height - 0.5f));
+                }
+                super.paint(g, a);
             }
         };
     }
+    
+    
+    public int getSwingConstants(int align, Rectangle bounds, int slop) {
+        SwingConstantsPD constants = ALIGN.get(align);
+        return constants.getSwingConstants(bounds, align);
+    }
 
+    public interface SwingConstantsPD {
+   //Interface skal ændre  
+        int getSwingConstants(Rectangle bounds,int slop);
+    }
+
+    public class CenterSwingConstants implements SwingConstantsPD {
+
+        Rectangle bounds;
+        int slop;
+
+        public CenterSwingConstants(Rectangle bound, int slop) {
+            this.slop = slop;
+            this.bounds = bound;
+
+        }
+
+        @Override
+        public int getSwingConstants(Rectangle bounds,int slop) {
+   
+            bounds.x += slop / 2;
+            bounds.width -= slop;
+
+            return SwingConstants.CENTER;
+        }
+
+    }
+
+    public  class rightSwingConstants implements SwingConstantsPD {
+
+        Rectangle bounds;
+        int slop; 
+        
+        public rightSwingConstants(Rectangle bounds,int slop ){
+        this.bounds = bounds; 
+        this.slop = slop;
+        }
+        
+        @Override
+        public int getSwingConstants(Rectangle bounds,int slop) { 
+             
+              bounds.x += slop;
+              bounds.width -= slop;
+            
+            return SwingConstants.RIGHT;
+        }
+
+    }
+
+    
+    
+    
+    
+  
+
+    
+    
     /**
-     * Initializes component properties, e.g. font, foreground, 
-     * background, caret color, selection color, selected text color,
-     * disabled text color, and border color.  The font, foreground, and
-     * background properties are only set if their current value is either null
-     * or a UIResource, other properties are set if the current
-     * value is null.
-     * 
+     * Initializes component properties, e.g. font, foreground, background,
+     * caret color, selection color, selected text color, disabled text color,
+     * and border color. The font, foreground, and background properties are
+     * only set if their current value is either null or a UIResource, other
+     * properties are set if the current value is null.
+     *
      * @see #uninstallDefaults
      * @see #installUI
      */
@@ -211,7 +287,7 @@ public class PaletteFormattedTextFieldUI extends BasicFormattedTextFieldUI {
             editor.setMargin(plaf.getInsets(prefix + ".margin"));
         }
 
-        errorIndicatorForeground = plaf.getColor(prefix+".errorIndicatorForeground");
+        errorIndicatorForeground = plaf.getColor(prefix + ".errorIndicatorForeground");
 
         editor.setOpaque(plaf.getBoolean(prefix + ".opaque"));
 
