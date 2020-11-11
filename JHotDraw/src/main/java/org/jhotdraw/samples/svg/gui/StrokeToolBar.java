@@ -102,10 +102,12 @@ public class StrokeToolBar extends AbstractToolBar {
     void createStrokeButtons(ResourceBundleUtil labels, AbstractButton btn, Map<AttributeKey, Object> defaultAttributes, boolean hasFields) {
         createStrokeColorButton(labels, btn, defaultAttributes, hasFields);
         createOpacitySlider(labels, hasFields);
+        createStrokeWidthPopupSliderButton(labels,hasFields);
         createStrokeJoinButton(labels, btn, hasFields);
         createStrokeCapButton(labels, btn, hasFields);
         createStrokeDashesButton(labels, btn, hasFields);
-    }
+        
+           }
 
     void createStrokeFields(ResourceBundleUtil labels, Map<AttributeKey, Object> defaultAttributes, AbstractButton btn) {
         createStrokeColorField(labels, btn, defaultAttributes);
