@@ -48,10 +48,10 @@ import static org.jhotdraw.samples.svg.SVGAttributeKeys.*;
 public class AlignToolBar extends AbstractToolBar {
 
     private SelectionComponentDisplayer displayer;
+    ResourceBundleUtil labels = ResourceBundleUtil.getBundle("org.jhotdraw.samples.svg.Labels");
 
     /** Creates new instance. */
     public AlignToolBar() {
-        ResourceBundleUtil labels = ResourceBundleUtil.getBundle("org.jhotdraw.samples.svg.Labels");
         setName(labels.getString(getID() + ".toolbar"));
     }
 
@@ -69,79 +69,70 @@ public class AlignToolBar extends AbstractToolBar {
             displayer.setVisibleIfCreationTool(false);
         }
     }
+    
+    public void createBtn (AbstractButton btn){
+        btn.setUI((PaletteButtonUI) PaletteButtonUI.createUI(btn));
+        btn.putClientProperty("hideActionText", Boolean.TRUE);
+        btn.setText(null);
+    }
+    
     public void createBtnEast (JPanel p, GridBagConstraints gbc){
-        ResourceBundleUtil labels = ResourceBundleUtil.getBundle("org.jhotdraw.samples.svg.Labels");
+        
         AbstractButton btn;
         
         gbc.insets = new Insets(0, 3, 0, 0);
         btn = new JButton(new AlignAction.East(editor, labels));
-        btn.setUI((PaletteButtonUI) PaletteButtonUI.createUI(btn));
-        btn.putClientProperty("hideActionText", Boolean.TRUE);
-        btn.setText(null);
+        createBtn(btn);
         p.add(btn, gbc);
     }
     
         public void createBtnWest (JPanel p, GridBagConstraints gbc){
-        ResourceBundleUtil labels = ResourceBundleUtil.getBundle("org.jhotdraw.samples.svg.Labels");
         AbstractButton btn;
         
         gbc.gridy = 0;
         gbc.insets = new Insets(0, 3, 0, 0);
         btn = new JButton(new AlignAction.West(editor, labels));
-        btn.setUI((PaletteButtonUI) PaletteButtonUI.createUI(btn));
-        btn.setText(null);
+        createBtn(btn);
         p.add(btn, gbc);
     }
         
         public void createBtnNorth (JPanel p, GridBagConstraints gbc){
-        ResourceBundleUtil labels = ResourceBundleUtil.getBundle("org.jhotdraw.samples.svg.Labels");
         AbstractButton btn;
         
         gbc.gridy = 1;
         gbc.insets = new Insets(3, 0, 0, 0);
         btn = new JButton(new AlignAction.North(editor, labels));
-        btn.setUI((PaletteButtonUI) PaletteButtonUI.createUI(btn));
-        btn.putClientProperty("hideActionText", Boolean.TRUE);
-        btn.setText(null);
+        createBtn(btn);
         p.add(btn, gbc);
     }
         
         public void createBtnSouth (JPanel p, GridBagConstraints gbc){
-        ResourceBundleUtil labels = ResourceBundleUtil.getBundle("org.jhotdraw.samples.svg.Labels");
         AbstractButton btn;
         
         gbc.insets = new Insets(3, 3, 0, 0);
         btn = new JButton(new AlignAction.South(editor, labels));
-        btn.setUI((PaletteButtonUI) PaletteButtonUI.createUI(btn));
-        btn.putClientProperty("hideActionText", Boolean.TRUE);
-        btn.setText(null);
+        createBtn(btn);
         p.add(btn, gbc);
     }
         
         public void createBtnHori (JPanel p, GridBagConstraints gbc){
-        ResourceBundleUtil labels = ResourceBundleUtil.getBundle("org.jhotdraw.samples.svg.Labels");
         AbstractButton btn;
         
         gbc.gridx = 0;
         gbc.gridy = 2;
         gbc.insets = new Insets(3, 0, 0, 0);
         btn = new JButton(new AlignAction.Horizontal(editor, labels));
-        btn.setUI((PaletteButtonUI) PaletteButtonUI.createUI(btn));
-        btn.putClientProperty("hideActionText", Boolean.TRUE);
-        btn.setText(null);
+        createBtn(btn);
         p.add(btn, gbc);
     }
         
         public void createBtnVerti (JPanel p, GridBagConstraints gbc){
-        ResourceBundleUtil labels = ResourceBundleUtil.getBundle("org.jhotdraw.samples.svg.Labels");
         AbstractButton btn;
         
         gbc.gridx = 1;
         gbc.insets = new Insets(3, 3, 0, 0);
         btn = new JButton(new AlignAction.Vertical(editor, labels));
-        btn.setUI((PaletteButtonUI) PaletteButtonUI.createUI(btn));
-        btn.putClientProperty("hideActionText", Boolean.TRUE);
-        btn.setText(null);
+        createBtn(btn);
         p.add(btn, gbc);
     }
 

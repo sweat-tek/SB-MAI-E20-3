@@ -59,18 +59,7 @@ public abstract class AlignAction extends AbstractSelectedAction {
 
     protected abstract void alignFigures(Collection selectedFigures, Rectangle2D.Double selectionBounds);
     
-    private boolean checkFigures(){
-        for (Iterator i=getView().getSelectedFigures().iterator(); i.hasNext(); ) {
-                Figure f = (Figure) i.next();
-                if (f.isTransformable()) {
-                f.willChange();
-                Rectangle2D.Double b = f.getBounds();
-                AffineTransform tx = new AffineTransform();
-                return true;
-            }
-        }
-        return false;
-    }
+    
     /**
      * Returns the bounds of the selected figures.
      */
