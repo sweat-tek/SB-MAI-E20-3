@@ -48,6 +48,7 @@ public class SVGPathFigure extends AbstractAttributedCompositeFigure implements 
      * This cachedPath is used for drawing.
      */
     private transient GeneralPath cachedPath;
+    private static final double TOLERANCE_BASE_TO_POINT2D = 5;
    // private transient Rectangle2D.Double cachedDrawingArea;
     /**
      * This is used to perform faster hit testing.
@@ -467,7 +468,7 @@ public class SVGPathFigure extends AbstractAttributedCompositeFigure implements 
         if (evt.getClickCount() == 2 && view.getHandleDetailLevel() % 2 == 0) {
             for (Figure child : getChildren()) {
                 SVGBezierFigure bf = (SVGBezierFigure) child;
-                int index = bf.findSegment(p, (float) (5f / view.getScaleFactor()));
+                int index = bf.findSegment(p, getToleranceFor(view));
                 if (index != -1) {
                     bf.handleMouseClick(p, evt, view);
                     evt.consume();
@@ -476,6 +477,10 @@ public class SVGPathFigure extends AbstractAttributedCompositeFigure implements 
             }
         }
         return false;
+    }
+
+    protected double getToleranceFor(DrawingView view){
+        return TOLERANCE_BASE_TO_POINT2D / view.getScaleFactor();
     }
 
     @Override
