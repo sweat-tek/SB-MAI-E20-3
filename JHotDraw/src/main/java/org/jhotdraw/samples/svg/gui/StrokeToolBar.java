@@ -304,6 +304,8 @@ public class StrokeToolBar extends AbstractToolBar {
     protected int getDefaultDisclosureState() {
         return 1;
     }
+    
+    public JPanel getJPanel(){ return p;}
 
     /**
      * This method is called from within the constructor to initialize the form.
