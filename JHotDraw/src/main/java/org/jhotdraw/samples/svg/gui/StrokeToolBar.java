@@ -67,8 +67,8 @@ public class StrokeToolBar extends AbstractToolBar {
     }
 
     /**
-     * Adds a layout for the stroke functionalities and consequently adds the buttons
-     * associated with the functionality
+     * Adds a layout for the stroke functionalities and consequently adds the
+     * buttons associated with the functionality
      *
      * @param state Depending on the state if should add with field or not
      * @return return the JPanel with the added buttons
@@ -82,7 +82,6 @@ public class StrokeToolBar extends AbstractToolBar {
                 STROKE_COLOR, ButtonFactory.HSV_COLORS, ButtonFactory.HSV_COLORS_COLUMN_COUNT,
                 "attribute.strokeColor", labels, defaultAttributes, new Rectangle(3, 3, 10, 10));
         STROKE_GRADIENT.set(defaultAttributes, null);
-
         switch (state) {
             case 1: {
                 createLayout();
@@ -102,12 +101,12 @@ public class StrokeToolBar extends AbstractToolBar {
     void createStrokeButtons(ResourceBundleUtil labels, AbstractButton btn, Map<AttributeKey, Object> defaultAttributes, boolean hasFields) {
         createStrokeColorButton(labels, btn, defaultAttributes, hasFields);
         createOpacitySlider(labels, hasFields);
-        createStrokeWidthPopupSliderButton(labels,hasFields);
+        createStrokeWidthPopupSliderButton(labels, hasFields);
         createStrokeJoinButton(labels, btn, hasFields);
         createStrokeCapButton(labels, btn, hasFields);
         createStrokeDashesButton(labels, btn, hasFields);
-        
-           }
+
+    }
 
     void createStrokeFields(ResourceBundleUtil labels, Map<AttributeKey, Object> defaultAttributes, AbstractButton btn) {
         createStrokeColorField(labels, btn, defaultAttributes);
@@ -200,7 +199,6 @@ public class StrokeToolBar extends AbstractToolBar {
         new FigureAttributeEditorHandler<Double>(STROKE_OPACITY, opacitySlider, editor);
     }
 
-
     void createStrokeWidthField(ResourceBundleUtil labels) {
         JAttributeTextField<Double> strokeWidthField = new JAttributeTextField<Double>();
         strokeWidthField.setColumns(2);
@@ -229,7 +227,7 @@ public class StrokeToolBar extends AbstractToolBar {
         strokeWidthPopupButton.setUI((PaletteButtonUI) PaletteButtonUI.createUI(strokeWidthPopupButton));
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.anchor = GridBagConstraints.FIRST_LINE_START;
-        gbc.gridx = (hasFields) ? 1 : 0;   
+        gbc.gridx = (hasFields) ? 1 : 0;
         gbc.insets = new Insets(3, 0, 0, 0);
         p.add(strokeWidthPopupButton, gbc);
         new FigureAttributeEditorHandler<Double>(STROKE_WIDTH, strokeWidthSlider, editor);
