@@ -25,7 +25,6 @@ import java.util.*;
 import java.io.*;
 import org.jhotdraw.samples.svg.*;
 import static org.jhotdraw.samples.svg.SVGAttributeKeys.*;
-import org.jhotdraw.geom.*;
 import org.jhotdraw.util.*;
 import org.jhotdraw.xml.*;
 /**
@@ -109,6 +108,7 @@ public abstract class SVGAttributedFigure extends AbstractAttributedFigure {
         }
         super.setAttribute(key, newValue);
     }
+    
     @Override public Collection<Action> getActions(Point2D.Double p) {
         LinkedList<Action> actions = new LinkedList<Action>();
         if (TRANSFORM.get(this) != null) {
