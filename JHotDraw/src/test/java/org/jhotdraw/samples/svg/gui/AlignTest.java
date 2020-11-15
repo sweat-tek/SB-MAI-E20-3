@@ -1,8 +1,10 @@
 package org.jhotdraw.samples.svg.gui;
 
 import java.awt.Graphics2D;
+import java.awt.GridBagConstraints;
 import java.awt.geom.Rectangle2D;
 import java.util.Collection;
+import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import org.jhotdraw.draw.Drawing;
 import org.jhotdraw.draw.Figure;
@@ -29,8 +31,8 @@ public class AlignTest {
         
     }
     
-    private North north;
-    private South south;
+    private JPanel p;
+    private GridBagConstraints gbc;
     private East east;
     private West west;
     private Horizontal hori;
@@ -55,8 +57,8 @@ public class AlignTest {
         
         @Before
         public void setUp(){
-            north = mock(North.class);
-            verti = mock(Vertical.class);
+            p = mock(JPanel.class);
+            gbc = mock(GridBagConstraints.class);
             figures = mock(Collection.class);
             rect2D = mock(Rectangle2D.Double.class);
             evt = mock(FigureEvent.class);
@@ -84,6 +86,14 @@ public class AlignTest {
             
             assertEquals(testBorder.getBorderInsets(), border.getBorderInsets());
             
+        }
+        
+        @Test
+        public void testCreateButton() {
+            toolBar.createBtnEast(p, gbc);
+            EmptyBorder testBorder = new EmptyBorder(0,3,0,0);
+            
+            assertEquals(testBorder.getBorderInsets(), gbc.insets);
         }
     
 }
