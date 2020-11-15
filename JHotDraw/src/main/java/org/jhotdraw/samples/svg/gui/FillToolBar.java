@@ -73,16 +73,12 @@ public class FillToolBar extends AbstractToolBar {
     @Override
     @FeatureEntryPoint(JHotDrawFeatures.FILL_PALETTE)
     protected JComponent createDisclosedComponent(int state) {
-        p = new JPanel();
-        p1 = new JPanel(new GridBagLayout());
-        p2 = new JPanel(new GridBagLayout());
-        p3 = new JPanel(new GridBagLayout());
+        p = new JPanel(); p1 = new JPanel(new GridBagLayout()); p2 = new JPanel(new GridBagLayout()); p3 = new JPanel(new GridBagLayout());
         labels = ResourceBundleUtil.getBundle("org.jhotdraw.samples.svg.Labels");
         if (state == 1) {
             panelset();
         } else if (state == 2) {
-
-            gbc = new GridBagConstraints();
+           gbc = new GridBagConstraints();
             setp();
             // Fill color field and button     
             colorFieldButton();
@@ -119,7 +115,6 @@ public class FillToolBar extends AbstractToolBar {
         gbc.anchor = GridBagConstraints.FIRST_LINE_START;
         gbc.weighty = 1f;
         gbc.insets = new Insets(3, 0, 0, 0);
-        p.add(opacityPopupButton, gbc);
         opacitySlider.setUI((SliderUI) PaletteSliderUI.createUI(opacitySlider));
         opacitySlider.setScaleFactor(100d);
         new FigureAttributeEditorHandler<Double>(FILL_OPACITY, opacitySlider, editor);

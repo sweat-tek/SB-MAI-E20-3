@@ -265,7 +265,10 @@ public class ColorFormatter extends DefaultFormatter {
             switch (outputFormat) {
                 case RGB_HEX:
                     str = "000000" + Integer.toHexString(c.getRGB() & 0xffffff);
+                       System.out.println("Values before: " + str);
                     str = "#" + str.substring(str.length() - 6);
+                    System.out.println(str + " STR");
+                    
                     break;
                 case RGB_INTEGER:
                     str = c.getRed() + "," + c.getGreen() + "," + c.getBlue();
