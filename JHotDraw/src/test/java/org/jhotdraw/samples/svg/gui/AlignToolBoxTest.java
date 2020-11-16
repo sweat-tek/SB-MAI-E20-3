@@ -26,23 +26,13 @@ import static org.mockito.Mockito.*;
  *
  * @author menta
  */
-public class AlignTest {
-    public AlignTest(){
+public class AlignToolBoxTest {
+    public AlignToolBoxTest(){
         
     }
     
     private JPanel p;
-    private GridBagConstraints gbc;
-    private East east;
-    private West west;
-    private Horizontal hori;
-    private Vertical verti;
-    private Collection figures;
-    private Rectangle2D.Double rect2D;
-    private Figure fig1;
-    private Figure fig2;
-    private Figure fig3;
-    private FigureEvent evt;
+    private GridBagConstraints gbc;;
     public static AlignToolBar toolBar;
  
         @BeforeClass
@@ -50,30 +40,13 @@ public class AlignTest {
             toolBar = new AlignToolBar();
         }
         
-        @AfterClass
-        public static void tearDownClass() throws Exception{
-            
-        }
-        
         @Before
         public void setUp(){
             p = mock(JPanel.class);
             gbc = mock(GridBagConstraints.class);
-            figures = mock(Collection.class);
-            rect2D = mock(Rectangle2D.Double.class);
-            evt = mock(FigureEvent.class);
-            
-            
-            figures.add(fig1);
-            figures.add(fig2);
-            
-            
+
         }
         
-        @After
-        public void tearDown(){
-            
-        }
         
         @Test
         public void testBorderAlignToolBox() {
