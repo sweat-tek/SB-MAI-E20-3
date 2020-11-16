@@ -14,27 +14,15 @@
 package org.jhotdraw.samples.svg.gui;
 
 import dk.sdu.mmmi.featuretracer.lib.FeatureEntryPoint;
-import java.beans.*;
-import java.util.prefs.*;
 import javax.swing.border.*;
-import org.jhotdraw.gui.*;
-import org.jhotdraw.samples.svg.*;
-import org.jhotdraw.undo.*;
 import org.jhotdraw.util.*;
 
 import java.awt.*;
-import java.awt.event.*;
-import java.util.*;
 import javax.swing.*;
-import javax.swing.event.*;
 import org.jhotdraw.app.JHotDrawFeatures;
-import org.jhotdraw.app.action.*;
 import org.jhotdraw.draw.*;
 import org.jhotdraw.draw.action.*;
 import org.jhotdraw.gui.plaf.palette.*;
-import org.jhotdraw.samples.svg.action.*;
-import org.jhotdraw.samples.svg.figures.*;
-import static org.jhotdraw.samples.svg.SVGAttributeKeys.*;
 
 /**
  * AlignToolBar.
@@ -49,10 +37,14 @@ public class AlignToolBar extends AbstractToolBar {
 
     private SelectionComponentDisplayer displayer;
     ResourceBundleUtil labels = ResourceBundleUtil.getBundle("org.jhotdraw.samples.svg.Labels");
+    JPanel p = new JPanel();
 
     /** Creates new instance. */
     public AlignToolBar() {
         setName(labels.getString(getID() + ".toolbar"));
+    }
+    public JPanel getJPanel(){
+        return p;
     }
 
     @Override
@@ -74,6 +66,10 @@ public class AlignToolBar extends AbstractToolBar {
         btn.setUI((PaletteButtonUI) PaletteButtonUI.createUI(btn));
         btn.putClientProperty("hideActionText", Boolean.TRUE);
         btn.setText(null);
+    }
+    
+    public void createBorder(){
+        p.setBorder(new EmptyBorder(5, 5, 5, 8));
     }
     
     public void createBtnEast (JPanel p, GridBagConstraints gbc){
@@ -139,12 +135,10 @@ public class AlignToolBar extends AbstractToolBar {
     @Override
     @FeatureEntryPoint(JHotDrawFeatures.ALIGN_PALETTE)
     protected JComponent createDisclosedComponent(int state) {
-        JPanel p = new JPanel();
-        p.setOpaque(false);
-        p.setBorder(new EmptyBorder(5, 5, 5, 8));
-        
+        createBorder();
         GridBagLayout layout = new GridBagLayout();
         p.setLayout(layout);
+        p.setOpaque(false);
 
         GridBagConstraints gbc = new GridBagConstraints();
         
