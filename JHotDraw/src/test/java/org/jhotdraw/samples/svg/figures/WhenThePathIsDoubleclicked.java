@@ -28,7 +28,7 @@ public class WhenThePathIsDoubleclicked extends Stage<WhenThePathIsDoubleclicked
         Mockito.when(drawingView.getHandleDetailLevel()).thenReturn(0);
     }
 
-    public WhenThePathIsDoubleclicked the_Path_is_doubleclicked() {
+    public WhenThePathIsDoubleclicked thePathIsDoubleclicked() {
         svgPathFigure.handleMouseClick(point2DDouble, mouseEvent, drawingView);
         return self();
     }

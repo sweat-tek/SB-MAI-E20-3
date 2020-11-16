@@ -6,15 +6,15 @@ import org.junit.Test;
 public class DoubleClickTest extends ScenarioTest<GivenAPathWithOneChild, WhenThePathIsDoubleclicked, ThenANodeWillBeAdded> {
 
     @Test
-    public void aFirstLoginTest() {
+    public void additionOfANodeWhenDoubleclickingTest() {
         given()
-                .a_Path_with_one_Child()
+                .aPathWithOneChild()
                 .and()
-                .the_Child_has_two_Points();
+                .twoPointsAreAddedToTheChild();
 
         when()
-                .the_Path_is_doubleclicked();
+                .thePathIsDoubleclicked();
         then()
-                .a_Node_will_be_added();
+                .aNodeWillBeAdded();
     }
 }
