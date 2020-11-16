@@ -23,57 +23,41 @@ public class GeneralPathStrategyMultiplePoints implements GeneralPathStrategy{
                 previous = current;
                 current = path.get(i);
 
-                if ((previous.mask & C2_MASK) == 0) {
-                    if ((current.mask & C1_MASK) == 0) {
-                        gp.lineTo(
-                                (float) current.x[0], (float) current.y[0]);
-                    } else {
-                        gp.quadTo(
-                                (float) current.x[1], (float) current.y[1],
-                                (float) current.x[0], (float) current.y[0]);
-                    }
-                } else {
-                    if ((current.mask & C1_MASK) == 0) {
-                        gp.quadTo(
-                                (float) previous.x[2], (float) previous.y[2],
-                                (float) current.x[0], (float) current.y[0]);
-                    } else {
-                        gp.curveTo(
-                                (float) previous.x[2], (float) previous.y[2],
-                                (float) current.x[1], (float) current.y[1],
-                                (float) current.x[0], (float) current.y[0]);
-                    }
-                }
+            pathLines(previous, current, gp);
             }
             if (path.isClosed()) {
                 if (path.size() > 1) {
                     previous = path.get(path.size() - 1);
                     current = path.get(0);
 
-                    if ((previous.mask & C2_MASK) == 0) {
-                        if ((current.mask & C1_MASK) == 0) {
-                            gp.lineTo(
-                                    (float) current.x[0], (float) current.y[0]);
-                        } else {
-                            gp.quadTo(
-                                    (float) current.x[1], (float) current.y[1],
-                                    (float) current.x[0], (float) current.y[0]);
-                        }
-                    } else {
-                        if ((current.mask & C1_MASK) == 0) {
-                            gp.quadTo(
-                                    (float) previous.x[2], (float) previous.y[2],
-                                    (float) current.x[0], (float) current.y[0]);
-                        } else {
-                            gp.curveTo(
-                                    (float) previous.x[2], (float) previous.y[2],
-                                    (float) current.x[1], (float) current.y[1],
-                                    (float) current.x[0], (float) current.y[0]);
-                        }
-                    }
+                    pathLines(previous, current, gp);
                 }
                 gp.closePath();
             }
+    }
+
+    private void pathLines(Node previous, Node current, GeneralPath gp) {
+        if ((previous.mask & C2_MASK) == 0) {
+            if ((current.mask & C1_MASK) == 0) {
+                gp.lineTo(
+                        (float) current.x[0], (float) current.y[0]);
+            } else {
+                gp.quadTo(
+                        (float) current.x[1], (float) current.y[1],
+                        (float) current.x[0], (float) current.y[0]);
+            }
+        } else {
+            if ((current.mask & C1_MASK) == 0) {
+                gp.quadTo(
+                        (float) previous.x[2], (float) previous.y[2],
+                        (float) current.x[0], (float) current.y[0]);
+            } else {
+                gp.curveTo(
+                        (float) previous.x[2], (float) previous.y[2],
+                        (float) current.x[1], (float) current.y[1],
+                        (float) current.x[0], (float) current.y[0]);
+            }
+        }
     }
 
 }
