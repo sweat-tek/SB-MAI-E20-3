@@ -157,6 +157,13 @@ public class UndoRedoManager extends UndoManager {//javax.swing.undo.UndoManager
     }
 
 
+
+
+
+
+
+
+
     public void setHasSignificantEdits(boolean newValue) {
         boolean oldValue = hasSignificantEdits;
         hasSignificantEdits = newValue;
