@@ -42,30 +42,21 @@ public class ToolsToolBar extends AbstractToolBar {
         setName(labels.getString("tools.toolbar"));
     }
 
-    @Override
-    protected JComponent createDisclosedComponent(int state) {
-        JPanel p = null;
-
-        switch (state) {
-            case 1:
-               {
-                  p = new JPanel();
-                    p.setOpaque(false);
-        p.setBorder(new EmptyBorder(5, 5, 5, 8));
-
-        ResourceBundleUtil labels = ResourceBundleUtil.getBundle("org.jhotdraw.samples.svg.Labels");
-
-        GridBagLayout layout = new GridBagLayout();
-        p.setLayout(layout);
-        GridBagConstraints gbc;
-        AbstractButton btn;
-        CreationTool creationTool;
-        PathTool pathTool;
-        TextCreationTool textTool;
-        TextAreaCreationTool textAreaTool;
-        SVGCreateFromFileTool imageTool;
-
-        HashMap<AttributeKey, Object> attributes;
+    
+    protected void BtnCreate(AbstractButton btn,GridBagConstraints gbc,JPanel p,ResourceBundleUtil labels){
+        btn = ButtonFactory.addSelectionToolTo(this, editor,
+                ButtonFactory.createDrawingActions(editor),
+                createSelectionActions(editor));
+        btn.setUI((PaletteButtonUI) PaletteButtonUI.createUI(btn));
+        gbc = new GridBagConstraints();
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        p.add(btn, gbc);
+        labels.configureToolBarButton(btn, "selectionTool");
+    }
+    
+    
+    protected void firstBtnCreate(AbstractButton btn,GridBagConstraints gbc,JPanel p,ResourceBundleUtil labels,CreationTool creationTool,HashMap<AttributeKey, Object> attributes){
         btn = ButtonFactory.addSelectionToolTo(this, editor,
                 ButtonFactory.createDrawingActions(editor),
                 createSelectionActions(editor));
@@ -85,16 +76,9 @@ public class ToolsToolBar extends AbstractToolBar {
         gbc.gridy = 1;
         gbc.insets = new Insets(3, 0, 0, 0);
         p.add(btn, gbc);
-
-        btn = ButtonFactory.addToolTo(this, editor, creationTool = new CreationTool(new SVGEllipseFigure(), attributes), "createEllipse", labels);
-        creationTool.setToolDoneAfterCreation(false);
-        btn.setUI((PaletteButtonUI) PaletteButtonUI.createUI(btn));
-        gbc = new GridBagConstraints();
-        gbc.gridx = 1;
-        gbc.gridy = 1;
-        gbc.insets = new Insets(3, 3, 0, 0);
-        p.add(btn, gbc);
-
+    }
+    
+    protected void secondBtnCreate(AbstractButton btn,PathTool pathTool,GridBagConstraints gbc,JPanel p,HashMap<AttributeKey, Object> attributes,CreationTool creationTool,ResourceBundleUtil labels){
         btn = ButtonFactory.addToolTo(this, editor, pathTool = new PathTool(new SVGPathFigure(), new SVGBezierFigure(true), attributes), "createPolygon", labels);
         pathTool.setToolDoneAfterCreation(false);
         btn.setUI((PaletteButtonUI) PaletteButtonUI.createUI(btn));
@@ -124,8 +108,11 @@ public class ToolsToolBar extends AbstractToolBar {
         gbc.gridy = 0;
         gbc.insets = new Insets(0, 3, 0, 0);
         p.add(btn, gbc);
-
-        attributes = new HashMap<AttributeKey, Object>();
+    }
+    
+    
+    protected void thirdBtnCreate(HashMap<AttributeKey, Object> attributes,AbstractButton btn,GridBagConstraints gbc,JPanel p,TextCreationTool textTool,TextAreaCreationTool textAreaTool,ResourceBundleUtil labels){
+       attributes = new HashMap<AttributeKey, Object>();
         attributes.put(AttributeKeys.FILL_COLOR, Color.black);
         attributes.put(AttributeKeys.STROKE_COLOR, null);
         btn = ButtonFactory.addToolTo(this, editor, textTool = new TextCreationTool(new SVGTextFigure(), attributes), "createText", labels);
@@ -146,9 +133,11 @@ public class ToolsToolBar extends AbstractToolBar {
         gbc.gridx = 1;
         gbc.gridy = 2;
         gbc.insets = new Insets(3, 3, 0, 0);
-        p.add(btn, gbc);
-
-        attributes = new HashMap<AttributeKey, Object>();
+        p.add(btn, gbc); 
+    }
+    
+   protected void forthBtnCreate(HashMap<AttributeKey, Object> attributes,AbstractButton btn,SVGCreateFromFileTool imageTool,GridBagConstraints gbc,JPanel p,ResourceBundleUtil labels){
+       attributes = new HashMap<AttributeKey, Object>();
         attributes.put(AttributeKeys.FILL_COLOR, null);
         attributes.put(AttributeKeys.STROKE_COLOR, null);
         btn = ButtonFactory.addToolTo(this, editor, imageTool = new SVGCreateFromFileTool(new SVGImageFigure(), new SVGGroupFigure(), attributes), "createImage", labels);
@@ -160,6 +149,46 @@ public class ToolsToolBar extends AbstractToolBar {
         gbc.gridy = 2;
         gbc.insets = new Insets(3, 3, 0, 0);
         p.add(btn, gbc);
+   }
+    
+    
+    @Override
+    protected JComponent createDisclosedComponent(int state) {
+        JPanel p = null;
+
+        switch (state) {
+            case 1:
+               {
+                  p = new JPanel();
+                    p.setOpaque(false);
+        p.setBorder(new EmptyBorder(5, 5, 5, 8));
+
+        ResourceBundleUtil labels = ResourceBundleUtil.getBundle("org.jhotdraw.samples.svg.Labels");
+
+        GridBagLayout layout = new GridBagLayout();
+        p.setLayout(layout);
+        GridBagConstraints gbc = null;
+        AbstractButton btn = null;
+        CreationTool creationTool = null;
+        PathTool pathTool = null;
+        TextCreationTool textTool = null;
+        TextAreaCreationTool textAreaTool = null;
+        SVGCreateFromFileTool imageTool = null;
+        HashMap<AttributeKey, Object> attributes;
+        
+       
+        BtnCreate(btn,gbc,p,labels);
+        
+        attributes = new HashMap<AttributeKey, Object>();
+        
+        firstBtnCreate(btn,gbc,p,labels,creationTool,attributes);
+
+        secondBtnCreate(btn,pathTool,gbc,p,attributes,creationTool,labels);
+
+        thirdBtnCreate(attributes,btn,gbc,p,textTool,textAreaTool,labels);
+        
+        forthBtnCreate(attributes,btn,imageTool,gbc,p,labels);
+      
                 }
                 break;
         }

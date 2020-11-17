@@ -274,11 +274,9 @@ public class Geom {
                     coords[1] = moveToY;
                     break;
             }
-            Point2D.Double chop = Geom.intersect(
-                    prevX, prevY,
-                    coords[0], coords[1],
-                    p.x, p.y,
-                    ctr.x, ctr.y);
+            IntersectLinesBuilder lines = new IntersectLinesBuilder();
+            lines.setXa(prevX).setYa(prevY).setXb(coords[0]).setYb(coords[1]).setXc(p.x).setYc(p.y).setXd(ctr.x).setYd(ctr.y);
+            Point2D.Double chop = Geom.intersect(lines.createIntersectLines());
 
             if (chop != null) {
                 double cl = Geom.length2(chop.x, chop.y, p.x, p.y);
@@ -292,7 +290,8 @@ public class Geom {
             prevX = coords[0];
             prevY = coords[1];
         }
-
+    
+    
         /*
         if (isClosed() && size() > 1) {
         Node first = get(0);
@@ -601,22 +600,25 @@ public class Geom {
      * Return the point of intersection if it exists, else null
      **/
     // from Doug Lea's PolygonFigure
-    public static Point2D.Double intersect(double xa, // line 1 point 1 x
-            double ya, // line 1 point 1 y
-            double xb, // line 1 point 2 x
-            double yb, // line 1 point 2 y
-            double xc, // line 2 point 1 x
-            double yc, // line 2 point 1 y
-            double xd, // line 2 point 2 x
-            double yd) { // line 2 point 2 y
+    
+    
+    public static Point2D.Double intersect(IntersectLines lines) { // line 2 point 2 y
 
+        double xa = lines.xa;
+        double ya = lines.ya;
+        double xb = lines.xb;        
+        double yb = lines.yb;
+        double xc = lines.xc;                
+        double yc = lines.yc;        
+        double xd = lines.xd;        
+        double yd = lines.yd;        
         // source: http://vision.dai.ed.ac.uk/andrewfg/c-g-a-faq.html
         // eq: for lines AB and CD
         //     (YA-YC)(XD-XC)-(XA-XC)(YD-YC)
         // r = -----------------------------  (eqn 1)
         //     (XB-XA)(YD-YC)-(YB-YA)(XD-XC)
         //
-        //     (YA-YC)(XB-XA)-(XA-XC)(YB-YA)
+        //     (YA-YC)(XB-XA)-(XA-XC)(YB-YA)ww
         // s = -----------------------------  (eqn 2)
         //     (XB-XA)(YD-YC)-(YB-YA)(XD-XC)
         //  XI = XA + r(XB-XA)

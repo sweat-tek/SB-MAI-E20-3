@@ -1001,43 +1001,8 @@ public class SVGOutputFormat implements OutputFormat {
             elem.setAttribute(name, toNumber(value));
         }
     }
-
-    /** Returns a value as a SVG Path attribute.
-     * as specified in http://www.w3.org/TR/SVGMobile12/paths.html#PathDataBNF
-     */
-    public static String toPath(BezierPath[] paths) {
-        StringBuilder buf = new StringBuilder();
-
-        for (int j = 0; j < paths.length; j++) {
-            BezierPath path = paths[j];
-
-            if (path.size() == 0) {
-                // nothing to do
-            } else if (path.size() == 1) {
-                BezierPath.Node current = path.get(0);
-                buf.append("M ");
-                buf.append(toNumber(current.x[0]));
-                buf.append(' ');
-                buf.append(toNumber(current.y[0]));
-                //buf.append(" L ");
-                buf.append(toNumber(current.x[0]));
-                buf.append(' ');
-                buf.append(toNumber(current.y[0] + 1));
-            } else {
-                BezierPath.Node previous;
-                BezierPath.Node current;
-
-                previous = current = path.get(0);
-                buf.append("M ");
-                buf.append(toNumber(current.x[0]));
-                buf.append(' ');
-                buf.append(toNumber(current.y[0]));
-                char nextCommand = 'L';
-                for (int i = 1, n = path.size(); i < n; i++) {
-                    previous = current;
-                    current = path.get(i);
-
-                    if ((previous.mask & BezierPath.C2_MASK) == 0) {
+public static void checkbezierPath(StringBuilder buf,BezierPath.Node previous,BezierPath.Node current,char nextCommand){
+     if ((previous.mask & BezierPath.C2_MASK) == 0) {
                         if ((current.mask & BezierPath.C1_MASK) == 0) {
                             if (nextCommand != 'L') {
                                 buf.append(" L ");
@@ -1096,75 +1061,53 @@ public class SVGOutputFormat implements OutputFormat {
                             buf.append(toNumber(current.x[0]));
                             buf.append(' ');
                             buf.append(toNumber(current.y[0]));
-                        }
-                    }
+}
+     }}
+    /** Returns a value as a SVG Path attribute.
+     * as specified in http://www.w3.org/TR/SVGMobile12/paths.html#PathDataBNF
+     */
+    public static String toPath(BezierPath[] paths) {
+        StringBuilder buf = new StringBuilder();
+
+        for (int j = 0; j < paths.length; j++) {
+            BezierPath path = paths[j];
+
+            if (path.size() == 0) {
+                // nothing to do
+            } else if (path.size() == 1) {
+                BezierPath.Node current = path.get(0);
+                buf.append("M ");
+                buf.append(toNumber(current.x[0]));
+                buf.append(' ');
+                buf.append(toNumber(current.y[0]));
+                //buf.append(" L ");
+                buf.append(toNumber(current.x[0]));
+                buf.append(' ');
+                buf.append(toNumber(current.y[0] + 1));
+            } else {
+                BezierPath.Node previous;
+                BezierPath.Node current;
+
+                previous = current = path.get(0);
+                buf.append("M ");
+                buf.append(toNumber(current.x[0]));
+                buf.append(' ');
+                buf.append(toNumber(current.y[0]));
+                char nextCommand = 'L';
+                for (int i = 1, n = path.size(); i < n; i++) {
+                    previous = current;
+                    current = path.get(i);
+
+                
+                     checkbezierPath(buf,previous, current,nextCommand);
+                    
                 }
                 if (path.isClosed()) {
                     if (path.size() > 1) {
                         previous = path.get(path.size() - 1);
                         current = path.get(0);
 
-                        if ((previous.mask & BezierPath.C2_MASK) == 0) {
-                            if ((current.mask & BezierPath.C1_MASK) == 0) {
-                                if (nextCommand != 'L') {
-                                    buf.append(" L ");
-                                    nextCommand = 'L';
-                                } else {
-                                    buf.append(' ');
-                                }
-                                buf.append(toNumber(current.x[0]));
-                                buf.append(' ');
-                                buf.append(toNumber(current.y[0]));
-                            } else {
-                                if (nextCommand != 'Q') {
-                                    buf.append(" Q ");
-                                    nextCommand = 'Q';
-                                } else {
-                                    buf.append(' ');
-                                }
-                                buf.append(toNumber(current.x[1]));
-                                buf.append(' ');
-                                buf.append(toNumber(current.y[1]));
-                                buf.append(' ');
-                                buf.append(toNumber(current.x[0]));
-                                buf.append(' ');
-                                buf.append(toNumber(current.y[0]));
-                            }
-                        } else {
-                            if ((current.mask & BezierPath.C1_MASK) == 0) {
-                                if (nextCommand != 'Q') {
-                                    buf.append(" Q ");
-                                    nextCommand = 'Q';
-                                } else {
-                                    buf.append(' ');
-                                }
-                                buf.append(toNumber(previous.x[2]));
-                                buf.append(' ');
-                                buf.append(toNumber(previous.y[2]));
-                                buf.append(' ');
-                                buf.append(toNumber(current.x[0]));
-                                buf.append(' ');
-                                buf.append(toNumber(current.y[0]));
-                            } else {
-                                if (nextCommand != 'C') {
-                                    buf.append(" C ");
-                                    nextCommand = 'C';
-                                } else {
-                                    buf.append(' ');
-                                }
-                                buf.append(toNumber(previous.x[2]));
-                                buf.append(' ');
-                                buf.append(toNumber(previous.y[2]));
-                                buf.append(' ');
-                                buf.append(toNumber(current.x[1]));
-                                buf.append(' ');
-                                buf.append(toNumber(current.y[1]));
-                                buf.append(' ');
-                                buf.append(toNumber(current.x[0]));
-                                buf.append(' ');
-                                buf.append(toNumber(current.y[0]));
-                            }
-                        }
+                        checkbezierPath(buf,previous, current,nextCommand);
                     }
                     buf.append(" Z");
                     nextCommand = '\0';
