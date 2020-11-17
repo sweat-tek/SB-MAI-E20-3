@@ -1,0 +1,13 @@
+name: Build code base
+
+on:
+  push:
+    branches:
+      - refactorings
+      - workflow
+      - master
+  pull_request:
+    branches:
+      - refactorings
+      - workflow
+      - master
