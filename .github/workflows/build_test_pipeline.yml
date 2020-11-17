@@ -15,7 +15,6 @@ on:
 jobs:
   build:
     runs-on: windows-latest
-
     steps:
       - uses: actions/checkout@v2
       - name: JDK setup, Version 1.8
