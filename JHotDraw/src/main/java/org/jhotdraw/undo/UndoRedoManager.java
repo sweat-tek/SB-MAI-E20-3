@@ -19,6 +19,7 @@ import java.beans.*;
 import javax.swing.*;
 import javax.swing.event.*;
 import javax.swing.undo.*;
+import java.security.*;
 import java.util.*;
 
 import org.jhotdraw.app.action.*;
@@ -43,6 +44,7 @@ import org.jhotdraw.util.*;
  * <br>1.0 2001-10-09
  */
 public class UndoRedoManager extends UndoManager {//javax.swing.undo.UndoManager {
+    private enum UndoRedoAction {UNDO, REDO, UNDO_OR_REDO};
     protected PropertyChangeSupport propertySupport = new PropertyChangeSupport(this);
     private final static boolean DEBUG = false;
 
@@ -249,8 +251,8 @@ public class UndoRedoManager extends UndoManager {//javax.swing.undo.UndoManager
      * The UndoRedoManager ignores all incoming UndoableEdit events,
      * while undo is in progress.
      */
-    public void undo() throws CannotUndoException {
-        undoOrRedo("undo");
+    public void undo() {
+        undoOrRedo(UndoRedoAction.UNDO);
     }
 
     /**
@@ -258,8 +260,8 @@ public class UndoRedoManager extends UndoManager {//javax.swing.undo.UndoManager
      * The UndoRedoManager ignores all incoming UndoableEdit events,
      * while redo is in progress.
      */
-    public void redo() throws CannotRedoException {
-        undoOrRedo("redo");
+    public void redo() {
+        undoOrRedo(UndoRedoAction.REDO);
     }
 
     /**
@@ -267,19 +269,28 @@ public class UndoRedoManager extends UndoManager {//javax.swing.undo.UndoManager
      * The UndoRedoManager ignores all incoming UndoableEdit events,
      * while undo or redo is in progress.
      */
-    public void undoOrRedo() throws CannotUndoException, CannotRedoException {
-        undoOrRedo("undoOrRedo");
+    public void undoOrRedo() {
+        undoOrRedo(UndoRedoAction.UNDO_OR_REDO);
     }
 
-    public void undoOrRedo(String action) throws CannotUndoException, CannotRedoException {
+    private void undoOrRedo(UndoRedoAction action) {
+        if (action == null){
+            return;
+        }
         undoOrRedoInProgress = true;
         try {
-            if      (action == "undo")      { super.undo(); }
-            else if (action == "redo")      { super.redo(); }
-            else if (action == "undoOrRedo"){ super.undoOrRedo(); }
-            else {
-                undoOrRedoInProgress = false;
-                return;
+            switch (action) {
+                case UNDO:
+                    super.undo();
+                    break;
+                case REDO:
+                    super.redo();
+                    break;
+                case UNDO_OR_REDO:
+                    super.undoOrRedo();
+                    break;
+                default:
+                    throw new InvalidParameterException("Wrong call");
             }
         } finally {
             undoOrRedoInProgress = false;
