@@ -9,7 +9,7 @@ public class GivenAPathWithOneChild extends Stage<GivenAPathWithOneChild> {
     protected SVGPathFigure svgPathFigure;
     protected static final int CHILD_INDEX = 0;
 
-    public GivenAPathWithOneChild the_Child_has_two_Points() {
+    public GivenAPathWithOneChild twoPointsAreAddedToTheChild() {
         SVGBezierFigure svgBezierFigure = svgPathFigure.getChild(CHILD_INDEX);
         BezierPath.Node firstNode = new BezierPath.Node(0, 0);
         BezierPath.Node secondNode = new BezierPath.Node(2, 2);
@@ -18,7 +18,7 @@ public class GivenAPathWithOneChild extends Stage<GivenAPathWithOneChild> {
         return self();
     }
 
-    public GivenAPathWithOneChild a_Path_with_one_Child() {
+    public GivenAPathWithOneChild aPathWithOneChild() {
         svgPathFigure = new SVGPathFigure();
         SVGBezierFigure svgBezierFigure = new SVGBezierFigure();
         svgPathFigure.add(CHILD_INDEX, svgBezierFigure);
