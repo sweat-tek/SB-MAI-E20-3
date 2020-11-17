@@ -18,6 +18,7 @@ import javax.swing.undo.*;
 import java.awt.event.*;
 import java.awt.geom.*;
 import java.util.*;
+import java.util.stream.IntStream;
 import org.jhotdraw.geom.*;
 /**
  * LineFigure.
@@ -42,17 +43,12 @@ public class LineFigure extends BezierFigure {
     // EDITING
     @Override
     public Collection<Handle> createHandles(int detailLevel) {
-        LinkedList<Handle> handles = new LinkedList<Handle>();
-        switch (detailLevel) {
-            case -1 : // Mouse hover handles
-                handles.add(new BezierOutlineHandle(this, true));
-                break;
-            case 0 :
-                handles.add(new BezierOutlineHandle(this));
-                for (int i=0, n = path.size(); i < n; i++) {
-                    handles.add(new BezierNodeHandle(this, i));
-                }
-                break;
+        LinkedList<Handle> handles = new LinkedList<>();
+        if (detailLevel == 0){
+            handles.add(new BezierOutlineHandle(this));
+            IntStream.range(0, path.size() - 1).forEach(i -> handles.add(new BezierNodeHandle(this, i)));
+        } else if (detailLevel == -1){
+            handles.add(new BezierOutlineHandle(this, true));
         }
         return handles;
     }

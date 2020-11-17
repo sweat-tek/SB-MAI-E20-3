@@ -64,18 +64,14 @@ public class SVGTextAreaFigure extends SVGAttributedFigure
     }
     // DRAWING
 
-    @Override
-    protected void drawText(java.awt.Graphics2D g) {
-    }
-
-    protected void drawFill(Graphics2D g) {
-        g.fill(getTextShape());
-        g.draw(new Rectangle2D.Double(getBounds().x, getBounds().y, getPreferredTextSize(changingDepth).width, getPreferredTextSize(changingDepth).height));
+    public void drawFill(Graphics2D graphics2D) {
+        graphics2D.fill(getTextShape());
+        graphics2D.draw(new Rectangle2D.Double(getBounds().x, getBounds().y, getPreferredTextSize(changingDepth).width, getPreferredTextSize(changingDepth).height));
     }
 
     @FeatureEntryPoint(JHotDrawFeatures.TEXT_AREA_TOOL)
-    protected void drawStroke(Graphics2D g) {
-        g.draw(getTextShape());
+    public void drawStroke(Graphics2D graphics2D) {
+        graphics2D.draw(getTextShape());
     }
     // SHAPE AND BOUNDS
 
@@ -181,7 +177,7 @@ public class SVGTextAreaFigure extends SVGAttributedFigure
      * @param leftMargin the left bound of the paragraph
      * @param rightMargin the right bound of the paragraph
      * @param tabStops an array with tab stops
-     * @param tabCounts the number of entries in tabStops which contain actual
+     * @param tabCount the number of entries in tabStops which contain actual
      *        values
      * @return Returns the actual bounds of the paragraph.
      */
