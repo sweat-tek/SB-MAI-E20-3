@@ -1,23 +1,11 @@
 package org.jhotdraw.samples.svg.gui;
 
-import java.awt.Graphics2D;
 import java.awt.GridBagConstraints;
-import java.awt.geom.Rectangle2D;
-import java.util.Collection;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
-import org.jhotdraw.draw.Drawing;
-import org.jhotdraw.draw.Figure;
-import org.jhotdraw.draw.FigureEvent;
-import org.jhotdraw.draw.action.AlignAction.*;
-import org.jhotdraw.samples.svg.gui.AlignToolBar;
 import org.junit.*;
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNotSame;
-import static org.junit.Assert.assertSame;
-import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.*;
 
 
