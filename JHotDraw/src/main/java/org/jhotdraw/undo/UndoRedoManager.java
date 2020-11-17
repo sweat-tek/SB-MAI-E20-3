@@ -243,20 +243,14 @@ public class UndoRedoManager extends UndoManager {//javax.swing.undo.UndoManager
         redoAction.putValue(Action.SHORT_DESCRIPTION, label);
     }
 
+    //TODO Remove code smell (Duplicated Code)
     /**
      * Undoes the last edit event.
      * The UndoRedoManager ignores all incoming UndoableEdit events,
      * while undo is in progress.
      */
-    public void undo()
-            throws CannotUndoException {
-        undoOrRedoInProgress = true;
-        try {
-            super.undo();
-        } finally {
-            undoOrRedoInProgress = false;
-            updateActions();
-        }
+    public void undo() throws CannotUndoException {
+        undoOrRedo("undo");
     }
 
     /**
@@ -264,15 +258,8 @@ public class UndoRedoManager extends UndoManager {//javax.swing.undo.UndoManager
      * The UndoRedoManager ignores all incoming UndoableEdit events,
      * while redo is in progress.
      */
-    public void redo()
-            throws CannotUndoException {
-        undoOrRedoInProgress = true;
-        try {
-            super.redo();
-        } finally {
-            undoOrRedoInProgress = false;
-            updateActions();
-        }
+    public void redo() throws CannotRedoException {
+        undoOrRedo("redo");
     }
 
     /**
@@ -280,11 +267,20 @@ public class UndoRedoManager extends UndoManager {//javax.swing.undo.UndoManager
      * The UndoRedoManager ignores all incoming UndoableEdit events,
      * while undo or redo is in progress.
      */
-    public void undoOrRedo()
-            throws CannotUndoException, CannotRedoException {
+    public void undoOrRedo() throws CannotUndoException, CannotRedoException {
+        undoOrRedo("undoOrRedo");
+    }
+
+    public void undoOrRedo(String action) throws CannotUndoException, CannotRedoException {
         undoOrRedoInProgress = true;
         try {
-            super.undoOrRedo();
+            if      (action == "undo")      { super.undo(); }
+            else if (action == "redo")      { super.redo(); }
+            else if (action == "undoOrRedo"){ super.undoOrRedo(); }
+            else {
+                undoOrRedoInProgress = false;
+                return;
+            }
         } finally {
             undoOrRedoInProgress = false;
             updateActions();
