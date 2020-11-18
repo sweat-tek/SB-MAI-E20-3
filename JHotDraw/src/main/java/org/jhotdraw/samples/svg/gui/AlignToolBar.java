@@ -29,22 +29,22 @@ import org.jhotdraw.gui.plaf.palette.*;
  *
  * @author Werner Randelshofer
  * @version 1.2 2008-05-23 Hide the toolbar if nothing is selected, and no
- * creation tool is active. 
- * <br>1.1 2008-03-26 Don't draw button borders. 
+ * creation tool is active.
+ * <br>1.1 2008-03-26 Don't draw button borders.
  * <br>1.0 May 1, 2007 Created.
  */
 public class AlignToolBar extends AbstractToolBar {
 
     private SelectionComponentDisplayer displayer;
-    ResourceBundleUtil labels = ResourceBundleUtil.getBundle("org.jhotdraw.samples.svg.Labels");
-    JPanel p = new JPanel();
+    private ResourceBundleUtil labels;
+    protected JPanel panel = new JPanel();
 
-    /** Creates new instance. */
+    /**
+     * Creates new instance.
+     */
     public AlignToolBar() {
+        this.labels = ResourceBundleUtil.getBundle("org.jhotdraw.samples.svg.Labels");
         setName(labels.getString(getID() + ".toolbar"));
-    }
-    public JPanel getJPanel(){
-        return p;
     }
 
     @Override
@@ -61,74 +61,74 @@ public class AlignToolBar extends AbstractToolBar {
             displayer.setVisibleIfCreationTool(false);
         }
     }
-    
-    public void createBtn (AbstractButton btn){
-        btn.setUI((PaletteButtonUI) PaletteButtonUI.createUI(btn));
-        btn.putClientProperty("hideActionText", Boolean.TRUE);
-        btn.setText(null);
+
+    public void createButton(AbstractButton button) {
+        button.setUI((PaletteButtonUI) PaletteButtonUI.createUI(button));
+        button.putClientProperty("hideActionText", Boolean.TRUE);
+        button.setText(null);
     }
-    
-    public void createBorder(){
-        p.setBorder(new EmptyBorder(5, 5, 5, 8));
+
+    public void createBorder() {
+        panel.setBorder(new EmptyBorder(5, 5, 5, 8));
     }
-    
-    public void createBtnEast (JPanel p, GridBagConstraints gbc){
-        
+
+    protected void createEastButton(JPanel p, GridBagConstraints gbc) {
+
         AbstractButton btn;
-        
+
         gbc.insets = new Insets(0, 3, 0, 0);
         btn = new JButton(new AlignAction.East(editor, labels));
-        createBtn(btn);
+        createButton(btn);
         p.add(btn, gbc);
     }
-    
-        public void createBtnWest (JPanel p, GridBagConstraints gbc){
+
+    protected void createWestButton(JPanel p, GridBagConstraints gbc) {
         AbstractButton btn;
-        
+
         gbc.gridy = 0;
         gbc.insets = new Insets(0, 3, 0, 0);
         btn = new JButton(new AlignAction.West(editor, labels));
-        createBtn(btn);
+        createButton(btn);
         p.add(btn, gbc);
     }
-        
-        public void createBtnNorth (JPanel p, GridBagConstraints gbc){
+
+    protected void createNorthButton(JPanel p, GridBagConstraints gbc) {
         AbstractButton btn;
-        
+
         gbc.gridy = 1;
         gbc.insets = new Insets(3, 0, 0, 0);
         btn = new JButton(new AlignAction.North(editor, labels));
-        createBtn(btn);
+        createButton(btn);
         p.add(btn, gbc);
     }
-        
-        public void createBtnSouth (JPanel p, GridBagConstraints gbc){
+
+    protected void createSouthButton(JPanel p, GridBagConstraints gbc) {
         AbstractButton btn;
-        
+
         gbc.insets = new Insets(3, 3, 0, 0);
         btn = new JButton(new AlignAction.South(editor, labels));
-        createBtn(btn);
+        createButton(btn);
         p.add(btn, gbc);
     }
-        
-        public void createBtnHori (JPanel p, GridBagConstraints gbc){
+
+    protected void createHorizontalButton(JPanel p, GridBagConstraints gbc) {
         AbstractButton btn;
-        
+
         gbc.gridx = 0;
         gbc.gridy = 2;
         gbc.insets = new Insets(3, 0, 0, 0);
         btn = new JButton(new AlignAction.Horizontal(editor, labels));
-        createBtn(btn);
+        createButton(btn);
         p.add(btn, gbc);
     }
-        
-        public void createBtnVerti (JPanel p, GridBagConstraints gbc){
+
+    protected void createVerticalButton(JPanel p, GridBagConstraints gbc) {
         AbstractButton btn;
-        
+
         gbc.gridx = 1;
         gbc.insets = new Insets(3, 3, 0, 0);
         btn = new JButton(new AlignAction.Vertical(editor, labels));
-        createBtn(btn);
+        createButton(btn);
         p.add(btn, gbc);
     }
 
@@ -137,24 +137,25 @@ public class AlignToolBar extends AbstractToolBar {
     protected JComponent createDisclosedComponent(int state) {
         createBorder();
         GridBagLayout layout = new GridBagLayout();
-        p.setLayout(layout);
-        p.setOpaque(false);
+        panel.setLayout(layout);
+        panel.setOpaque(false);
 
         GridBagConstraints gbc = new GridBagConstraints();
         
-        createBtnWest(p,gbc);
-        createBtnEast(p,gbc);
-        createBtnNorth(p,gbc);
-        createBtnSouth(p,gbc);
-        createBtnHori(p,gbc);
-        createBtnVerti(p,gbc);
-        return p;
+
+        createWestButton(panel, gbc);
+        createEastButton(panel, gbc);
+        createNorthButton(panel, gbc);
+        createSouthButton(panel, gbc);
+        createHorizontalButton(panel, gbc);
+        createVerticalButton(panel, gbc);
+        return panel;
     }
 
-    /** This method is called from within the constructor to
-     * initialize the form.
-     * WARNING: Do NOT modify this code. The content of this method is
-     * always regenerated by the Form Editor.
+    /**
+     * This method is called from within the constructor to initialize the form.
+     * WARNING: Do NOT modify this code. The content of this method is always
+     * regenerated by the Form Editor.
      */
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {

@@ -9,6 +9,7 @@ import com.tngtech.jgiven.Stage;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Rectangle2D;
 import static junit.framework.Assert.assertEquals;
+import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  *
@@ -29,7 +30,7 @@ public class ThenTheFigureWillBeAlignedEast extends Stage<ThenTheFigureWillBeAli
         GivenAFigureAndSelectionBounds.fig1.transform(tx);
         GivenAFigureAndSelectionBounds.fig1.changed();
         
-        assertEquals(155.0, GivenAFigureAndSelectionBounds.fig1.getBounds().x);
+        assertThat(GivenAFigureAndSelectionBounds.fig1.getBounds().x).isEqualTo(155.0);
         return self();
     }
     
