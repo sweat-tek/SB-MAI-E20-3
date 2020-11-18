@@ -19,8 +19,8 @@ public class AlignToolBoxTest {
         
     }
     
-    private JPanel p;
-    private GridBagConstraints gbc;;
+    private JPanel panel;
+    private GridBagConstraints gbc;
     public static AlignToolBar toolBar;
  
         @BeforeClass
@@ -30,7 +30,7 @@ public class AlignToolBoxTest {
         
         @Before
         public void setUp(){
-            p = mock(JPanel.class);
+            panel = mock(JPanel.class);
             gbc = mock(GridBagConstraints.class);
 
         }
@@ -39,7 +39,7 @@ public class AlignToolBoxTest {
         @Test
         public void testBorderAlignToolBox() {
             toolBar.createBorder();
-            EmptyBorder border = (EmptyBorder) toolBar.getJPanel().getBorder();
+            EmptyBorder border = (EmptyBorder) toolBar.panel.getBorder();
             
             assertNotNull(border);
             
@@ -51,7 +51,7 @@ public class AlignToolBoxTest {
         
         @Test
         public void testCreateButton() {
-            toolBar.createBtnEast(p, gbc);
+            toolBar.createEastButton(panel, gbc);
             EmptyBorder testBorder = new EmptyBorder(0,3,0,0);
             
             assertEquals(testBorder.getBorderInsets(), gbc.insets);
