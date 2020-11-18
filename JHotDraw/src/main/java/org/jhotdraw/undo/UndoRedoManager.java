@@ -164,6 +164,8 @@ public class UndoRedoManager extends UndoManager {//javax.swing.undo.UndoManager
 
 
 
+
+
     public void setHasSignificantEdits(boolean newValue) {
         boolean oldValue = hasSignificantEdits;
         hasSignificantEdits = newValue;
@@ -222,7 +224,6 @@ public class UndoRedoManager extends UndoManager {//javax.swing.undo.UndoManager
         return redoAction;
     }
 
-
     /**
      * Updates the properties of the UndoAction
      * and of the RedoAction.
@@ -280,21 +281,23 @@ public class UndoRedoManager extends UndoManager {//javax.swing.undo.UndoManager
         undoOrRedo(UndoRedoAction.UNDO_OR_REDO);
     }
 
-    private void undoOrRedo(UndoRedoAction action) {
-        if (action == null){
-            return;
-        }
+    protected UndoRedoAction undoOrRedo(UndoRedoAction action) {
+        if (action == null){ return null; }
         undoOrRedoInProgress = true;
+        UndoRedoAction returnAction;
         try {
             switch (action) {
                 case UNDO:
                     super.undo();
+                    returnAction = UndoRedoAction.UNDO;
                     break;
                 case REDO:
                     super.redo();
+                    returnAction = UndoRedoAction.REDO;
                     break;
                 case UNDO_OR_REDO:
                     super.undoOrRedo();
+                    returnAction = UndoRedoAction.UNDO_OR_REDO;
                     break;
                 default:
                     throw new InvalidParameterException("Wrong call");
@@ -303,6 +306,7 @@ public class UndoRedoManager extends UndoManager {//javax.swing.undo.UndoManager
             undoOrRedoInProgress = false;
             updateActions();
         }
+        return returnAction;
     }
 
     public void addPropertyChangeListener(PropertyChangeListener listener) {
