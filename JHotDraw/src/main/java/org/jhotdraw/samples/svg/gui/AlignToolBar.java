@@ -62,13 +62,13 @@ public class AlignToolBar extends AbstractToolBar {
         }
     }
 
-    public void createButton(AbstractButton button) {
+    protected void createButton(AbstractButton button) {
         button.setUI((PaletteButtonUI) PaletteButtonUI.createUI(button));
         button.putClientProperty("hideActionText", Boolean.TRUE);
         button.setText(null);
     }
 
-    public void createBorder() {
+    protected void createBorder() {
         panel.setBorder(new EmptyBorder(5, 5, 5, 8));
     }
 
