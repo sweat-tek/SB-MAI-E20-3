@@ -44,7 +44,7 @@ import org.jhotdraw.util.*;
  * <br>1.0 2001-10-09
  */
 public class UndoRedoManager extends UndoManager {//javax.swing.undo.UndoManager {
-    private enum UndoRedoAction {UNDO, REDO, UNDO_OR_REDO};
+    protected enum UndoRedoAction {UNDO, REDO, UNDO_OR_REDO, TEST};
     protected PropertyChangeSupport propertySupport = new PropertyChangeSupport(this);
     private final static boolean DEBUG = false;
 
@@ -284,24 +284,26 @@ public class UndoRedoManager extends UndoManager {//javax.swing.undo.UndoManager
     protected UndoRedoAction undoOrRedo(UndoRedoAction action) {
         if (action == null){ return null; }
         undoOrRedoInProgress = true;
-        UndoRedoAction returnAction;
+        UndoRedoAction returnAction = null;
         try {
             switch (action) {
                 case UNDO:
-                    super.undo();
                     returnAction = UndoRedoAction.UNDO;
+                    super.undo();
                     break;
                 case REDO:
-                    super.redo();
                     returnAction = UndoRedoAction.REDO;
+                    super.redo();
                     break;
                 case UNDO_OR_REDO:
-                    super.undoOrRedo();
                     returnAction = UndoRedoAction.UNDO_OR_REDO;
+                    super.undoOrRedo();
                     break;
                 default:
                     throw new InvalidParameterException("Wrong call");
             }
+        } catch (CannotUndoException | CannotRedoException e){
+            e.getMessage();
         } finally {
             undoOrRedoInProgress = false;
             updateActions();

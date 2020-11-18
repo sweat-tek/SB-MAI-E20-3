@@ -5,11 +5,12 @@ import org.junit.*;
 
 import javax.swing.undo.*;
 
+import java.security.*;
+
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 
 public class UndoRedoManagerTest {
-    UndoAction undoAction;
     UndoRedoManager undoRedoManager;
 
     @Before
@@ -19,75 +20,42 @@ public class UndoRedoManagerTest {
 
     @Test
     public void undoOrRedoTest_UNDO(){
-        assertFalse(undoRedoManager.hasSignificantEdits());
-        undoRedoManager.setHasSignificantEdits(true);
-        assertTrue(undoRedoManager.hasSignificantEdits());
-        /*
-        when(undoRedoManager.getDebug()).thenReturn(true);
-        boolean bool = undoRedoManager.hasSignificantEdits();
-        undoRedoManager.setHasSignificantEdits(bool);
-        assertTrue(undoRedoManager.hasSignificantEdits());
-         */
+        UndoRedoManager.UndoRedoAction action = undoRedoManager.undoOrRedo(UndoRedoManager.UndoRedoAction.UNDO);
+        assertEquals(action, UndoRedoManager.UndoRedoAction.UNDO);
     }
 
     @Test
-    public void setHasSignificantEditsTest_SetTrue(){
-        assertFalse(undoRedoManager.hasSignificantEdits());
-        undoRedoManager.setHasSignificantEdits(true);
-        assertTrue(undoRedoManager.hasSignificantEdits());
-        /*
-        when(undoRedoManager.getDebug()).thenReturn(true);
-        boolean bool = undoRedoManager.hasSignificantEdits();
-        undoRedoManager.setHasSignificantEdits(bool);
-        assertTrue(undoRedoManager.hasSignificantEdits());
-         */
+    public void undoOrRedoTest_REDO(){
+        UndoRedoManager.UndoRedoAction action = undoRedoManager.undoOrRedo(UndoRedoManager.UndoRedoAction.REDO);
+        assertEquals(action, UndoRedoManager.UndoRedoAction.REDO);
     }
 
     @Test
-    public void setHasSignificantEditsTest_SetFalse(){
-        undoRedoManager.setHasSignificantEdits(false);
-        assertFalse(undoRedoManager.hasSignificantEdits());
-        /*
-        when(undoRedoManager.getDebug()).thenReturn(true);
-        boolean bool = undoRedoManager.hasSignificantEdits();
-        undoRedoManager.setHasSignificantEdits(bool);
-        assertTrue(undoRedoManager.hasSignificantEdits());
-         */
+    public void undoOrRedoTest_UNDO_OR_REDO(){
+        UndoRedoManager.UndoRedoAction action = undoRedoManager.undoOrRedo(UndoRedoManager.UndoRedoAction.UNDO_OR_REDO);
+        assertEquals(action, UndoRedoManager.UndoRedoAction.UNDO_OR_REDO);
     }
 
     @Test
-    public void setHasSignificantEditsTest_didFirePropertyChange(){
-        undoRedoManager.setHasSignificantEdits(false);
-        //verify(undoRedoManager, times(1)).propertySupport.firePropertyChange("hasSignificantEdits",false, false);
-        /*
-        when(undoRedoManager.getDebug()).thenReturn(true);
-        boolean bool = undoRedoManager.hasSignificantEdits();
-        undoRedoManager.setHasSignificantEdits(bool);
-        assertTrue(undoRedoManager.hasSignificantEdits());
-         */
+    public void undoOrRedoTest_null(){
+        UndoRedoManager.UndoRedoAction action = undoRedoManager.undoOrRedo(null);
+        assertEquals(action, null);
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
     @Test
-    public void setHasSignificantEditsTest(){
-        undoAction = mock(UndoAction.class);
-        when(undoAction.isEnabled()).thenReturn(true);
-        undoAction.isEnabled();
-        verify(undoAction, times(1)).isEnabled();
-        boolean bool = undoRedoManager.hasSignificantEdits();
-        assertTrue(bool);
+    public void undoOrRedoTest_other(){
+        try{
+            UndoRedoManager.UndoRedoAction action = undoRedoManager.undoOrRedo(UndoRedoManager.UndoRedoAction.TEST);
+        } catch (InvalidParameterException e){
+            System.out.println(e.getMessage());
+            assertTrue(true);
+        }
     }
+
+    /*
+    @Test
+    public void test(){
+        assertTrue(true);
+    }
+    */
 }
