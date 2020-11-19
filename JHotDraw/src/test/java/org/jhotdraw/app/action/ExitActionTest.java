@@ -41,13 +41,12 @@ public class ExitActionTest {
     public static ExitAction exitAction;
     public static Application app;
     public static SVGApplicationModel model;
-    public static Application testApp;
-//    public final static String ID = "application.exit";
-//    private Component oldFocusOwner;
     private View unsavedView;
     private int unsavedViewsCount;
     private File testFile;
 //    private View documentToBeReviewed;
+//    public final static String ID = "application.exit";
+//    private Component oldFocusOwner;
 
     @BeforeClass
     public static void setUpClass() throws Exception {
@@ -71,6 +70,25 @@ public class ExitActionTest {
             
         }
     }
+
+    @Test
+    public void testSaveToFile() throws InterruptedException {
+
+        View testView = new SVGView();
+        testView.init();
+        exitAction.unsavedView = testView;
+
+        testFile = new File("testfile.txt");
+
+        Worker w = exitAction.saveToFile(testFile);
+        while (w.isRunning) {
+            Thread.sleep(0, 1);
+        }
+        assertTrue(testFile.exists());
+    }
+}
+
+
 
 //    @Test
 //    public void testReturnReviewPane() {
@@ -107,19 +125,3 @@ public class ExitActionTest {
 //        }
 //        assertTrue(testFile.exists());
 //    }
-    @Test
-    public void testNegavtiveSaveToFile() throws InterruptedException {
-
-        View testView = new SVGView();
-        testView.init();
-        exitAction.unsavedView = testView;
-
-        testFile = new File("testfile.txt");
-
-        Worker w = exitAction.saveToFile(testFile);
-        while (w.isRunning) {
-            Thread.sleep(0, 1);
-        }
-        assertTrue(testFile.exists());
-    }
-}
