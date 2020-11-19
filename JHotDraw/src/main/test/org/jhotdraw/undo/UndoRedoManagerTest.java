@@ -45,10 +45,10 @@ public class UndoRedoManagerTest {
     @Test
     public void undoOrRedoTest_other(){
         try{
-            UndoRedoManager.UndoRedoAction action = undoRedoManager.undoOrRedo(UndoRedoManager.UndoRedoAction.TEST);
+            undoRedoManager.undoOrRedo(UndoRedoManager.UndoRedoAction.TEST);
+            fail();
         } catch (InvalidParameterException e){
             System.out.println(e.getMessage());
-            assertTrue(true);
         }
     }
 
