@@ -21,6 +21,7 @@ class GivenView {
     
     public void a_view() {
         View testView = new SVGView();
+        testView.init();
         exitAction.unsavedView = testView;
     }
     

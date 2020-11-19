@@ -66,7 +66,9 @@ public class ExitActionTest {
     @After
     public void tearDown() {
         if (testFile.exists()) {
+            System.out.println(testFile.toString() + " was deleted.");
             testFile.delete();
+            
         }
     }
 
@@ -109,6 +111,7 @@ public class ExitActionTest {
     public void testNegavtiveSaveToFile() throws InterruptedException {
 
         View testView = new SVGView();
+        testView.init();
         exitAction.unsavedView = testView;
 
         testFile = new File("testfile.txt");
