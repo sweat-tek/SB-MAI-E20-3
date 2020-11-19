@@ -5,6 +5,7 @@
  */
 package org.jhotdraw.app.action;
 
+import com.tngtech.jgiven.Stage;
 import com.tngtech.jgiven.annotation.ScenarioState;
 import java.io.File;
 import org.jhotdraw.gui.Worker;
@@ -13,7 +14,7 @@ import org.jhotdraw.gui.Worker;
  *
  * @author Mikkel H
  */
-class WhenSave {
+class WhenSaveViewInFile extends Stage<WhenSaveViewInFile> {
 
     @ScenarioState
     private ExitAction exitAction;
@@ -21,7 +22,7 @@ class WhenSave {
     @ScenarioState
     private File testFile;
 
-    public void fileSaved() throws InterruptedException {
+    public WhenSaveViewInFile saveViewInFile() throws InterruptedException {
         testFile = new File("testFile.txt");
 
         Worker w = exitAction.saveToFile(testFile);
@@ -30,5 +31,6 @@ class WhenSave {
 //            Thread.sleep(1);
             Thread.sleep(0, 1);
         }
+        return self();
     }
 }

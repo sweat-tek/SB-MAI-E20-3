@@ -5,6 +5,7 @@
  */
 package org.jhotdraw.app.action;
 
+import com.tngtech.jgiven.Stage;
 import com.tngtech.jgiven.annotation.ScenarioState;
 import java.io.File;
 import static org.junit.Assert.assertTrue;
@@ -13,13 +14,15 @@ import static org.junit.Assert.assertTrue;
  *
  * @author Mikkel H
  */
-class ThenIsFileSaved {
+class ThenIsFileSaved extends Stage<ThenIsFileSaved>{
 
     @ScenarioState
     private File testFile;
 
-    public void IsFileSave() {
+    public ThenIsFileSaved IsFileSaved() {
+        System.out.println("hej med dig");
         assertTrue(testFile.exists());
+        return self();
     }
 
 }

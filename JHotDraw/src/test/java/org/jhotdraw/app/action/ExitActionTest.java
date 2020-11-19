@@ -41,9 +41,9 @@ public class ExitActionTest {
     public static ExitAction exitAction;
     public static Application app;
     public static SVGApplicationModel model;
-    private View unsavedView;
-    private int unsavedViewsCount;
     private File testFile;
+//    private int unsavedViewsCount;
+//    private View unsavedView;
 //    private View documentToBeReviewed;
 //    public final static String ID = "application.exit";
 //    private Component oldFocusOwner;
@@ -57,8 +57,9 @@ public class ExitActionTest {
 
     @Before
     public void setUp() {
-        unsavedViewsCount = 0;
+
         app.setModel(model);
+//        unsavedViewsCount = 0;
 //        documentToBeReviewed = null; 
     }
 
@@ -67,7 +68,7 @@ public class ExitActionTest {
         if (testFile.exists()) {
             System.out.println(testFile.toString() + " was deleted.");
             testFile.delete();
-            
+
         }
     }
 
@@ -81,14 +82,14 @@ public class ExitActionTest {
         testFile = new File("testfile.txt");
 
         Worker w = exitAction.saveToFile(testFile);
+        // Since w is a worker in another thread i need to wait for it, else the test fails. 
+        // So i created the loop to run until w is done.
         while (w.isRunning) {
             Thread.sleep(0, 1);
         }
         assertTrue(testFile.exists());
     }
 }
-
-
 
 //    @Test
 //    public void testReturnReviewPane() {
