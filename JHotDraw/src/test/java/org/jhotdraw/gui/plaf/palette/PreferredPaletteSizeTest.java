@@ -6,10 +6,8 @@
 package org.jhotdraw.gui.plaf.palette;
 
 import java.awt.Dimension;
-import org.junit.After;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
-import org.junit.Before;
 import org.junit.Test;
 
 /**

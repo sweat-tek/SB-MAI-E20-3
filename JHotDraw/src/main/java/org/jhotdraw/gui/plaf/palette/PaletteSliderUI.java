@@ -17,6 +17,7 @@ import org.apache.batik.ext.awt.LinearGradientPaint;
 import org.apache.batik.ext.awt.MultipleGradientPaint;
 import java.awt.*;
 import java.awt.geom.*;
+import java.util.Objects;
 import javax.swing.*;
 import javax.swing.plaf.*;
 import javax.swing.plaf.basic.*;
@@ -35,10 +36,6 @@ public class PaletteSliderUI extends BasicSliderUI {
     private final static float[] selectedStops = new float[]{0f, 0.2f, 1f};
     private final static Color[] selectedStopColors = new Color[]{new Color(0x999999), new Color(0xaaaaaa), new Color(0x666666)};
 
-    Rectangle knobBounds = thumbRect;
-    int w = knobBounds.width;
-    int h = knobBounds.height;
-    int cw = w / 2;
     float[] stops;
     Color[] stopColors;
 
@@ -130,6 +127,13 @@ public class PaletteSliderUI extends BasicSliderUI {
 
     private void sliderRightToLeft(Graphics g) {
 
+        Rectangle knobBounds = thumbRect;
+        int w = knobBounds.width;
+        int h = knobBounds.height;
+        int cw = w / 2;
+        float[] stops;
+        Color[] stopColors;
+
         g.fillRect(5, 1, w - 1 - cw, h - 3);
         Polygon p = new Polygon();
         p.addPoint(cw, 0);
@@ -153,6 +157,11 @@ public class PaletteSliderUI extends BasicSliderUI {
 
     private void sliderLeftToRight(Graphics g) {
 
+        Rectangle knobBounds = thumbRect;
+        int w = knobBounds.width;
+        int h = knobBounds.height;
+        int cw = w / 2;
+        
         g.fillRect(1, 1, w - 1 - cw, h - 3);
         Polygon p = new Polygon();
         p.addPoint(w - cw - 1, 0);
@@ -175,7 +184,12 @@ public class PaletteSliderUI extends BasicSliderUI {
 
     }
 
-    private void horizontalSlider(Graphics g) {
+    public void horizontalSlider(Graphics g) {
+
+        Rectangle knobBounds = thumbRect;
+        int w = knobBounds.width;
+        int h = knobBounds.height;
+        int cw = w / 2;
 
         g.fillRect(1, 1, w - 3, h - 1 - cw);
         Polygon p = new Polygon();
@@ -199,29 +213,19 @@ public class PaletteSliderUI extends BasicSliderUI {
 
     }
 
-    private void sliderEnabled(Graphics g, float[] stops, Color[] stopColors) {
+    private void verticalSlider(Graphics g) {
 
-        g.setColor(slider.getBackground());
-        if (slider.getModel().getValueIsAdjusting()) {
-            stops = selectedStops;
-            stopColors = selectedStopColors;
-        } else {
-            stops = enabledStops;
-            stopColors = enabledStopColors;
-        }
+        Rectangle knobBounds = thumbRect;
+        int h = knobBounds.height;
+        int cw = h / 2;
     }
 
-    private void sliderDisabled(Graphics g, float[] stops, Color[] stopColors) {
-
-        g.setColor(slider.getBackground().darker());
-        stops = enabledStops;
-        stopColors = enabledStopColors;
-
-    }
-
-    private void plainThumb(Graphics gr) {
-        // "plain" version
+    private void drawSlider(Graphics gr) {
         Graphics2D g = (Graphics2D) gr;
+        Rectangle knobBounds = thumbRect;
+        int w = knobBounds.width;
+        int h = knobBounds.height;
+        // "plain" version
         LinearGradientPaint lgp = new LinearGradientPaint(
                 new Point2D.Float(2, 2), new Point2D.Float(2, 2 + h - 4),
                 stops, stopColors,
@@ -235,42 +239,49 @@ public class PaletteSliderUI extends BasicSliderUI {
 
     @Override
     public void paintThumb(Graphics gr) {
-
+       
         Graphics2D g = (Graphics2D) gr;
+        Rectangle knobBounds = thumbRect;
         g.translate(knobBounds.x, knobBounds.y);
 
         if (slider.isEnabled()) {
-            sliderEnabled(g, stops, stopColors);
+            g.setColor(slider.getBackground());
+            if (slider.getModel().getValueIsAdjusting()) {
+                stops = selectedStops;
+                stopColors = selectedStopColors;
+            } else {
+                stops = enabledStops;
+                stopColors = enabledStopColors;
+            }
         } else {
-            sliderDisabled(g, stops, stopColors);
+            g.setColor(slider.getBackground().darker());
+            stops = enabledStops;
+            stopColors = enabledStopColors;
         }
-
-        Boolean paintThumbArrowShape
-                = (Boolean) slider.getClientProperty("Slider.paintThumbArrowShape");
+       
+        Boolean paintThumbArrowShape 
+        = (Boolean) slider.getClientProperty("Slider.paintThumbArrowShape");
 
         if ((!slider.getPaintTicks() && paintThumbArrowShape == null)
-                || paintThumbArrowShape == Boolean.FALSE) {
-            
+                || Objects.equals(paintThumbArrowShape, Boolean.FALSE)) {
+
             // "plain" version
-            plainThumb(g);
+            drawSlider(gr);
 
         } else if (slider.getOrientation() == JSlider.HORIZONTAL) {
             horizontalSlider(g);
         } else {  // vertical
-            int cw = h / 2;
+            verticalSlider(g);
             if (slider.getComponentOrientation().isLeftToRight()) {
                 sliderLeftToRight(g);
             } else {
                 sliderRightToLeft(g);
             }
         }
-        
+       
         g.translate(-knobBounds.x, -knobBounds.y);
     }
 
-    
-    
-    
     @Override
     protected Dimension getThumbSize() {
         Dimension size = new Dimension();
