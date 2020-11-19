@@ -20,7 +20,6 @@ class ThenIsFileSaved extends Stage<ThenIsFileSaved>{
     private File testFile;
 
     public ThenIsFileSaved IsFileSaved() {
-        System.out.println("hej med dig");
         assertTrue(testFile.exists());
         return self();
     }
