@@ -14,20 +14,21 @@ import org.jhotdraw.gui.Worker;
  * @author Mikkel H
  */
 class WhenSave {
-    
+
     @ScenarioState
     private ExitAction exitAction;
-    
+
     @ScenarioState
     private File testFile;
-    
+
     public void fileSaved() throws InterruptedException {
-        File testFile = new File("testFile.txt");
+        testFile = new File("testFile.txt");
 
         Worker w = exitAction.saveToFile(testFile);
-//        while (w.isRunning) {
-////            Thread.sleep(0, 1);
-//            Thread.sleep(1000);
-//        }
+        
+        while (w.isRunning) {
+//            Thread.sleep(1);
+            Thread.sleep(0, 1);
+        }
     }
 }

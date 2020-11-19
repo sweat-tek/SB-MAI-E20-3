@@ -17,6 +17,7 @@ import org.jhotdraw.app.Application;
 import org.jhotdraw.app.DefaultSDIApplication;
 import org.jhotdraw.app.View;
 import org.jhotdraw.gui.Worker;
+import org.jhotdraw.samples.svg.SVGApplicationModel;
 import org.jhotdraw.samples.svg.SVGView;
 import org.junit.After;
 import org.junit.AfterClass;
@@ -39,6 +40,7 @@ public class ExitActionTest {
 
     public static ExitAction exitAction;
     public static Application app;
+    public static SVGApplicationModel model;
     public static Application testApp;
 //    public final static String ID = "application.exit";
 //    private Component oldFocusOwner;
@@ -51,19 +53,21 @@ public class ExitActionTest {
     public static void setUpClass() throws Exception {
         app = new DefaultSDIApplication();
         exitAction = new ExitAction(app);
+        model = new SVGApplicationModel();
     }
 
     @Before
     public void setUp() {
         unsavedViewsCount = 0;
+        app.setModel(model);
 //        documentToBeReviewed = null; 
     }
 
     @After
     public void tearDown() {
-//        if (testFile.exists()) {
-//            testFile.delete();
-//        }
+        if (testFile.exists()) {
+            testFile.delete();
+        }
     }
 
 //    @Test
