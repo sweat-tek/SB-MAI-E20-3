@@ -30,7 +30,7 @@ import org.jhotdraw.xml.DOMOutput;
  * @version 2.0 2007-05-18 Changed due to changes in Figure interface. 
  * <br>1.0 July 9, 2006 Created.
  */
-public abstract class AbstractAttributedCompositeFigure extends AbstractCompositeFigure {
+public abstract class AbstractAttributedCompositeFigure extends AbstractCompositeFigure implements DrawableFigure{
 
     private HashMap<AttributeKey, Object> attributes = new HashMap<AttributeKey, Object>();
     /**
@@ -119,36 +119,13 @@ public abstract class AbstractAttributedCompositeFigure extends AbstractComposit
         }
     }
 
+    /**
+     * Same as draw, but also calls draw on the parameter children
+     * @param g the graphic that should be drawn and passed to the draw method of the children
+     */
     public void drawFigure(Graphics2D g) {
-        drawChildren(g);
-        if (AttributeKeys.FILL_COLOR.get(this) != null) {
-            g.setColor(AttributeKeys.FILL_COLOR.get(this));
-            drawFill(g);
-        }
-        if (STROKE_COLOR.get(this) != null && STROKE_WIDTH.get(this) > 0d) {
-            g.setStroke(AttributeKeys.getStroke(this));
-            g.setColor(STROKE_COLOR.get(this));
-
-            drawStroke(g);
-        }
-        if (TEXT_COLOR.get(this) != null) {
-            if (TEXT_SHADOW_COLOR.get(this) != null &&
-                    TEXT_SHADOW_OFFSET.get(this) != null) {
-                Dimension2DDouble d = TEXT_SHADOW_OFFSET.get(this);
-                g.translate(d.width, d.height);
-                g.setColor(TEXT_SHADOW_COLOR.get(this));
-                drawText(g);
-                g.translate(-d.width, -d.height);
-            }
-            g.setColor(TEXT_COLOR.get(this));
-            drawText(g);
-        }
-    }
-
-    protected void drawChildren(Graphics2D g) {
-        for (Figure child : getChildren()) {
-            child.draw(g);
-        }
+        getChildren().forEach(child -> child.draw(g));
+        this.draw(g);
     }
 
     public Stroke getStroke() {
@@ -169,31 +146,6 @@ public abstract class AbstractAttributedCompositeFigure extends AbstractComposit
         Rectangle2D.Double r = getBounds();
         Geom.grow(r, width, width);
         return r;
-    }
-
-    /**
-     * This method is called by method draw() to draw the fill
-     * area of the figure. AttributedFigure configures the Graphics2D
-     * object with the FILL_COLOR attribute before calling this method.
-     * If the FILL_COLOR attribute is null, this method is not called.
-     */
-    protected abstract void drawFill(java.awt.Graphics2D g);
-
-    /**
-     * This method is called by method draw() to draw the lines of the figure
-     *. AttributedFigure configures the Graphics2D object with
-     * the STROKE_COLOR attribute before calling this method.
-     * If the STROKE_COLOR attribute is null, this method is not called.
-     */
-    /**
-     * This method is called by method draw() to draw the text of the figure
-     *. AttributedFigure configures the Graphics2D object with
-     * the TEXT_COLOR attribute before calling this method.
-     * If the TEXT_COLOR attribute is null, this method is not called.
-     */
-    protected abstract void drawStroke(java.awt.Graphics2D g);
-
-    protected void drawText(java.awt.Graphics2D g) {
     }
 
     public AbstractAttributedCompositeFigure clone() {

@@ -458,18 +458,18 @@ public abstract class AbstractCompositeFigure
         }
     }
 
-    public void draw(Graphics2D g) {
-        Rectangle2D clipBounds = g.getClipBounds();
+    public void draw(Graphics2D graphics2D) {
+        Rectangle2D clipBounds = graphics2D.getClipBounds();
         if (clipBounds != null) {
             for (Figure child : getChildren()) {
                 if (child.isVisible() && child.getDrawingArea().intersects(clipBounds)) {
-                    child.draw(g);
+                    child.draw(graphics2D);
                 }
             }
         } else {
             for (Figure child : getChildren()) {
                 if (child.isVisible()) {
-                    child.draw(g);
+                    child.draw(graphics2D);
                 }
             }
         }
