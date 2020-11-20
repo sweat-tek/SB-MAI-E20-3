@@ -5,11 +5,11 @@
  * and all its contributors.
  * All rights reserved.
  *
- * The copyright of this software is owned by the authors and  
- * contributors of the JHotDraw project ("the copyright holders").  
- * You may not use, copy or modify this software, except in  
- * accordance with the license agreement you entered into with  
- * the copyright holders. For details see accompanying license terms. 
+ * The copyright of this software is owned by the authors and
+ * contributors of the JHotDraw project ("the copyright holders").
+ * You may not use, copy or modify this software, except in
+ * accordance with the license agreement you entered into with
+ * the copyright holders. For details see accompanying license terms.
  */
 
 package org.jhotdraw.undo;
@@ -19,7 +19,10 @@ import java.beans.*;
 import javax.swing.*;
 import javax.swing.event.*;
 import javax.swing.undo.*;
+import java.security.*;
 import java.util.*;
+
+import org.jhotdraw.app.action.*;
 import org.jhotdraw.util.*;
 
 /**
@@ -41,9 +44,10 @@ import org.jhotdraw.util.*;
  * <br>1.0 2001-10-09
  */
 public class UndoRedoManager extends UndoManager {//javax.swing.undo.UndoManager {
+    protected enum UndoRedoAction {UNDO, REDO, UNDO_OR_REDO, TEST};
     protected PropertyChangeSupport propertySupport = new PropertyChangeSupport(this);
     private final static boolean DEBUG = false;
-    
+
     /**
      * The resource bundle used for internationalisation.
      */
@@ -55,7 +59,7 @@ public class UndoRedoManager extends UndoManager {//javax.swing.undo.UndoManager
      * last call to discardAllEdits.
      */
     private boolean hasSignificantEdits = false;
-    
+
     /**
      * This flag is set to true when an undo or redo
      * operation is in progress. The UndoRedoManager
@@ -63,7 +67,7 @@ public class UndoRedoManager extends UndoManager {//javax.swing.undo.UndoManager
      * this flag is true.
      */
     private boolean undoOrRedoInProgress;
-    
+
     /**
      * Sending this UndoableEdit event to the UndoRedoManager
      * disables the Undo and Redo functions of the manager.
@@ -76,17 +80,16 @@ public class UndoRedoManager extends UndoManager {//javax.swing.undo.UndoManager
             return false;
         }
     };
-    
+
     /**
      * Undo Action for use in a menu bar.
      */
-    private class UndoAction
-            extends AbstractAction {
+    private class UndoAction extends AbstractAction {
         public UndoAction() {
             labels.configureAction(this, "edit.undo");
             setEnabled(false);
         }
-        
+
         /**
          * Invoked when an action occurs.
          */
@@ -98,19 +101,17 @@ public class UndoRedoManager extends UndoManager {//javax.swing.undo.UndoManager
                 e.printStackTrace();
             }
         }
-        
     }
-    
+
     /**
      * Redo Action for use in a menu bar.
      */
-    private class RedoAction
-            extends AbstractAction {
+    private class RedoAction extends AbstractAction {
         public RedoAction() {
             labels.configureAction(this, "edit.redo");
             setEnabled(false);
         }
-        
+
         /**
          * Invoked when an action occurs.
          */
@@ -121,32 +122,31 @@ public class UndoRedoManager extends UndoManager {//javax.swing.undo.UndoManager
                 System.out.println("Cannot redo: "+e);
             }
         }
-        
     }
-    
+
     /** The undo action instance. */
     private UndoAction undoAction;
     /** The redo action instance. */
     private RedoAction redoAction;
-    
+
     public static ResourceBundleUtil getLabels() {
         if (labels == null) {
             labels = ResourceBundleUtil.getBundle("org.jhotdraw.undo.Labels");
         }
         return labels;
     }
-    
+
     /** Creates new UndoRedoManager */
     public UndoRedoManager() {
         getLabels();
         undoAction = new UndoAction();
         redoAction = new RedoAction();
     }
-    
+
     public void setLocale(Locale l) {
         labels = ResourceBundleUtil.getBundle("org.jhotdraw.undo.Labels", l);
     }
-    
+
     /**
      * Discards all edits.
      */
@@ -155,13 +155,24 @@ public class UndoRedoManager extends UndoManager {//javax.swing.undo.UndoManager
         updateActions();
         setHasSignificantEdits(false);
     }
-    
+
+
+
+
+
+
+
+
+
+
+
     public void setHasSignificantEdits(boolean newValue) {
         boolean oldValue = hasSignificantEdits;
         hasSignificantEdits = newValue;
-        firePropertyChange("hasSignificantEdits", oldValue, newValue);
+        //firePropertyChange("hasSignificantEdits", oldValue, newValue);
+        propertySupport.firePropertyChange("hasSignificantEdits", oldValue, newValue);
     }
-    
+
     /**
      * Returns true if at least one significant UndoableEdit
      * has been added since the last call to discardAllEdits.
@@ -169,7 +180,7 @@ public class UndoRedoManager extends UndoManager {//javax.swing.undo.UndoManager
     public boolean hasSignificantEdits() {
         return hasSignificantEdits;
     }
-    
+
     /**
      * If inProgress, inserts anEdit at indexOfNextAdd, and removes
      * any old edits that were at indexOfNextAdd or later. The die
@@ -205,24 +216,22 @@ public class UndoRedoManager extends UndoManager {//javax.swing.undo.UndoManager
     public Action getUndoAction() {
         return undoAction;
     }
-    
+
     /**
      * Gets the redo action for use as a Redo menu item.
      */
     public Action getRedoAction() {
         return redoAction;
     }
-    
-   
+
     /**
      * Updates the properties of the UndoAction
      * and of the RedoAction.
      */
     private void updateActions() {
         String label;
-        if (DEBUG) System.out.println("UndoManager.updateActions "+
-                editToBeUndone()
-                +" canUndo="+canUndo()+" canRedo="+canRedo());
+        if (DEBUG)
+            System.out.println("UndoManager.updateActions "+editToBeUndone()+" canUndo="+canUndo()+" canRedo="+canRedo());
         if (canUndo()) {
             undoAction.setEnabled(true);
             label = getUndoPresentationName();
@@ -232,7 +241,7 @@ public class UndoRedoManager extends UndoManager {//javax.swing.undo.UndoManager
         }
         undoAction.putValue(Action.NAME, label);
         undoAction.putValue(Action.SHORT_DESCRIPTION, label);
-        
+
         if (canRedo()) {
             redoAction.setEnabled(true);
             label = getRedoPresentationName();
@@ -243,21 +252,15 @@ public class UndoRedoManager extends UndoManager {//javax.swing.undo.UndoManager
         redoAction.putValue(Action.NAME, label);
         redoAction.putValue(Action.SHORT_DESCRIPTION, label);
     }
-    
+
+    //TODO Remove code smell (Duplicated Code)
     /**
      * Undoes the last edit event.
      * The UndoRedoManager ignores all incoming UndoableEdit events,
      * while undo is in progress.
      */
-    public void undo()
-    throws CannotUndoException {
-        undoOrRedoInProgress = true;
-        try {
-            super.undo();
-        } finally {
-            undoOrRedoInProgress = false;
-            updateActions();
-        }
+    public void undo() {
+        undoOrRedo(UndoRedoAction.UNDO);
     }
 
     /**
@@ -265,36 +268,55 @@ public class UndoRedoManager extends UndoManager {//javax.swing.undo.UndoManager
      * The UndoRedoManager ignores all incoming UndoableEdit events,
      * while redo is in progress.
      */
-    public void redo()
-    throws CannotUndoException {
-        undoOrRedoInProgress = true;
-        try {
-            super.redo();
-        } finally {
-            undoOrRedoInProgress = false;
-            updateActions();
-        }
+    public void redo() {
+        undoOrRedo(UndoRedoAction.REDO);
     }
-    
+
     /**
      * Undoes or redoes the last edit event.
      * The UndoRedoManager ignores all incoming UndoableEdit events,
      * while undo or redo is in progress.
      */
-    public void undoOrRedo()
-    throws CannotUndoException, CannotRedoException {
+    public void undoOrRedo() {
+        undoOrRedo(UndoRedoAction.UNDO_OR_REDO);
+    }
+
+    protected UndoRedoAction undoOrRedo(UndoRedoAction action) {
+        if (action == null){ return null; }
         undoOrRedoInProgress = true;
+        UndoRedoAction returnAction = null;
         try {
-            super.undoOrRedo();
+            switch (action) {
+                case UNDO:
+                    returnAction = UndoRedoAction.UNDO;
+                    super.undo();
+                    break;
+                case REDO:
+                    returnAction = UndoRedoAction.REDO;
+                    super.redo();
+                    break;
+                case UNDO_OR_REDO:
+                    returnAction = UndoRedoAction.UNDO_OR_REDO;
+                    super.undoOrRedo();
+                    break;
+                default:
+                    throw new InvalidParameterException("Wrong call");
+            }
+        } catch (CannotUndoException | CannotRedoException e){
+            e.getMessage();
         } finally {
             undoOrRedoInProgress = false;
             updateActions();
         }
+        return returnAction;
     }
-    
+
     public void addPropertyChangeListener(PropertyChangeListener listener) {
         propertySupport.addPropertyChangeListener(listener);
     }
+
+    //TODO remove code smell (Speculative Generality)
+    /*
     public void addPropertyChangeListener(String propertyName, PropertyChangeListener listener) {
         propertySupport.addPropertyChangeListener( propertyName, listener);
     }
@@ -304,7 +326,10 @@ public class UndoRedoManager extends UndoManager {//javax.swing.undo.UndoManager
     public void removePropertyChangeListener(String propertyName, PropertyChangeListener listener) {
         propertySupport.removePropertyChangeListener(propertyName, listener);
     }
-    
+    */
+
+    //TODO remove code smell (Middle Man)
+    /*
     protected void firePropertyChange(String propertyName, boolean oldValue, boolean newValue) {
         propertySupport.firePropertyChange(propertyName, oldValue, newValue);
     }
@@ -314,4 +339,5 @@ public class UndoRedoManager extends UndoManager {//javax.swing.undo.UndoManager
     protected void firePropertyChange(String propertyName, Object oldValue, Object newValue) {
         propertySupport.firePropertyChange(propertyName, oldValue, newValue);
     }
+    */
 }

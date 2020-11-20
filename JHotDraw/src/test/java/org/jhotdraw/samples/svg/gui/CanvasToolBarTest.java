@@ -1,6 +1,7 @@
 package org.jhotdraw.samples.svg.gui;
 
 import com.tngtech.jgiven.base.ScenarioTestBase;
+import com.tngtech.jgiven.impl.*;
 import org.junit.Test;
 
 /**
@@ -13,5 +14,10 @@ public class CanvasToolBarTest extends ScenarioTestBase<GivenCanvasToolBar, When
         given().someCanvasColor();
         when().chanceColorFieldToGreen();
         then().thenBackgroundColorIsGreen();
+    }
+
+    @Override
+    public Scenario<GivenCanvasToolBar, WhenCanvasToolBar, ThenCanvasToolBar> getScenario() {
+        return null;
     }
 }

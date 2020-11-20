@@ -6,6 +6,7 @@
 package org.jhotdraw.samples.svg.figures;
 
 import com.tngtech.jgiven.base.ScenarioTestBase;
+import com.tngtech.jgiven.impl.*;
 import org.junit.Test;
 
 /**
@@ -18,5 +19,10 @@ public class EllipseToolDrawAcceptanceTest extends ScenarioTestBase<GivenMousePr
         given().mousePressedAndDragged();
         when().mouseReleased();
         then().figureCreated();
+    }
+
+    @Override
+    public Scenario<GivenMousePressedAndDragged, WhenMouseIsReleased, ThenAnEllipseIsDrawn> getScenario() {
+        return null;
     }
 }
