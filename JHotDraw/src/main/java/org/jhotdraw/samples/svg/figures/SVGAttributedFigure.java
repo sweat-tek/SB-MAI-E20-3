@@ -24,7 +24,6 @@ import java.util.*;
 import java.io.*;
 import org.jhotdraw.samples.svg.*;
 import static org.jhotdraw.samples.svg.SVGAttributeKeys.*;
-import org.jhotdraw.geom.*;
 import org.jhotdraw.util.*;
 import org.jhotdraw.xml.*;
 
