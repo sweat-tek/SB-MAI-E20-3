@@ -15,7 +15,7 @@ import com.tngtech.jgiven.annotation.ProvidedScenarioState;
  */
 public class WhenAddTextualMeaning extends Stage<WhenAddTextualMeaning>{
     @ProvidedScenarioState
-    User user;
+    //User user;
     
     @ExpectedScenarioState
     TextHolderFigure textHolder;
@@ -24,10 +24,10 @@ public class WhenAddTextualMeaning extends Stage<WhenAddTextualMeaning>{
     TextHolderFigure figureWithText;
     
     public WhenAddTextualMeaning adding_textual_meaning_to_image(){
-        assertThat( user ).isNotNull();
-        assertThat( textHolder ).isNotNull();
+        //assertThat( user ).isNotNull();
+        //assertThat( textHolder ).isNotNull();
         
-        figureWithText = user.AddTextToFigure(textHolder, "some text");
+       // figureWithText = user.AddTextToFigure(textHolder, "some text");
         return this;
     }
 }
