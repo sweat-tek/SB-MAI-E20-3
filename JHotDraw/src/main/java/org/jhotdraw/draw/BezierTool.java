@@ -62,6 +62,8 @@ public class BezierTool extends AbstractTool {
     private Point mouseLocation;
     /** Holds the view on which we are currently creating a figure. */
     private DrawingView creationView;
+    
+    private Figure lastFigure;
 
     /** Creates a new instance. */
     public BezierTool(BezierFigure prototype) {
@@ -269,6 +271,7 @@ public class BezierTool extends AbstractTool {
         if (finishWhenMouseReleased == Boolean.TRUE) {
             if (createdFigure.getNodeCount() > 1) {
                 finishCreation(createdFigure, creationView);
+                lastFigure = createdFigure;
                 createdFigure = null;
                 finishWhenMouseReleased = null;
                 return;
@@ -348,5 +351,9 @@ public class BezierTool extends AbstractTool {
 
     public boolean isToolDoneAfterCreation() {
         return isToolDoneAfterCreation;
+    }
+    
+    public BezierFigure getLastFigure() {
+        return (BezierFigure)lastFigure;
     }
 }
