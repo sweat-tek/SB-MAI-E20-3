@@ -12,7 +12,6 @@ public class ThenANodeWillBeRemoved extends Stage<ThenANodeWillBeRemoved> {
     protected ArgumentList argumentList;
 
     public ThenANodeWillBeRemoved a_Bezier_Figure_will_be_removed(){
-        List<Figure> list = (argumentList.drawingView.getDrawing().getChildren());
         assertThat(argumentList.drawingView.getDrawing().getChildren()).isNullOrEmpty();
         return self();
     }

@@ -22,7 +22,6 @@ public class GivenAPathFigure extends Stage<GivenAPathFigure> {
     public GivenAPathFigure a_Bezier_Figure() {
         argumentList.svgBezierFigure = new SVGBezierFigure();
         argumentList.drawingView.getDrawing().add(argumentList.svgBezierFigure);
-
         return self();
     }
 }
