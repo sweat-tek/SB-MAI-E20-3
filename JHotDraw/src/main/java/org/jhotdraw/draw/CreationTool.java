@@ -27,8 +27,8 @@ import org.jhotdraw.util.*;
  * To create a figure using the CreationTool, the user does the following mouse
  * gestures on a DrawingView:
  * <ol>
- * <li>Press the mouse button over the DrawingView. This defines the
- * start point of the Figure bounds.</li>
+ * <li>Press the mouse button over the DrawingView. This defines the start point
+ * of the Figure bounds.</li>
  * <li>Drag the mouse while keeping the mouse button pressed, and then release
  * the mouse button. This defines the end point of the Figure bounds.</li>
  * </ol>
@@ -38,9 +38,9 @@ import org.jhotdraw.util.*;
  * creation tool is recommended. For example the TextTool allows to enter the
  * text into a TextFigure after the user has performed the mouse gestures.
  * <p>
- * Alltough the mouse gestures might be fitting for the creation of a connection,
- * the CreationTool is not suited for the creation of a ConnectionFigure. Use
- * the ConnectionTool for this type of figures instead.
+ * Alltough the mouse gestures might be fitting for the creation of a
+ * connection, the CreationTool is not suited for the creation of a
+ * ConnectionFigure. Use the ConnectionTool for this type of figures instead.
  * <p>
  * Design pattern:<br>
  * Name: Prototype.<br>
@@ -52,16 +52,22 @@ import org.jhotdraw.util.*;
  * cursor for creation tool.
  * <br>2.2 2007-08-22 Added property 'toolDoneAfterCreation'.
  * <br>2.1.1 2006-07-20 Minimal size treshold was enforced too eagerly.
- * <br>2.1 2006-07-15 Changed to create prototype creation from class presentationName.
+ * <br>2.1 2006-07-15 Changed to create prototype creation from class
+ * presentationName.
  * <br>2.0 2006-01-14 Changed to support double precision coordinates.
  * <br>1.0 2003-12-01 Derived from JHotDraw 5.4b1.
  */
 public class CreationTool extends AbstractTool {
 
+    private Figure lastFigure;
+
+    public Figure getLastFigure() {
+        return lastFigure;
+    }
+
     /**
-     * Attributes to be applied to the created ConnectionFigure.
-     * These attributes override the default attributes of the
-     * DrawingEditor.
+     * Attributes to be applied to the created ConnectionFigure. These
+     * attributes override the default attributes of the DrawingEditor.
      */
     protected Map<AttributeKey, Object> prototypeAttributes;
     /**
@@ -74,8 +80,8 @@ public class CreationTool extends AbstractTool {
      */
     protected Dimension minimalSizeTreshold = new Dimension(2, 2);
     /**
-     * We set the figure to this minimal size, if it is smaller than the
-     * minimal size treshold.
+     * We set the figure to this minimal size, if it is smaller than the minimal
+     * size treshold.
      */
     protected Dimension minimalSize = new Dimension(40, 40);
     /**
@@ -87,13 +93,15 @@ public class CreationTool extends AbstractTool {
      */
     protected Figure createdFigure;
     /**
-     * If this is set to false, the CreationTool does not fire toolDone
-     * after a new Figure has been created. This allows to create multiple
-     * figures consecutively.
+     * If this is set to false, the CreationTool does not fire toolDone after a
+     * new Figure has been created. This allows to create multiple figures
+     * consecutively.
      */
     private boolean isToolDoneAfterCreation = true;
 
-    /** Creates a new instance. */
+    /**
+     * Creates a new instance.
+     */
     public CreationTool(String prototypeClassName) {
         this(prototypeClassName, null, null);
     }
@@ -118,9 +126,10 @@ public class CreationTool extends AbstractTool {
         this.presentationName = name;
     }
 
-    /** Creates a new instance with the specified prototype but without an
+    /**
+     * Creates a new instance with the specified prototype but without an
      * attribute set. The CreationTool clones this prototype each time a new
-     *  Figure needs to be created. When a new Figure is created, the
+     * Figure needs to be created. When a new Figure is created, the
      * CreationTool applies the default attributes from the DrawingEditor to it.
      *
      * @param prototype The prototype used to create a new Figure.
@@ -129,16 +138,18 @@ public class CreationTool extends AbstractTool {
         this(prototype, null, null);
     }
 
-    /** Creates a new instance with the specified prototype but without an
+    /**
+     * Creates a new instance with the specified prototype but without an
      * attribute set. The CreationTool clones this prototype each time a new
      * Figure needs to be created. When a new Figure is created, the
      * CreationTool applies the default attributes from the DrawingEditor to it,
-     * and then it applies the attributes to it, that have been supplied in
-     * this constructor.
+     * and then it applies the attributes to it, that have been supplied in this
+     * constructor.
      *
      * @param prototype The prototype used to create a new Figure.
      * @param attributes The CreationTool applies these attributes to the
-     * prototype after having applied the default attributes from the DrawingEditor.
+     * prototype after having applied the default attributes from the
+     * DrawingEditor.
      */
     public CreationTool(Figure prototype, Map<AttributeKey, Object> attributes) {
         this(prototype, attributes, null);
@@ -149,10 +160,11 @@ public class CreationTool extends AbstractTool {
      *
      * @param prototype The prototype used to create a new Figure.
      * @param attributes The CreationTool applies these attributes to the
-     * prototype after having applied the default attributes from the DrawingEditor.
+     * prototype after having applied the default attributes from the
+     * DrawingEditor.
      * @param name The name parameter is currently not used.
-     * @deprecated This constructor might go away, because the name parameter
-     * is not used.
+     * @deprecated This constructor might go away, because the name parameter is
+     * not used.
      */
     public CreationTool(Figure prototype, Map<AttributeKey, Object> attributes, String name) {
         this.prototype = prototype;
@@ -220,14 +232,14 @@ public class CreationTool extends AbstractTool {
                     fireToolDone();
                 }
             } else {
-                if (Math.abs(anchor.x - evt.getX()) < minimalSizeTreshold.width &&
-                        Math.abs(anchor.y - evt.getY()) < minimalSizeTreshold.height) {
+                if (Math.abs(anchor.x - evt.getX()) < minimalSizeTreshold.width
+                        && Math.abs(anchor.y - evt.getY()) < minimalSizeTreshold.height) {
                     createdFigure.willChange();
                     createdFigure.setBounds(
                             constrainPoint(new Point(anchor.x, anchor.y)),
                             constrainPoint(new Point(
-                            anchor.x + (int) Math.max(bounds.width, minimalSize.width),
-                            anchor.y + (int) Math.max(bounds.height, minimalSize.height))));
+                                    anchor.x + (int) Math.max(bounds.width, minimalSize.width),
+                                    anchor.y + (int) Math.max(bounds.height, minimalSize.height))));
                     createdFigure.changed();
                 }
                 if (createdFigure instanceof CompositeFigure) {
@@ -252,6 +264,7 @@ public class CreationTool extends AbstractTool {
                     }
                 });
                 creationFinished(createdFigure);
+                lastFigure = createdFigure;
                 createdFigure = null;
             }
         } else {
@@ -283,8 +296,8 @@ public class CreationTool extends AbstractTool {
 
     /**
      * This method allows subclasses to do perform additonal user interactions
-     * after the new figure has been created.
-     * The implementation of this class just invokes fireToolDone.
+     * after the new figure has been created. The implementation of this class
+     * just invokes fireToolDone.
      */
     protected void creationFinished(Figure createdFigure) {
         if (createdFigure.isSelectable()) {
@@ -296,9 +309,9 @@ public class CreationTool extends AbstractTool {
     }
 
     /**
-     * If this is set to false, the CreationTool does not fire toolDone
-     * after a new Figure has been created. This allows to create multiple
-     * figures consecutively.
+     * If this is set to false, the CreationTool does not fire toolDone after a
+     * new Figure has been created. This allows to create multiple figures
+     * consecutively.
      */
     public void setToolDoneAfterCreation(boolean newValue) {
         boolean oldValue = isToolDoneAfterCreation;
@@ -306,8 +319,8 @@ public class CreationTool extends AbstractTool {
     }
 
     /**
-     * Returns true, if this tool fires toolDone immediately after a new
-     * figure has been created.
+     * Returns true, if this tool fires toolDone immediately after a new figure
+     * has been created.
      */
     public boolean isToolDoneAfterCreation() {
         return isToolDoneAfterCreation;
