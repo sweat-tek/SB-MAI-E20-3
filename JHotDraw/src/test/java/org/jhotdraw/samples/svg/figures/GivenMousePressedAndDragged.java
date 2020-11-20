@@ -32,7 +32,7 @@ public class GivenMousePressedAndDragged extends Stage<GivenMousePressedAndDragg
     @ProvidedScenarioState
     int yAxis = 408;
     @ProvidedScenarioState
-    int xAxis = 127;
+    int xAxis = 127; 
     
     DefaultDrawingEditor defaultDrawingEditor;
     Constrainer constrainer;

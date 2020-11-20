@@ -27,7 +27,7 @@ public class ThenAnEllipseIsDrawn extends Stage<ThenAnEllipseIsDrawn> {
         SVGEllipseFigure result = tool.getLastFigureEllipse();
         assertNotNull(result);
         
-        assertEquals(new SVGEllipseFigure(5,5,10,10), result);
+        assertEquals(new SVGEllipseFigure(127,408,10,10), result);
         
         return self();
     }
