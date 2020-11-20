@@ -41,15 +41,15 @@ public abstract class SVGAttributedFigure extends AbstractAttributedFigure {
      */
     public SVGAttributedFigure() {
     }
-
-    public void draw(Graphics2D g) {
+    
+    public void draw(Graphics2D graphics2D)  {
         double opacity = OPACITY.get(this);
         opacity = Math.min(Math.max(0d, opacity), 1d);
         if (opacity != 0d) {
             if (opacity != 1d) {
                 Rectangle2D.Double drawingArea = getDrawingArea();
-
-                Rectangle2D clipBounds = g.getClipBounds();
+                
+                Rectangle2D clipBounds = graphics2D.getClipBounds();
                 if (clipBounds != null) {
                     Rectangle2D.intersect(drawingArea, clipBounds, drawingArea);
                 }
@@ -57,23 +57,23 @@ public abstract class SVGAttributedFigure extends AbstractAttributedFigure {
                 if (!drawingArea.isEmpty()) {
 
                     BufferedImage buf = new BufferedImage(
-                            Math.max(1, (int) ((2 + drawingArea.width) * g.getTransform().getScaleX())),
-                            Math.max(1, (int) ((2 + drawingArea.height) * g.getTransform().getScaleY())),
+                            Math.max(1, (int) ((2 + drawingArea.width) * graphics2D.getTransform().getScaleX())),
+                            Math.max(1, (int) ((2 + drawingArea.height) * graphics2D.getTransform().getScaleY())),
                             BufferedImage.TYPE_INT_ARGB);
                     Graphics2D gr = buf.createGraphics();
-                    gr.scale(g.getTransform().getScaleX(), g.getTransform().getScaleY());
+                    gr.scale(graphics2D.getTransform().getScaleX(), graphics2D.getTransform().getScaleY());
                     gr.translate((int) -drawingArea.x, (int) -drawingArea.y);
-                    gr.setRenderingHints(g.getRenderingHints());
+                    gr.setRenderingHints(graphics2D.getRenderingHints());
                     drawFigure(gr);
                     gr.dispose();
-                    Composite savedComposite = g.getComposite();
-                    g.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, (float) opacity));
-                    g.drawImage(buf, (int) drawingArea.x, (int) drawingArea.y,
+                    Composite savedComposite = graphics2D.getComposite();
+                    graphics2D.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, (float) opacity));
+                    graphics2D.drawImage(buf, (int) drawingArea.x, (int) drawingArea.y,
                             2 + (int) drawingArea.width, 2 + (int) drawingArea.height, null);
-                    g.setComposite(savedComposite);
+                    graphics2D.setComposite(savedComposite);
                 }
             } else {
-                drawFigure(g);
+                drawFigure(graphics2D);
             }
         }
     }
