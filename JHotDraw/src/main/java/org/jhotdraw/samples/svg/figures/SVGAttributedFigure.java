@@ -11,7 +11,6 @@
  * accordance with the license agreement you entered into with  
  * the copyright holders. For details see accompanying license terms. 
  */
-
 package org.jhotdraw.samples.svg.figures;
 
 import java.awt.event.*;
@@ -27,6 +26,7 @@ import org.jhotdraw.samples.svg.*;
 import static org.jhotdraw.samples.svg.SVGAttributeKeys.*;
 import org.jhotdraw.util.*;
 import org.jhotdraw.xml.*;
+
 /**
  * SVGAttributedFigure.
  *
@@ -34,47 +34,49 @@ import org.jhotdraw.xml.*;
  * @version 1.0 December 10, 2006 Created.
  */
 public abstract class SVGAttributedFigure extends AbstractAttributedFigure {
-    
-    /** Creates a new instance. */
+
+    /**
+     * Creates a new instance.
+     */
     public SVGAttributedFigure() {
     }
     
-    public void draw(Graphics2D g)  {
+    public void draw(Graphics2D graphics2D)  {
         double opacity = OPACITY.get(this);
         opacity = Math.min(Math.max(0d, opacity), 1d);
         if (opacity != 0d) {
             if (opacity != 1d) {
                 Rectangle2D.Double drawingArea = getDrawingArea();
                 
-                Rectangle2D clipBounds = g.getClipBounds();
+                Rectangle2D clipBounds = graphics2D.getClipBounds();
                 if (clipBounds != null) {
                     Rectangle2D.intersect(drawingArea, clipBounds, drawingArea);
                 }
-                
-                if (! drawingArea.isEmpty()) {
-                    
+
+                if (!drawingArea.isEmpty()) {
+
                     BufferedImage buf = new BufferedImage(
-                            Math.max(1, (int) ((2 + drawingArea.width) * g.getTransform().getScaleX())),
-                            Math.max(1, (int) ((2 + drawingArea.height) * g.getTransform().getScaleY())),
+                            Math.max(1, (int) ((2 + drawingArea.width) * graphics2D.getTransform().getScaleX())),
+                            Math.max(1, (int) ((2 + drawingArea.height) * graphics2D.getTransform().getScaleY())),
                             BufferedImage.TYPE_INT_ARGB);
                     Graphics2D gr = buf.createGraphics();
-                    gr.scale(g.getTransform().getScaleX(), g.getTransform().getScaleY());
+                    gr.scale(graphics2D.getTransform().getScaleX(), graphics2D.getTransform().getScaleY());
                     gr.translate((int) -drawingArea.x, (int) -drawingArea.y);
-                    gr.setRenderingHints(g.getRenderingHints());
+                    gr.setRenderingHints(graphics2D.getRenderingHints());
                     drawFigure(gr);
                     gr.dispose();
-                    Composite savedComposite = g.getComposite();
-                    g.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, (float) opacity));
-                    g.drawImage(buf, (int) drawingArea.x, (int) drawingArea.y,
+                    Composite savedComposite = graphics2D.getComposite();
+                    graphics2D.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, (float) opacity));
+                    graphics2D.drawImage(buf, (int) drawingArea.x, (int) drawingArea.y,
                             2 + (int) drawingArea.width, 2 + (int) drawingArea.height, null);
-                    g.setComposite(savedComposite);
+                    graphics2D.setComposite(savedComposite);
                 }
             } else {
-                drawFigure(g);
+                drawFigure(graphics2D);
             }
         }
     }
-    
+
     /**
      * This method is invoked before the rendered image of the figure is
      * composited.
@@ -85,7 +87,7 @@ public abstract class SVGAttributedFigure extends AbstractAttributedFigure {
             savedTransform = g.getTransform();
             g.transform(TRANSFORM.get(this));
         }
-        
+
         Paint paint = SVGAttributeKeys.getFillPaint(this);
         if (paint != null) {
             g.setPaint(paint);
@@ -101,6 +103,7 @@ public abstract class SVGAttributedFigure extends AbstractAttributedFigure {
             g.setTransform(savedTransform);
         }
     }
+
     @Override
     public <T> void setAttribute(AttributeKey<T> key, T newValue) {
         if (key == TRANSFORM) {
@@ -108,8 +111,9 @@ public abstract class SVGAttributedFigure extends AbstractAttributedFigure {
         }
         super.setAttribute(key, newValue);
     }
-    
-    @Override public Collection<Action> getActions(Point2D.Double p) {
+
+    @Override
+    public Collection<Action> getActions(Point2D.Double p) {
         LinkedList<Action> actions = new LinkedList<Action>();
         if (TRANSFORM.get(this) != null) {
             ResourceBundleUtil labels = ResourceBundleUtil.getBundle("org.jhotdraw.samples.svg.Labels");
@@ -119,17 +123,47 @@ public abstract class SVGAttributedFigure extends AbstractAttributedFigure {
                     SVGAttributedFigure.this.willChange();
                     fireUndoableEditHappened(
                             TRANSFORM.setUndoable(SVGAttributedFigure.this, null)
-                            );
+                    );
                     SVGAttributedFigure.this.changed();
                 }
             });
         }
         return actions;
     }
-    @Override final public void write(DOMOutput out) throws IOException {
+
+    @Override
+    final public void write(DOMOutput out) throws IOException {
         throw new UnsupportedOperationException("Use SVGStorableOutput to write this Figure.");
     }
-    @Override final public void read(DOMInput in) throws IOException {
+
+    @Override
+    final public void read(DOMInput in) throws IOException {
         throw new UnsupportedOperationException("Use SVGStorableInput to read this Figure.");
+    }
+
+    protected void tmpHolder(AffineTransform tx) {
+        AffineTransform t = TRANSFORM.getClone(this);
+        t.preConcatenate(tx);
+        TRANSFORM.basicSet(this, t);
+    }
+
+    protected void tmpHolder2(AffineTransform tx) {
+        Point2D.Double anchor = getStartPoint();
+        Point2D.Double lead = getEndPoint();
+        setBounds(
+                (Point2D.Double) tx.transform(anchor, anchor),
+                (Point2D.Double) tx.transform(lead, lead));
+        if (FILL_GRADIENT.get(this) != null
+                && !FILL_GRADIENT.get(this).isRelativeToFigureBounds()) {
+            Gradient g = FILL_GRADIENT.getClone(this);
+            g.transform(tx);
+            FILL_GRADIENT.basicSet(this, g);
+        }
+        if (STROKE_GRADIENT.get(this) != null
+                && !STROKE_GRADIENT.get(this).isRelativeToFigureBounds()) {
+            Gradient g = STROKE_GRADIENT.getClone(this);
+            g.transform(tx);
+            STROKE_GRADIENT.basicSet(this, g);
+        }
     }
 }

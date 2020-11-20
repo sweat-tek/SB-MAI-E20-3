@@ -18,6 +18,7 @@ import java.awt.*;
 import java.awt.geom.*;
 import java.awt.event.*;
 import java.util.*;
+import org.jhotdraw.samples.svg.figures.SVGEllipseFigure;
 import org.jhotdraw.util.*;
 
 /**
@@ -290,7 +291,7 @@ public class CreationTool extends AbstractTool {
         return createdFigure;
     }
 
-    protected Figure getAddedFigure() {
+    protected Figure getAddedFigure() { 
         return createdFigure;
     }
 
@@ -335,3 +336,9 @@ public class CreationTool extends AbstractTool {
         }
     }
 }
+    
+    public SVGEllipseFigure getLastFigureEllipse(){
+        return (SVGEllipseFigure)lastFigure;
+    }
+}
+

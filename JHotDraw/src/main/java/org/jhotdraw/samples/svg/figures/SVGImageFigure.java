@@ -81,23 +81,25 @@ public class SVGImageFigure extends SVGAttributedFigure implements SVGFigure, Im
     // DRAWING
     @Override
     @FeatureEntryPoint(JHotDrawFeatures.IMAGE_TOOL)
-    public void draw(Graphics2D g) {
+    public void draw(Graphics2D graphics2D) {
         //super.draw(g);
 
         double opacity = OPACITY.get(this);
         opacity = Math.min(Math.max(0d, opacity), 1d);
         if (opacity != 0d) {
-            Composite savedComposite = g.getComposite();
+            Composite savedComposite = graphics2D.getComposite();
             if (opacity != 1d) {
-                g.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, (float) opacity));
+                graphics2D.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, (float) opacity));
             }
 
             BufferedImage image = getBufferedImage();
             if (image != null) {
                 if (TRANSFORM.get(this) != null) {
+
                     renderTransform(g, image);
+
                 } else {
-                    g.drawImage(image, (int) rectangle.x, (int) rectangle.y, (int) rectangle.width, (int) rectangle.height, null);
+                    graphics2D.drawImage(image, (int) rectangle.x, (int) rectangle.y, (int) rectangle.width, (int) rectangle.height, null);
                 }
 
             } else {
@@ -105,7 +107,7 @@ public class SVGImageFigure extends SVGAttributedFigure implements SVGFigure, Im
             }
 
             if (opacity != 1d) {
-                g.setComposite(savedComposite);
+                graphics2D.setComposite(savedComposite);
             }
         }
     }
@@ -138,7 +140,7 @@ public class SVGImageFigure extends SVGAttributedFigure implements SVGFigure, Im
     protected void drawStroke(Graphics2D g) {
 
     }
-
+  
     // SHAPE AND BOUNDS
     public double getX() {
         return rectangle.x;

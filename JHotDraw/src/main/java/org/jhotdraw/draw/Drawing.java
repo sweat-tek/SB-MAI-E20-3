@@ -177,7 +177,7 @@ public interface Drawing extends CompositeFigure, Serializable, DOMStorable {
     /**
      * Draws all the figures from back to front.
      */
-    void draw(Graphics2D g);
+    void draw(Graphics2D graphics2D);
     
     /**
      * Draws only the figures in the supplied set.
