@@ -11,7 +11,6 @@
  * accordance with the license agreement you entered into with  
  * the copyright holders. For details see accompanying license terms. 
  */
-
 package org.jhotdraw.app.action;
 
 import dk.sdu.mmmi.featuretracer.lib.FeatureEntryPoint;
@@ -32,9 +31,12 @@ import org.jhotdraw.app.JHotDrawFeatures;
  * @version 1.0 2008-05-17 Created.
  */
 public class ClearSelectionAction extends AbstractAction {
+
     public final static String ID = "edit.clearSelection";
-    
-    /** Creates a new instance. */
+
+    /**
+     * Creates a new instance.
+     */
     public ClearSelectionAction() {
         ResourceBundleUtil labels = ResourceBundleUtil.getBundle("org.jhotdraw.app.Labels");
         labels.configureAction(this, ID);
@@ -45,15 +47,25 @@ public class ClearSelectionAction extends AbstractAction {
         Component focusOwner = KeyboardFocusManager.
                 getCurrentKeyboardFocusManager().
                 getPermanentFocusOwner();
-        if (focusOwner != null) {
-            if (focusOwner instanceof EditableComponent) {
-                ((EditableComponent) focusOwner).clearSelection();
-            } else if (focusOwner instanceof JTextComponent) {
-               JTextComponent tc = ((JTextComponent) focusOwner);
-               tc.select(tc.getSelectionStart(), tc.getSelectionStart());
-            } else {
-                focusOwner.getToolkit().beep();
-            }
+        if (focusOwner == null) {
+            return;
+        }
+        if (!clearSelectionSuccess(focusOwner)) {
+            focusOwner.getToolkit().beep();
+        }
+
+    }
+
+    private boolean clearSelectionSuccess(Component focusOwner) {
+        if (focusOwner instanceof EditableComponent) {
+            ((EditableComponent) focusOwner).clearSelection();
+            return true;
+        } else if (focusOwner instanceof JTextComponent) {
+            JTextComponent tc = ((JTextComponent) focusOwner);
+            tc.select(tc.getSelectionStart(), tc.getSelectionStart());
+            return true;
+        } else {
+            return false;
         }
     }
 }

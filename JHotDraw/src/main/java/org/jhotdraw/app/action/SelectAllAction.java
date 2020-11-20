@@ -11,7 +11,6 @@
  * accordance with the license agreement you entered into with  
  * the copyright holders. For details see accompanying license terms. 
  */
-
 package org.jhotdraw.app.action;
 
 import dk.sdu.mmmi.featuretracer.lib.FeatureEntryPoint;
@@ -32,9 +31,12 @@ import org.jhotdraw.app.JHotDrawFeatures;
  * @version 1.0 February 27, 2006 Created.
  */
 public class SelectAllAction extends AbstractAction {
+
     public final static String ID = "edit.selectAll";
-    
-    /** Creates a new instance. */
+
+    /**
+     * Creates a new instance.
+     */
     public SelectAllAction() {
         ResourceBundleUtil labels = ResourceBundleUtil.getBundle("org.jhotdraw.app.Labels");
         labels.configureAction(this, ID);
@@ -45,14 +47,22 @@ public class SelectAllAction extends AbstractAction {
         Component focusOwner = KeyboardFocusManager.
                 getCurrentKeyboardFocusManager().
                 getPermanentFocusOwner();
-        if (focusOwner != null) {
-            if (focusOwner instanceof EditableComponent) {
-                ((EditableComponent) focusOwner).selectAll();
-            } else if (focusOwner instanceof JTextComponent) {
-                ((JTextComponent) focusOwner).selectAll();
-            } else {
-                focusOwner.getToolkit().beep();
-            }
+        if (focusOwner == null) {
+            return;
         }
+        if(!selectionSuccess(focusOwner)){
+            focusOwner.getToolkit().beep();
+        }
+    }
+
+    private boolean selectionSuccess(Component focusOwner) {
+        if (focusOwner instanceof EditableComponent) {
+            ((EditableComponent) focusOwner).selectAll();
+            return true;
+        } else if (focusOwner instanceof JTextComponent) {
+            ((JTextComponent) focusOwner).selectAll();
+            return true;
+        }
+        return false;
     }
 }
