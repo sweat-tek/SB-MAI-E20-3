@@ -25,8 +25,6 @@ public class ExitActionJGivenTest extends ScenarioTest<GivenAView, WhenSaveViewI
     public static ExitAction exitAction = new ExitAction(app);
     @ScenarioState
     public static SVGApplicationModel model = new SVGApplicationModel();
-    @ScenarioState
-    private File testFile;
 
     @Test
     public void ExitActionJGivenTest() throws InterruptedException {

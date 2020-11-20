@@ -27,14 +27,9 @@ class WhenOpeningANewWindow extends Stage<WhenOpeningANewWindow>{
     public static NewAction newAction;
 
     public WhenOpeningANewWindow opening_a_new_window() {
-        
         newAction = new NewAction(app);
-        
         ActionEvent evt = new ActionEvent(app, 0, "New Window");
-        
         newAction.actionPerformed(evt);
-
         return self();
     }
-
 }

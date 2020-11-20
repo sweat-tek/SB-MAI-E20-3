@@ -10,6 +10,7 @@ import com.tngtech.jgiven.annotation.ProvidedScenarioState;
 import org.jhotdraw.app.Application;
 import org.jhotdraw.app.*;
 import static org.jhotdraw.app.action.NewAction.ID;
+import org.jhotdraw.samples.svg.Main;
 import org.jhotdraw.samples.svg.SVGApplicationModel;
 import org.jhotdraw.samples.svg.SVGView;
 import org.jhotdraw.util.ResourceBundleUtil;
@@ -21,7 +22,7 @@ import org.jhotdraw.util.ResourceBundleUtil;
 class GivenAnApplication extends Stage<GivenAnApplication> {
 
     @ProvidedScenarioState
-    public static Application app;
+    public Application app;
 
     public static DefaultApplicationModel appModel;
 
