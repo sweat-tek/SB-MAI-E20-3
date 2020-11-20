@@ -32,7 +32,11 @@ import org.jhotdraw.draw.*;
  */
 public class BringToFrontAction extends AbstractSelectedAction {
     
-       public static String ID = "edit.bringToFront";
+       private static String ID = "edit.bringToFront";
+       
+       public static String getID() {
+           return ID;
+       }
        
     /** Creates a new instance. */
     public BringToFrontAction(DrawingEditor editor) {
