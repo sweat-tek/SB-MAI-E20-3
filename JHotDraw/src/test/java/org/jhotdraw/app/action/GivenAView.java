@@ -6,21 +6,21 @@
 package org.jhotdraw.app.action;
 
 import com.tngtech.jgiven.Stage;
-import com.tngtech.jgiven.annotation.ScenarioState;
+import com.tngtech.jgiven.annotation.ProvidedScenarioState;
 import org.jhotdraw.app.View;
-import static org.jhotdraw.app.action.ExitActionTest.exitAction;
 import org.jhotdraw.samples.svg.SVGView;
+
 
 /**
  *
  * @author Mikkel H
  */
-class GivenView extends Stage<GivenView> {
+class GivenAView extends Stage<GivenAView> {
     
-    @ScenarioState
+    @ProvidedScenarioState
     private ExitAction exitAction;
     
-    public GivenView aView() {
+    public GivenAView a_view() {
         View testView = new SVGView();
         testView.init();
         exitAction.unsavedView = testView;

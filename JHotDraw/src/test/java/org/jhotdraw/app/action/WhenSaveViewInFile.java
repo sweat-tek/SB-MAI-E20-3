@@ -6,7 +6,8 @@
 package org.jhotdraw.app.action;
 
 import com.tngtech.jgiven.Stage;
-import com.tngtech.jgiven.annotation.ScenarioState;
+import com.tngtech.jgiven.annotation.ExpectedScenarioState;
+import com.tngtech.jgiven.annotation.ProvidedScenarioState;
 import java.io.File;
 import org.jhotdraw.gui.Worker;
 
@@ -16,19 +17,16 @@ import org.jhotdraw.gui.Worker;
  */
 class WhenSaveViewInFile extends Stage<WhenSaveViewInFile> {
 
-    @ScenarioState
+    @ExpectedScenarioState
     private ExitAction exitAction;
 
-    @ScenarioState
+    @ProvidedScenarioState
     private File testFile;
 
-    public WhenSaveViewInFile saveViewInFile() throws InterruptedException {
-        testFile = new File("testFile.txt");
-
+    public WhenSaveViewInFile save_view_in_file() throws InterruptedException {
+        testFile = new File("testFile.txt");;
         Worker w = exitAction.saveToFile(testFile);
-        
         while (w.isRunning) {
-//            Thread.sleep(1);
             Thread.sleep(0, 1);
         }
         return self();

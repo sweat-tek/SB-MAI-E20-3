@@ -10,21 +10,14 @@ import com.tngtech.jgiven.junit.ScenarioTest;
 import java.io.File;
 import org.jhotdraw.app.Application;
 import org.jhotdraw.app.DefaultSDIApplication;
-import static org.jhotdraw.app.action.ExitActionTest.app;
-import static org.jhotdraw.app.action.ExitActionTest.exitAction;
 import org.jhotdraw.samples.svg.SVGApplicationModel;
-import org.junit.After;
-import org.junit.AfterClass;
-import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
-import static org.junit.Assert.*;
 
 /**
  *
  * @author Mikkel H
  */
-public class ExitActionJGivenTest extends ScenarioTest<GivenView, WhenSaveViewInFile, ThenIsFileSaved> {
+public class ExitActionJGivenTest extends ScenarioTest<GivenAView, WhenSaveViewInFile, ThenIsFileSaved> {
 
     @ScenarioState
     public static Application app = new DefaultSDIApplication();
@@ -39,10 +32,10 @@ public class ExitActionJGivenTest extends ScenarioTest<GivenView, WhenSaveViewIn
     public void ExitActionJGivenTest() throws InterruptedException {
         app.setModel(model);
         given()
-                .aView();
+                .a_view();
         when()
-                .saveViewInFile();
+                .save_view_in_file();
         then()
-                .IsFileSaved();
+                .is_file_saved();
     }
 }

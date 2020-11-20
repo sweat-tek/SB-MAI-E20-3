@@ -7,20 +7,23 @@ package org.jhotdraw.app.action;
 
 import com.tngtech.jgiven.Stage;
 import com.tngtech.jgiven.annotation.ExpectedScenarioState;
-import java.io.File;
-import static org.junit.Assert.assertTrue;
+import org.jhotdraw.app.Application;
+import static org.junit.Assert.*;
+import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  *
  * @author Mikkel H
  */
-class ThenIsFileSaved extends Stage<ThenIsFileSaved>{
+class ThenThereIsTwoViews extends Stage<ThenThereIsTwoViews> {
 
     @ExpectedScenarioState
-    private File testFile;
+    public static Application app;
 
-    public ThenIsFileSaved is_file_saved() {
-        assertTrue(testFile.exists());
+    public ThenThereIsTwoViews there_is_two_views() {
+        int viewCount = app.views().size();
+        assertEquals(viewCount, 2);
+
         return self();
     }
 

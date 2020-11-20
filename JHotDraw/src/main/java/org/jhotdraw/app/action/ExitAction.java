@@ -38,8 +38,8 @@ public class ExitAction extends AbstractApplicationAction {
     public final static String ID = "application.exit";
     private Component oldFocusOwner;
     protected View unsavedView;
-    private int unsavedViewsCount = 0;
-    private View documentToBeReviewed = null;
+    protected int unsavedViewsCount = 0;
+    protected View documentToBeReviewed = null;
     private final Application app = getApplication();
 
     /**
@@ -51,12 +51,13 @@ public class ExitAction extends AbstractApplicationAction {
         labels.configureAction(this, ID);
     }
 
-    private void silentAbort(int unsavedViewsCount, View documentToBeReviewed) {
+    protected boolean silentAbort(int unsavedViewsCount, View documentToBeReviewed) {
         if (unsavedViewsCount > 0 && documentToBeReviewed == null) {
             // Silently abort, if no view can be reviewed.
             app.setEnabled(true);
-            return;
+            return app.isEnabled();
         }
+        return app.isEnabled();
     }
 
     private void checkViewsForUnsavedChanges() {
