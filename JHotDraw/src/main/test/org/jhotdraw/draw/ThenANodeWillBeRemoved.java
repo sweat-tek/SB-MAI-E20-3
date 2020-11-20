@@ -3,8 +3,6 @@ package org.jhotdraw.draw;
 import com.tngtech.jgiven.Stage;
 import com.tngtech.jgiven.annotation.ExpectedScenarioState;
 
-import java.util.*;
-
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class ThenANodeWillBeRemoved extends Stage<ThenANodeWillBeRemoved> {

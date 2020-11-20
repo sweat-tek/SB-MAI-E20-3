@@ -3,7 +3,6 @@ package org.jhotdraw.draw;
 import com.tngtech.jgiven.annotation.*;
 import org.jhotdraw.samples.svg.figures.*;
 import com.tngtech.jgiven.Stage;
-import org.jhotdraw.undo.*;
 
 public class GivenAPathFigure extends Stage<GivenAPathFigure> {
     @ProvidedScenarioState

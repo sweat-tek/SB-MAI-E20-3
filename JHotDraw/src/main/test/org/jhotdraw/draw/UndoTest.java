@@ -3,9 +3,7 @@ package org.jhotdraw.draw;
 import com.tngtech.jgiven.junit.*;
 import org.junit.*;
 
-import static org.mockito.Mockito.mock;
-
-public class UndoTest extends ScenarioTest<org.jhotdraw.draw.GivenAPathFigure, WhenUndoActionIsPerformed, ThenANodeWillBeRemoved> {
+public class UndoTest extends ScenarioTest<GivenAPathFigure, WhenUndoActionIsPerformed, ThenANodeWillBeRemoved> {
 
     @Test
     public void aFirstLoginTest() {
