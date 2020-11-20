@@ -47,6 +47,8 @@ public class GivenMousePressedAndMouseDragged extends Stage<GivenMousePressedAnd
         Mockito.when(constrainer.constrainPoint(new Point2D.Double(xAxis, yAxis))).thenReturn(new Point2D.Double(xAxis, yAxis));
         tool.activate(defaultDrawingEditor);
         Mockito.when(defaultDrawingView.getConstrainer()).thenReturn(constrainer);
+        Mockito.when(tool.getDrawing()).thenReturn(drawing);
+        Mockito.when(tool.getView()).thenReturn(defaultDrawingView);
         Mockito.when(defaultDrawingView.getDrawing()).thenReturn(drawing);
     }
     
@@ -68,7 +70,7 @@ public class GivenMousePressedAndMouseDragged extends Stage<GivenMousePressedAnd
     }
     
     private void givenMousePressed() {
-        tool.mousePressed(getMouseEvent(yAxis, yAxis));
+        tool.mousePressed(getMouseEvent(xAxis, yAxis));
     }
     
     private void givenMouseDragged() {
