@@ -20,12 +20,9 @@ public class SelectAllTest extends ScenarioTest<FigureGiven, AutomaticSelectionI
      */
     @Test
     public void selectedAllTest() {
-        given()
-                .aFigure();
-        when()
-                .automaticSelectionFeatureIsUsed();
-        then()
-                .theFigureWillBeSelected();
+        given().aFigure();
+        when().automaticSelectionFeatureIsUsed();
+        then().theFigureWillBeSelected();
     }
 
 
