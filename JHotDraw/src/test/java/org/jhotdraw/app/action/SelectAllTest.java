@@ -13,16 +13,16 @@ import org.junit.Test;
  *
  * @author theun
  */
-public class SelectAllTest extends ScenarioTest<FigureGiven, AutomaticSelectionIsUsed,FigureWillBeSelected>{
+public class SelectAllTest extends ScenarioTest<GivenFigure, WhenAutomaticSelectionIsUsed,ThenFigureIsSelected>{
 
     /**
      * @param args the command line arguments
      */
     @Test
     public void selectedAllTest() {
-        given().aFigure();
-        when().automaticSelectionFeatureIsUsed();
-        then().theFigureWillBeSelected();
+        given().GivenFigureMethod();
+        when().WhenAutomaticSelectionIsUsedMethod();
+        then().ThenFigureIsSelectedMethod();
     }
 
 

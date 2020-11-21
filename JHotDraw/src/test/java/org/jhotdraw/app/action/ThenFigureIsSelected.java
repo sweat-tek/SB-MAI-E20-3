@@ -12,13 +12,13 @@ import static org.junit.Assert.assertEquals;
  *
  * @author theun
  */
-public class FigureWillBeSelected extends Stage<FigureWillBeSelected>{
+public class ThenFigureIsSelected extends Stage<ThenFigureIsSelected>{
     /**
      * @param args the command line arguments
      */
-    public FigureWillBeSelected theFigureWillBeSelected() {
+    public ThenFigureIsSelected ThenFigureIsSelectedMethod() {
         
-        assertEquals(1, AutomaticSelectionIsUsed.selectedFigures.size());
+        assertEquals(1, WhenAutomaticSelectionIsUsed.selectedFigures.size());
         
         return self();
     }

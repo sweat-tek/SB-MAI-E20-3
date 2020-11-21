@@ -14,14 +14,14 @@ import org.jhotdraw.draw.Figure;
  *
  * @author theun
  */
-public class AutomaticSelectionIsUsed extends Stage<AutomaticSelectionIsUsed>{
+public class WhenAutomaticSelectionIsUsed extends Stage<WhenAutomaticSelectionIsUsed>{
 
     protected static Set<Figure> selectedFigures = new LinkedHashSet<Figure>();
     
-    public AutomaticSelectionIsUsed automaticSelectionFeatureIsUsed() {
+    public WhenAutomaticSelectionIsUsed WhenAutomaticSelectionIsUsedMethod() {
         
         selectedFigures = new LinkedHashSet<Figure>();
-        selectedFigures.add(FigureGiven.figure);
+        selectedFigures.add(GivenFigure.figure);
                 
         return self();
     }

@@ -13,13 +13,13 @@ import org.jhotdraw.draw.Figure;
  *
  * @author theun
  */
-public class FigureGiven extends Stage<FigureGiven>{
+public class GivenFigure extends Stage<GivenFigure>{
     
     protected static Figure figure;
     
     
     
-    public FigureGiven aFigure() {
+    public GivenFigure GivenFigureMethod() {
         
         figure = new BezierFigure();
         
