@@ -13,17 +13,17 @@ import org.jhotdraw.samples.svg.figures.SVGTextFigure;
  *
  * @author Alex
  */
-public class GivenTextHolderCreated extends Stage<GivenTextHolderCreated>{
+public class GivenTextHolderCanvasCreated extends Stage<GivenTextHolderCanvasCreated>{
     
     @ProvidedScenarioState
-    TextHolderFigure textHolder;
+    QuadTreeDrawing textHolderCanvas;
     
-    public GivenTextHolderCreated text_holder(){
-        return the_text_holder(new SVGTextFigure());
+    public GivenTextHolderCanvasCreated text_holder_canvas(){
+        return the_text_holder_canvas(new QuadTreeDrawing());
     }
     
-    public GivenTextHolderCreated the_text_holder(TextHolderFigure textHolder){
-        this.textHolder = textHolder;
+    public GivenTextHolderCanvasCreated the_text_holder_canvas(QuadTreeDrawing textHolderCanvas){
+        this.textHolderCanvas = textHolderCanvas;
         return this;
     }
 }

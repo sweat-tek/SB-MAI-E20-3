@@ -8,26 +8,25 @@ package org.jhotdraw.draw;
 import com.tngtech.jgiven.Stage;
 import com.tngtech.jgiven.annotation.ExpectedScenarioState;
 import com.tngtech.jgiven.annotation.ProvidedScenarioState;
+import org.jhotdraw.samples.svg.figures.SVGTextFigure;
 
 /**
  *
  * @author Alex
  */
 public class WhenAddTextualMeaning extends Stage<WhenAddTextualMeaning>{
-    @ProvidedScenarioState
-    //User user;
-    
     @ExpectedScenarioState
-    TextHolderFigure textHolder;
+    QuadTreeDrawing textHolderCanvas;
             
     @ProvidedScenarioState
-    TextHolderFigure figureWithText;
+    SVGTextFigure textFigure;
     
     public WhenAddTextualMeaning adding_textual_meaning_to_image(){
-        //assertThat( user ).isNotNull();
-        //assertThat( textHolder ).isNotNull();
+        //assertThat( textHolderCanvas ).isNotNull();
+        textFigure = new SVGTextFigure();
+        textFigure.setText("hello");
         
-       // figureWithText = user.AddTextToFigure(textHolder, "some text");
+        textHolderCanvas.add(textFigure);
         return this;
     }
 }

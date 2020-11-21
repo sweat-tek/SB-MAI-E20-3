@@ -7,6 +7,9 @@ package org.jhotdraw.draw;
 
 import com.tngtech.jgiven.Stage;
 import com.tngtech.jgiven.annotation.ExpectedScenarioState;
+import org.jhotdraw.samples.svg.figures.SVGTextFigure;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 /**
  *
@@ -14,13 +17,30 @@ import com.tngtech.jgiven.annotation.ExpectedScenarioState;
  */
 public class ThenTextWritten extends Stage<ThenTextWritten> {
     @ExpectedScenarioState
-    TextHolderFigure figureWithText;
+    SVGTextFigure textFigure;
     
-    public void the_resulting_text_in_figure_is_some_text(){
-        the_resulting_text_in_figure_is("some text");
+    @ExpectedScenarioState
+    QuadTreeDrawing textHolderCanvas;
+    
+    public void the_resulting_text_in_figure_is_hello(){
+        the_resulting_text_in_figure_is("hello");
+    }
+    
+    public void the_figure_is_in_canvas(){
+        the_resulting_figure_in_canvas_is(textFigure);
+    }
+    
+    public void the_resulting_figure_in_canvas_is(SVGTextFigure figure){
+        assertNotNull(textHolderCanvas);
+        assertNotNull(textFigure);
+        
+        assertTrue(textHolderCanvas.contains(textFigure));
     }
     
     public void the_resulting_text_in_figure_is(String expectedText){
-        //assertThat( figureWithText.getText() ).isEqualTo( expectedText );
+        assertNotNull(textHolderCanvas);
+        assertNotNull(textFigure);
+        
+        assertTrue(textFigure.getText().equalsIgnoreCase(expectedText));
     }
 }

@@ -19,10 +19,10 @@ import com.tngtech.jgiven.junit.ScenarioTest;
  * @author Alex
  */
 public class WriteTextJGivenTest 
-        extends ScenarioTest<GivenTextHolderCreated, WhenAddTextualMeaning, ThenTextWritten> {
+        extends ScenarioTest<GivenTextHolderCanvasCreated, WhenAddTextualMeaning, ThenTextWritten> {
     
     @ScenarioStage
-    GivenTextHolderCreated givenState;
+    GivenTextHolderCanvasCreated givenState;
     
     @ScenarioStage
     WhenAddTextualMeaning whenAction;
@@ -51,8 +51,9 @@ public class WriteTextJGivenTest
 
     @Test
     public void text_is_written() {
-        givenState.given().text_holder();
+        givenState.given().text_holder_canvas();
         whenAction.when().adding_textual_meaning_to_image();
-        thenOutcome.then().the_resulting_text_in_figure_is_some_text();
+        thenOutcome.then().the_resulting_text_in_figure_is_hello();
+        thenOutcome.then().the_figure_is_in_canvas();
     }
 }
