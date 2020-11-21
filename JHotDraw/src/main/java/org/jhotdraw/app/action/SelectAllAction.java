@@ -55,11 +55,12 @@ public class SelectAllAction extends AbstractAction {
         }
     }
 
-    private boolean selectionSuccess(Component focusOwner) {
+    public boolean selectionSuccess(Component focusOwner) {
         if (focusOwner instanceof EditableComponent) {
             ((EditableComponent) focusOwner).selectAll();
             return true;
-        } else if (focusOwner instanceof JTextComponent) {
+        } 
+        else if (focusOwner instanceof JTextComponent) {
             ((JTextComponent) focusOwner).selectAll();
             return true;
         }
