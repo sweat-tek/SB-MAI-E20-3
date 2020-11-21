@@ -115,31 +115,34 @@ public class MoveHandle extends LocatorHandle {
         if (f.isTransformable()) {
             AffineTransform tx = new AffineTransform();
 
-            switch (evt.getKeyCode()) {
-                case KeyEvent.VK_UP:
-                    tx.translate(0, -1);
-                    evt.consume();
-                    break;
-                case KeyEvent.VK_DOWN:
-                    tx.translate(0, +1);
-                    evt.consume();
-                    break;
-                case KeyEvent.VK_LEFT:
-                    tx.translate(-1, 0);
-                    evt.consume();
-                    break;
-                case KeyEvent.VK_RIGHT:
-                    tx.translate(+1, 0);
-                    evt.consume();
-                    break;
-            }
+            handleEvent(evt, tx);
             f.willChange();
             f.transform(tx);
             f.changed();
-            fireUndoableEditHappened(
-                    new TransformEdit(f, tx));
+            fireUndoableEditHappened(new TransformEdit(f, tx));
         }
 
+    }
+
+    private void handleEvent(KeyEvent evt, AffineTransform tx) {
+        switch (evt.getKeyCode()) {
+            case KeyEvent.VK_UP:
+                tx.translate(0, -1);
+                evt.consume();
+                break;
+            case KeyEvent.VK_DOWN:
+                tx.translate(0, +1);
+                evt.consume();
+                break;
+            case KeyEvent.VK_LEFT:
+                tx.translate(-1, 0);
+                evt.consume();
+                break;
+            case KeyEvent.VK_RIGHT:
+                tx.translate(+1, 0);
+                evt.consume();
+                break;
+        }
     }
 
     static public Handle south(
