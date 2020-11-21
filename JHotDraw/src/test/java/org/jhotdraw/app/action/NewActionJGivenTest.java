@@ -6,21 +6,13 @@
 package org.jhotdraw.app.action;
 
 import com.tngtech.jgiven.junit.ScenarioTest;
-import java.awt.event.ActionEvent;
-import static org.jhotdraw.app.action.ExitActionJGivenTest.app;
-import static org.jhotdraw.app.action.ExitActionJGivenTest.model;
-import org.junit.After;
-import org.junit.AfterClass;
-import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
-import static org.junit.Assert.*;
 
 /**
  *
  * @author Mikkel H
  */
-public class NewActionTest extends ScenarioTest<GivenAnApplication, WhenOpeningANewWindow, ThenThereIsTwoViews> {
+public class NewActionJGivenTest extends ScenarioTest<GivenAnApplication, WhenOpeningANewWindow, ThenThereIsTwoViews> {
     
     @Test
     public void NewActionJGivenTest() throws InterruptedException {
