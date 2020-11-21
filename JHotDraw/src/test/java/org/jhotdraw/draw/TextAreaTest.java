@@ -15,7 +15,7 @@ import org.junit.Test;
 public class TextAreaTest extends ScenarioTest<GivenAnEmptyDrawingCanvas, WhenATextAreaIsCreated, ThenItWillContainATextArea> {
     
     @Test
-    public void additionOfANodeWhenDoubleclickingTest() {
+    public void textAreaTest() {
         given()
                 .emptyDrawingCanvasCreated();
         when()
