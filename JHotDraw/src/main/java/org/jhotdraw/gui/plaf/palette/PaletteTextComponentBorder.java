@@ -18,6 +18,7 @@ import java.awt.Component;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Insets;
+import java.awt.Point;
 import java.awt.geom.Point2D;
 import javax.swing.*;
 import javax.swing.border.Border;
@@ -32,10 +33,14 @@ import org.apache.batik.ext.awt.*;
  */
 public class PaletteTextComponentBorder extends PaletteUtility implements Border, UIResource {
 
+
+    
     private final static float[] enabledStops = new float[]{0f, 0.2f};
     private final static Color[] enabledStopColors = new Color[]{new Color(0xc8c8c8), new Color(0xffffff)};
 
+    
     public void paintBorder(Component c, Graphics gr, int x, int y, int width, int height) {
+        DrawBorder db = new DrawBorder(new Point(x,y), width, height);
         Graphics2D g = (Graphics2D) gr;
         JComponent jc = (JComponent) c;
         int borderColor;
@@ -51,8 +56,16 @@ public class PaletteTextComponentBorder extends PaletteUtility implements Border
             stopColors = enabledStopColors;
         }
 
-        dosomething(c, g, x, y, width, height, borderColor, stopColors, stops);
-    }
-
-    
+        
+           String segmentPosition = getSegmentPosition(c);
+        if (segmentPosition == "first" || segmentPosition == "middle") {
+            width += 1;
+        }
+        
+        g.setColor(new Color(borderColor, true));
+        g.drawRect(x, y, width - 1, height - 1);
+        
+        doPaint(g, db, stopColors, stops); 
+           
+    } 
 }

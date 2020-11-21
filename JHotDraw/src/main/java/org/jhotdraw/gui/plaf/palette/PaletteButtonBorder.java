@@ -18,6 +18,7 @@ import java.awt.Component;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Insets;
+import java.awt.Point;
 import java.awt.geom.Point2D;
 import javax.swing.*;
 import javax.swing.border.Border;
@@ -44,9 +45,10 @@ public class PaletteButtonBorder extends PaletteUtility implements Border, UIRes
         }
     } 
     
- // TODO change parameter
+
  
     public void paintBorder(AbstractButton c, Graphics gr, int x, int y, int width, int height) {
+        DrawBorder db = new DrawBorder(new Point(x,y), width, height);
         Graphics2D g = (Graphics2D) gr;
         ButtonModel m = c.getModel();
         int borderColor;
@@ -67,8 +69,18 @@ public class PaletteButtonBorder extends PaletteUtility implements Border, UIRes
                 stops = enabledStops;
                 stopColors = enabledStopColors;
             }
-        }  
-        dosomething(c, g, x, y, width, height, borderColor, stopColors, stops); 
+        } 
+        
+           String segmentPosition = getSegmentPosition(c);
+        if (segmentPosition == "first" || segmentPosition == "middle") {
+            width += 1;
+        }
+        
+        g.setColor(new Color(borderColor, true));
+        g.drawRect(x, y, width - 1, height - 1);  
+        
+        
+        doPaint(g, db, stopColors, stops);
         
     }
 
