@@ -39,8 +39,7 @@ import java.util.*;
  * <br>2.0 2006-02-14 Updated to work with multiple views.
  * <br>1.0 2003-12-01 Created.
  */
-public abstract class AbstractSelectedAction
-        extends AbstractAction  {
+public abstract class AbstractSelectedAction extends AbstractAction  {
     private DrawingEditor editor;
     protected ResourceBundleUtil labels =
             ResourceBundleUtil.getBundle("org.jhotdraw.draw.Labels", Locale.getDefault());
@@ -101,12 +100,7 @@ public abstract class AbstractSelectedAction
     }
     
     public void setEditor(DrawingEditor editor) {
-        if (this.editor != null) {
-            this.editor.removePropertyChangeListener(eventHandler);
-            if (this.editor.getActiveView() != null) {
-                this.editor.getActiveView().removeFigureSelectionListener(eventHandler);
-            }
-        }
+        dispose();
         this.editor = editor;
         if (this.editor != null) {
             this.editor.addPropertyChangeListener(eventHandler);
@@ -116,6 +110,7 @@ public abstract class AbstractSelectedAction
         }
         updateEnabledState();
     }
+    
     
     public DrawingEditor getEditor() {
         return editor;
