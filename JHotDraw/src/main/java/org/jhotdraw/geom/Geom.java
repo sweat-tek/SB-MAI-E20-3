@@ -274,11 +274,16 @@ public class Geom {
                     coords[1] = moveToY;
                     break;
             }
-            Point2D.Double chop = Geom.intersect(
-                    prevX, prevY,
-                    coords[0], coords[1],
-                    p.x, p.y,
-                    ctr.x, ctr.y);
+            Point2D.Double chop = Geom.intersect(new GeomLineDouble(
+                    new GeomPointDouble(prevX, prevY), 
+                    new GeomPointDouble(coords[0], coords[1])),
+            new GeomLineDouble(
+                    new GeomPointDouble(p.x, p.y), 
+                    new GeomPointDouble(ctr.x, ctr.y)));
+//                    prevX, prevY,
+//                    coords[0], coords[1],
+//                    p.x, p.y,
+//                    ctr.x, ctr.y);
 
             if (chop != null) {
                 double cl = Geom.length2(chop.x, chop.y, p.x, p.y);
@@ -545,14 +550,7 @@ public class Geom {
      * Return the point of intersection if it exists, else null
      **/
     // from Doug Lea's PolygonFigure
-    public static Point intersect(int xa, // line 1 point 1 x
-            int ya, // line 1 point 1 y
-            int xb, // line 1 point 2 x
-            int yb, // line 1 point 2 y
-            int xc, // line 2 point 1 x
-            int yc, // line 2 point 1 y
-            int xd, // line 2 point 2 x
-            int yd) { // line 2 point 2 y
+    public static Point intersect(GeomLineInt line1, GeomLineInt line2) { 
 
         // source: http://vision.dai.ed.ac.uk/andrewfg/c-g-a-faq.html
         // eq: for lines AB and CD
@@ -565,6 +563,14 @@ public class Geom {
         //     (XB-XA)(YD-YC)-(YB-YA)(XD-XC)
         //  XI = XA + r(XB-XA)
         //  YI = YA + r(YB-YA)
+        int xa = line1.getP1().getX();
+        int ya = line1.getP1().getY();
+        int xb = line1.getP2().getX();
+        int yb = line1.getP2().getY();
+        int xc = line2.getP1().getX();
+        int yc = line2.getP1().getY();
+        int xd = line2.getP2().getX();
+        int yd = line2.getP2().getY();
 
         double denom = ((xb - xa) * (yd - yc) - (yb - ya) * (xd - xc));
 
@@ -599,16 +605,12 @@ public class Geom {
     /**
      * Standard line intersection algorithm
      * Return the point of intersection if it exists, else null
+     * @param line1
+     * @param line2
+     * @return 
      **/
     // from Doug Lea's PolygonFigure
-    public static Point2D.Double intersect(double xa, // line 1 point 1 x
-            double ya, // line 1 point 1 y
-            double xb, // line 1 point 2 x
-            double yb, // line 1 point 2 y
-            double xc, // line 2 point 1 x
-            double yc, // line 2 point 1 y
-            double xd, // line 2 point 2 x
-            double yd) { // line 2 point 2 y
+    public static Point2D.Double intersect(GeomLineDouble line1, GeomLineDouble line2) { // line 2 point 2 y
 
         // source: http://vision.dai.ed.ac.uk/andrewfg/c-g-a-faq.html
         // eq: for lines AB and CD
@@ -621,6 +623,14 @@ public class Geom {
         //     (XB-XA)(YD-YC)-(YB-YA)(XD-XC)
         //  XI = XA + r(XB-XA)
         //  YI = YA + r(YB-YA)
+        double xa = line1.getP1().getX();
+        double ya = line1.getP1().getY();
+        double xb = line1.getP2().getX();
+        double yb = line1.getP2().getY();
+        double xc = line2.getP1().getX();
+        double yc = line2.getP1().getY();
+        double xd = line2.getP2().getX();
+        double yd = line2.getP2().getY();
 
         double denom = ((xb - xa) * (yd - yc) - (yb - ya) * (xd - xc));
 
@@ -652,16 +662,7 @@ public class Geom {
         }
     }
 
-    public static Point2D.Double intersect(
-            double xa, // line 1 point 1 x
-            double ya, // line 1 point 1 y
-            double xb, // line 1 point 2 x
-            double yb, // line 1 point 2 y
-            double xc, // line 2 point 1 x
-            double yc, // line 2 point 1 y
-            double xd, // line 2 point 2 x
-            double yd,
-            double limit) { // line 2 point 2 y
+    public static Point2D.Double intersect(GeomLineDouble line1, GeomLineDouble line2, double limit) { // line 2 point 2 y
 
         // source: http://vision.dai.ed.ac.uk/andrewfg/c-g-a-faq.html
         // eq: for lines AB and CD
@@ -674,6 +675,15 @@ public class Geom {
         //     (XB-XA)(YD-YC)-(YB-YA)(XD-XC)
         //  XI = XA + r(XB-XA)
         //  YI = YA + r(YB-YA)
+        
+        double xa = line1.getP1().getX();
+        double ya = line1.getP1().getY();
+        double xb = line1.getP2().getX();
+        double yb = line1.getP2().getY();
+        double xc = line2.getP1().getX();
+        double yc = line2.getP1().getY();
+        double xd = line2.getP2().getX();
+        double yd = line2.getP2().getY();
 
         double denom = ((xb - xa) * (yd - yc) - (yb - ya) * (xd - xc));
 
