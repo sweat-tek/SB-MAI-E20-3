@@ -3214,6 +3214,9 @@ public class SVGInputFormat implements InputFormat {
 
                 SVGInputFormatHelper helper = new SVGInputFormatHelper(elem, str, tt, t, type);
 
+                
+                
+               
                 if (type.equals("matrix")) {
                     return helper.matrix();
 

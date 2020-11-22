@@ -81,6 +81,7 @@ public class SVGRectFigure extends SVGAttributedFigure implements SVGFigure {
         } else {
             g.fill(roundrect);
         }
+        g.fill(cachedHitShape);
     }
 
     @FeatureEntryPoint(JHotDrawFeatures.RECTANGLE_TOOL)
