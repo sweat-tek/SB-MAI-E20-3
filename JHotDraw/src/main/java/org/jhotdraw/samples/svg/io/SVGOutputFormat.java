@@ -36,16 +36,16 @@ import static org.jhotdraw.samples.svg.SVGAttributeKeys.*;
 import static org.jhotdraw.samples.svg.SVGConstants.*;
 
 /**
- * An output format for storing drawings as
- * Scalable Vector Graphics SVG Tiny 1.2.
+ * An output format for storing drawings as Scalable Vector Graphics SVG Tiny
+ * 1.2.
  *
  * @author Werner Randelshofer
  * @version 1.3 2009-04-17 Added support for link target.
- * <br>1.2.1 2009-03-29 createTextArea only added the last line of
- * a multiline text to the output.
+ * <br>1.2.1 2009-03-29 createTextArea only added the last line of a multiline
+ * text to the output.
  * <br>1.2 2007-12-16 Adapted to changes in OutputFormat.
- * <br>1.1.1 2007-04-23 Fixed writing of "path" attribute, fixed writing
- * of "textArea" element.
+ * <br>1.1.1 2007-04-23 Fixed writing of "path" attribute, fixed writing of
+ * "textArea" element.
  * <br>1.1 2007-04-22 Added support for "a" element.
  * <br>1.0 December 12, 2006 Created.
  */
@@ -57,8 +57,7 @@ public class SVGOutputFormat implements OutputFormat {
      */
     private int nextId;
     /**
-     * In this hash map we store all elements to which we have assigned
-     * an id.
+     * In this hash map we store all elements to which we have assigned an id.
      */
     private HashMap<IXMLElement, String> identifiedElements;
     /**
@@ -70,8 +69,8 @@ public class SVGOutputFormat implements OutputFormat {
      */
     private IXMLElement document;
     /**
-     * Maps gradients to ID's. We use this, so that we need to store
-     * the same gradient only once.
+     * Maps gradients to ID's. We use this, so that we need to store the same
+     * gradient only once.
      */
     private HashMap<Gradient, String> gradientToIDMap;
     /**
@@ -79,7 +78,6 @@ public class SVGOutputFormat implements OutputFormat {
      */
     private boolean isPrettyPrint;
     private final static HashMap<Integer, String> strokeLinejoinMap;
-
 
     static {
         strokeLinejoinMap = new HashMap<Integer, String>();
@@ -89,7 +87,6 @@ public class SVGOutputFormat implements OutputFormat {
     }
     private final static HashMap<Integer, String> strokeLinecapMap;
 
-
     static {
         strokeLinecapMap = new HashMap<Integer, String>();
         strokeLinecapMap.put(BasicStroke.CAP_BUTT, "butt");
@@ -97,14 +94,15 @@ public class SVGOutputFormat implements OutputFormat {
         strokeLinecapMap.put(BasicStroke.CAP_SQUARE, "square");
     }
     /**
-     * Set this variable to true if values should be written with float precision
-     * instead with double precision.
-     * Float precision is less accurate then double precision, but it uses
-     * less storage space.
+     * Set this variable to true if values should be written with float
+     * precision instead with double precision. Float precision is less accurate
+     * then double precision, but it uses less storage space.
      */
     private final static boolean isFloatPrecision = true;
 
-    /** Creates a new instance. */
+    /**
+     * Creates a new instance.
+     */
     public SVGOutputFormat() {
     }
 
@@ -153,8 +151,8 @@ public class SVGOutputFormat implements OutputFormat {
             if (path.getChildCount() == 1) {
                 BezierFigure bezier = (BezierFigure) path.getChild(0);
                 boolean isLinear = true;
-                for (int i = 0, n = bezier.getNodeCount(); i < n; i++) {
-                    if (bezier.getNode(i).getMask() != 0) {
+                for (int i = 0, n = bezier.getBezierNode().getNodeCount(bezier.getBezierPath()); i < n; i++) {
+                    if (bezier.getBezierNode().getNode(bezier.getBezierPath(), i).getMask() != 0) {
                         isLinear = false;
                         break;
                     }
@@ -163,7 +161,7 @@ public class SVGOutputFormat implements OutputFormat {
                     if (bezier.isClosed()) {
                         writePolygonElement(parent, path);
                     } else {
-                        if (bezier.getNodeCount() == 2) {
+                        if (bezier.getBezierNode().getNodeCount(bezier.getBezierPath()) == 2) {
                             writeLineElement(parent, path);
                         } else {
                             writePolylineElement(parent, path);
@@ -189,11 +187,11 @@ public class SVGOutputFormat implements OutputFormat {
     protected void writeCircleElement(IXMLElement parent, SVGEllipseFigure f) throws IOException {
         parent.addChild(
                 createCircle(
-                document,
-                f.getX() + f.getWidth() / 2d,
-                f.getY() + f.getHeight() / 2d,
-                f.getWidth() / 2d,
-                f.getAttributes()));
+                        document,
+                        f.getX() + f.getWidth() / 2d,
+                        f.getY() + f.getHeight() / 2d,
+                        f.getWidth() / 2d,
+                        f.getAttributes()));
     }
 
     protected IXMLElement createCircle(IXMLElement doc,
@@ -306,12 +304,12 @@ public class SVGOutputFormat implements OutputFormat {
     protected void writeImageElement(IXMLElement parent, SVGImageFigure f) throws IOException {
         parent.addChild(
                 createImage(document,
-                f.getX(),
-                f.getY(),
-                f.getWidth(),
-                f.getHeight(),
-                f.getImageData(),
-                f.getAttributes()));
+                        f.getX(),
+                        f.getY(),
+                        f.getWidth(),
+                        f.getHeight(),
+                        f.getImageData(),
+                        f.getAttributes()));
     }
 
     protected IXMLElement createImage(IXMLElement doc,
@@ -412,10 +410,10 @@ public class SVGOutputFormat implements OutputFormat {
         BezierFigure bezier = (BezierFigure) f.getChild(0);
         parent.addChild(createLine(
                 document,
-                bezier.getNode(0).x[0],
-                bezier.getNode(0).y[0],
-                bezier.getNode(1).x[0],
-                bezier.getNode(1).y[0],
+                bezier.getBezierNode().getNode(bezier.getBezierPath(), 0).x[0],
+                bezier.getBezierNode().getNode(bezier.getBezierPath(), 0).y[0],
+                bezier.getBezierNode().getNode(bezier.getBezierPath(), 1).x[0],
+                bezier.getBezierNode().getNode(bezier.getBezierPath(), 1).y[0],
                 f.getAttributes()));
     }
 
@@ -436,14 +434,14 @@ public class SVGOutputFormat implements OutputFormat {
     protected void writeRectElement(IXMLElement parent, SVGRectFigure f) throws IOException {
         parent.addChild(
                 createRect(
-                document,
-                f.getX(),
-                f.getY(),
-                f.getWidth(),
-                f.getHeight(),
-                f.getArcWidth(),
-                f.getArcHeight(),
-                f.getAttributes()));
+                        document,
+                        f.getX(),
+                        f.getY(),
+                        f.getWidth(),
+                        f.getHeight(),
+                        f.getArcWidth(),
+                        f.getArcHeight(),
+                        f.getAttributes()));
     }
 
     protected IXMLElement createRect(IXMLElement doc,
@@ -475,11 +473,11 @@ public class SVGOutputFormat implements OutputFormat {
         }
         parent.addChild(
                 createText(
-                document,
-                f.getCoordinates(),
-                f.getRotates(),
-                styledDoc,
-                f.getAttributes()));
+                        document,
+                        f.getCoordinates(),
+                        f.getRotates(),
+                        styledDoc,
+                        f.getAttributes()));
     }
 
     protected IXMLElement createText(IXMLElement doc,
@@ -542,10 +540,10 @@ public class SVGOutputFormat implements OutputFormat {
 
         parent.addChild(
                 createTextArea(
-                document,
-                bounds.x, bounds.y, bounds.width, bounds.height,
-                styledDoc,
-                f.getAttributes()));
+                        document,
+                        bounds.x, bounds.y, bounds.width, bounds.height,
+                        styledDoc,
+                        f.getAttributes()));
     }
 
     protected IXMLElement createTextArea(IXMLElement doc,
@@ -606,7 +604,6 @@ public class SVGOutputFormat implements OutputFormat {
         // Computed value:  	 Specified <color> value, except inherit
         //
         // Nothing to do: Attribute 'color' is not needed.
-
         //'color-rendering'
         // Value:  	 auto | optimizeSpeed | optimizeQuality | inherit
         // Initial:  	 auto
@@ -618,7 +615,6 @@ public class SVGOutputFormat implements OutputFormat {
         // Computed value:  	 Specified value, except inherit
         //
         // Nothing to do: Attribute 'color-rendering' is not needed.
-
         // 'fill'
         // Value:  	<paint> | inherit (See Specifying paint)
         // Initial:  	 black
@@ -666,7 +662,6 @@ public class SVGOutputFormat implements OutputFormat {
         } else {
             writeAttribute(elem, "fill", toColor(FILL_COLOR.get(f)), "#000");
         }
-
 
         //'fill-opacity'
         //Value:  	 <opacity-value> | inherit
@@ -828,6 +823,7 @@ public class SVGOutputFormat implements OutputFormat {
         //Computed value:  	 Specified value, except inherit
         writeAttribute(elem, "stroke-width", STROKE_WIDTH.get(f), 1d);
     }
+
     /* Writes the opacity attribute.
      */
 
@@ -849,6 +845,7 @@ public class SVGOutputFormat implements OutputFormat {
         //(See Clamping values which are restricted to a particular range.)
         writeAttribute(elem, "opacity", OPACITY.get(f), 1d);
     }
+
     /* Writes the transform attribute as specified in
      * http://www.w3.org/TR/SVGMobile12/coords.html#TransformAttribute
      *
@@ -861,6 +858,7 @@ public class SVGOutputFormat implements OutputFormat {
             writeAttribute(elem, "transform", toTransform(t), "none");
         }
     }
+
     /* Writes font attributes as listed in
      * http://www.w3.org/TR/SVGMobile12/feature.html#Font
      */
@@ -906,7 +904,6 @@ public class SVGOutputFormat implements OutputFormat {
         // Computed value:  	 Specified value, except inherit
         writeAttribute(elem, "font-style", (FONT_ITALIC.get(a)) ? "italic" : "normal", "normal");
 
-
         //'font-variant'
         //Value:  	normal | small-caps | inherit
         //Initial:  	normal
@@ -944,6 +941,7 @@ public class SVGOutputFormat implements OutputFormat {
         //Animatable:  	yes
         writeAttribute(elem, "text-decoration", (FONT_UNDERLINE.get(a)) ? "underline" : "none", "none");
     }
+
     /* Writes viewport attributes.
      */
 
@@ -1002,8 +1000,9 @@ public class SVGOutputFormat implements OutputFormat {
         }
     }
 
-    /** Returns a value as a SVG Path attribute.
-     * as specified in http://www.w3.org/TR/SVGMobile12/paths.html#PathDataBNF
+    /**
+     * Returns a value as a SVG Path attribute. as specified in
+     * http://www.w3.org/TR/SVGMobile12/paths.html#PathDataBNF
      */
     public static String toPath(BezierPath[] paths) {
         StringBuilder buf = new StringBuilder();
@@ -1186,8 +1185,8 @@ public class SVGOutputFormat implements OutputFormat {
     }
 
     /**
-     * Returns a Point2D.Double array as a Points attribute value.
-     * as specified in http://www.w3.org/TR/SVGMobile12/shapes.html#PointsBNF
+     * Returns a Point2D.Double array as a Points attribute value. as specified
+     * in http://www.w3.org/TR/SVGMobile12/shapes.html#PointsBNF
      */
     public static String toPoints(Point2D.Double[] points) throws IOException {
         StringBuilder buf = new StringBuilder();
@@ -1201,6 +1200,7 @@ public class SVGOutputFormat implements OutputFormat {
         }
         return buf.toString();
     }
+
     /* Converts an AffineTransform into an SVG transform attribute value as specified in
      * http://www.w3.org/TR/SVGMobile12/coords.html#TransformAttribute
      */
@@ -1286,13 +1286,12 @@ public class SVGOutputFormat implements OutputFormat {
             return "none";
         }
 
-
         String value;
         value = "000000" + Integer.toHexString(color.getRGB());
         value = "#" + value.substring(value.length() - 6);
-        if (value.charAt(1) == value.charAt(2) &&
-                value.charAt(3) == value.charAt(4) &&
-                value.charAt(5) == value.charAt(6)) {
+        if (value.charAt(1) == value.charAt(2)
+                && value.charAt(3) == value.charAt(4)
+                && value.charAt(5) == value.charAt(6)) {
             value = "#" + value.charAt(1) + value.charAt(3) + value.charAt(5);
         }
         return value;

@@ -70,7 +70,7 @@ public class BezierNodeHandle extends AbstractHandle {
     @Override
     public void draw(Graphics2D g) {
         BezierFigure f = getOwner();
-        int size = f.getNodeCount();
+        int size = f.getBezierNode().getNodeCount(f.path);
         boolean isClosed = f.isClosed();
         Color fillColor;
         Color strokeColor;
@@ -82,7 +82,7 @@ public class BezierNodeHandle extends AbstractHandle {
             strokeColor = (Color) getEditor().getHandleAttribute(HandleAttributeKeys.BEZIER_NODE_HANDLE_STROKE_COLOR_DISABLED);
         }
         if (size > index) {
-            BezierPath.Node v = f.getNode(index);
+            BezierPath.Node v = f.getBezierNode().getNode(f.path,index);
             if (v.mask == 0 ||
                     index == 0 && v.mask == BezierPath.C1_MASK && !isClosed ||
                     index == size - 1 && v.mask == BezierPath.C2_MASK && !isClosed) {
@@ -104,7 +104,7 @@ public class BezierNodeHandle extends AbstractHandle {
     }
 
     protected Point getLocation() {
-        if (getOwner().getNodeCount() > index) {
+        if (getOwner().getBezierNode().getNodeCount(getOwner().path) > index) {
             Point2D.Double p = getOwner().getPoint(index, 0);
             if (TRANSFORM.get(getTransformOwner()) != null) {
                 TRANSFORM.get(getTransformOwner()).transform(p, p);
@@ -116,7 +116,7 @@ public class BezierNodeHandle extends AbstractHandle {
     }
 
     protected BezierPath.Node getBezierNode() {
-        return getOwner().getNodeCount() > index ? getOwner().getNode(index) : null;
+        return getOwner().getBezierNode().getNodeCount(getOwner().path) > index ? getOwner().getBezierNode().getNode(getOwner().path,index) : null;
     }
 
     protected Rectangle basicGetBounds() {
@@ -137,7 +137,7 @@ public class BezierNodeHandle extends AbstractHandle {
         view.getDrawing().fireUndoableEditHappened(edit = new CompositeEdit("Punkt verschieben"));
         Point2D.Double location = view.getConstrainer().constrainPoint(view.viewToDrawing(getLocation()));
         Point2D.Double p = view.getConstrainer().constrainPoint(view.viewToDrawing(anchor));
-        oldNode = figure.getNode(index);
+        oldNode = figure.getBezierNode().getNode(figure.path, index);
         fireHandleRequestSecondaryHandles();
     }
 
@@ -154,11 +154,11 @@ public class BezierNodeHandle extends AbstractHandle {
             }
         }
 
-        BezierPath.Node n = figure.getNode(index);
+        BezierPath.Node n = figure.getBezierNode().getNode(figure.path,index);
         //fireAreaInvalidated(n);
         n.moveTo(p);
         //fireAreaInvalidated(n);
-        figure.setNode(index, n);
+        figure.getBezierNode().setNode(figure.path, index, n);
         figure.changed();
     }
 
@@ -175,20 +175,20 @@ public class BezierNodeHandle extends AbstractHandle {
     public void trackEnd(Point anchor, Point lead, int modifiersEx) {
         final BezierFigure f = getOwner();
              BezierPath.Node oldValue = (BezierPath.Node) oldNode.clone();;
-             BezierPath.Node newValue = f.getNode(index);
+             BezierPath.Node newValue = f.getBezierNode().getNode(f.path, index);
 
         // Change node type
         if ((modifiersEx & (InputEvent.META_DOWN_MASK | InputEvent.CTRL_DOWN_MASK | InputEvent.ALT_DOWN_MASK | InputEvent.SHIFT_DOWN_MASK)) != 0 &&
                 (modifiersEx & InputEvent.BUTTON2_MASK) == 0) {
             f.willChange();
-            if (index > 0 && index < f.getNodeCount() || f.isClosed()) {
+            if (index > 0 && index < f.getBezierNode().getNodeCount(f.path) || f.isClosed()) {
                 newValue.mask = (newValue.mask + 3) % 4;
             } else if (index == 0) {
                 newValue.mask = ((newValue.mask & BezierPath.C2_MASK) == 0) ? BezierPath.C2_MASK : 0;
             } else {
                 newValue.mask = ((newValue.mask & BezierPath.C1_MASK) == 0) ? BezierPath.C1_MASK : 0;
             }
-            f.setNode(index, newValue);
+            f.getBezierNode().setNode(f.path, index, newValue);
             f.changed();
             fireHandleRequestSecondaryHandles();
         }
@@ -224,12 +224,12 @@ public class BezierNodeHandle extends AbstractHandle {
     @Override
     public void trackDoubleClick(Point p, int modifiersEx) {
         final BezierFigure f = getOwner();
-        if (f.getNodeCount() > 2 &&
+        if (f.getBezierNode().getNodeCount(f.path) > 2 &&
                 (modifiersEx &
                 (InputEvent.META_DOWN_MASK | InputEvent.CTRL_DOWN_MASK | InputEvent.ALT_DOWN_MASK)) == 0) {
             Rectangle invalidatedArea = getDrawingArea();
             f.willChange();
-            final BezierPath.Node removedNode = f.removeNode(index);
+            final BezierPath.Node removedNode = f.getBezierNode().removeNode(f.path, index);
             f.changed();
             fireHandleRequestRemove(invalidatedArea);
             fireUndoableEditHappened(new AbstractUndoableEdit() {
@@ -245,7 +245,7 @@ public class BezierNodeHandle extends AbstractHandle {
                     super.redo();
                     view.removeFromSelection(f);
                     f.willChange();
-                    f.removeNode(index);
+                    f.getBezierNode().removeNode(f.path, index);
                     f.changed();
                     view.addToSelection(f);
                 }
@@ -255,7 +255,7 @@ public class BezierNodeHandle extends AbstractHandle {
                     super.undo();
                     view.removeFromSelection(f);
                     f.willChange();
-                    f.addNode(index, removedNode);
+                    f.getBezierNode().addNode(f.path,index, removedNode);
                     f.changed();
                     view.addToSelection(f);
                 }
@@ -267,26 +267,26 @@ public class BezierNodeHandle extends AbstractHandle {
     public Collection<Handle> createSecondaryHandles() {
         BezierFigure f = getOwner();
         LinkedList<Handle> list = new LinkedList<Handle>();
-        BezierPath.Node v = f.getNode(index);
+        BezierPath.Node v = f.getBezierNode().getNode(f.path, index);
         if ((v.mask & BezierPath.C1_MASK) != 0 &&
                 (index != 0 || f.isClosed())) {
             list.add(new BezierControlPointHandle(f, index, 1, getTransformOwner()));
         }
         if ((v.mask & BezierPath.C2_MASK) != 0 &&
-                (index < f.getNodeCount() - 1 ||
+                (index < f.getBezierNode().getNodeCount(f.path) - 1 ||
                 f.isClosed())) {
             list.add(new BezierControlPointHandle(f, index, 2, getTransformOwner()));
         }
         if (index > 0 || f.isClosed()) {
-            int i = (index == 0) ? f.getNodeCount() - 1 : index - 1;
-            v = f.getNode(i);
+            int i = (index == 0) ? f.getBezierNode().getNodeCount(f.path) - 1 : index - 1;
+            v = f.getBezierNode().getNode(f.path,i);
             if ((v.mask & BezierPath.C2_MASK) != 0) {
                 list.add(new BezierControlPointHandle(f, i, 2, getTransformOwner()));
             }
         }
-        if (index < f.getNodeCount() - 1 || f.isClosed()) {
-            int i = (index == f.getNodeCount() - 1) ? 0 : index + 1;
-            v = f.getNode(i);
+        if (index < f.getBezierNode().getNodeCount(f.path) - 1 || f.isClosed()) {
+            int i = (index == f.getBezierNode().getNodeCount(f.path) - 1) ? 0 : index + 1;
+            v = f.getBezierNode().getNode(f.path,i);
             if ((v.mask & BezierPath.C1_MASK) != 0) {
                 list.add(new BezierControlPointHandle(f, i, 1, getTransformOwner()));
             }
@@ -306,42 +306,42 @@ public class BezierNodeHandle extends AbstractHandle {
     @Override
     public void keyPressed(KeyEvent evt) {
         final BezierFigure f = getOwner();
-        oldNode = f.getNode(index);
+        oldNode = f.getBezierNode().getNode(f.path,index);
 
         switch (evt.getKeyCode()) {
             case KeyEvent.VK_UP:
                 f.willChange();
                 f.setPoint(index, new Point2D.Double(oldNode.x[0], oldNode.y[0] - 1d));
                 f.changed();
-                view.getDrawing().fireUndoableEditHappened(new BezierNodeEdit(f, index, oldNode, f.getNode(index)));
+                view.getDrawing().fireUndoableEditHappened(new BezierNodeEdit(f, index, oldNode, f.getBezierNode().getNode(f.path,index)));
                 evt.consume();
                 break;
             case KeyEvent.VK_DOWN:
                 f.willChange();
                 f.setPoint(index, new Point2D.Double(oldNode.x[0], oldNode.y[0] + 1d));
                 f.changed();
-                view.getDrawing().fireUndoableEditHappened(new BezierNodeEdit(f, index, oldNode, f.getNode(index)));
+                view.getDrawing().fireUndoableEditHappened(new BezierNodeEdit(f, index, oldNode, f.getBezierNode().getNode(f.path,index)));
                 evt.consume();
                 break;
             case KeyEvent.VK_LEFT:
                 f.willChange();
                 f.setPoint(index, new Point2D.Double(oldNode.x[0] - 1d, oldNode.y[0]));
                 f.changed();
-                view.getDrawing().fireUndoableEditHappened(new BezierNodeEdit(f, index, oldNode, f.getNode(index)));
+                view.getDrawing().fireUndoableEditHappened(new BezierNodeEdit(f, index, oldNode, f.getBezierNode().getNode(f.path,index)));
                 evt.consume();
                 break;
             case KeyEvent.VK_RIGHT:
                 f.willChange();
                 f.setPoint(index, new Point2D.Double(oldNode.x[0] + 1d, oldNode.y[0]));
                 f.changed();
-                view.getDrawing().fireUndoableEditHappened(new BezierNodeEdit(f, index, oldNode, f.getNode(index)));
+                view.getDrawing().fireUndoableEditHappened(new BezierNodeEdit(f, index, oldNode, f.getBezierNode().getNode(f.path,index)));
                 evt.consume();
                 break;
             case KeyEvent.VK_DELETE:
             case KeyEvent.VK_BACK_SPACE:
                 Rectangle invalidatedArea = getDrawingArea();
                 f.willChange();
-                final BezierPath.Node removedNode = f.removeNode(index);
+                final BezierPath.Node removedNode = f.getBezierNode().removeNode(f.path,index);
                 f.changed();
                 fireHandleRequestRemove(invalidatedArea);
                 fireUndoableEditHappened(new AbstractUndoableEdit() {
@@ -357,7 +357,7 @@ public class BezierNodeHandle extends AbstractHandle {
                         super.redo();
                         view.removeFromSelection(f);
                         f.willChange();
-                        f.removeNode(index);
+                        f.getBezierNode().removeNode(f.path,index);
                         f.changed();
                         view.addToSelection(f);
                     }
@@ -367,7 +367,7 @@ public class BezierNodeHandle extends AbstractHandle {
                         super.undo();
                         view.removeFromSelection(f);
                         f.willChange();
-                        f.addNode(index, removedNode);
+                        f.getBezierNode().addNode(f.path, index, removedNode);
                         f.changed();
                         view.addToSelection(f);
                     }

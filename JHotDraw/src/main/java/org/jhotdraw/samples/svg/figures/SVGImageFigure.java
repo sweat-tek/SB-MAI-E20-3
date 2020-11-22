@@ -78,15 +78,15 @@ public class SVGImageFigure extends SVGAttributedFigure implements SVGFigure, Im
     // DRAWING
     @Override
     @FeatureEntryPoint(JHotDrawFeatures.IMAGE_TOOL)
-    public void draw(Graphics2D graphics2D) {
+    public void draw(Graphics2D g) {
         //super.draw(g);
 
         double opacity = OPACITY.get(this);
         opacity = Math.min(Math.max(0d, opacity), 1d);
         if (opacity != 0d) {
-            Composite savedComposite = graphics2D.getComposite();
+            Composite savedComposite = g.getComposite();
             if (opacity != 1d) {
-                graphics2D.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, (float) opacity));
+                g.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, (float) opacity));
             }
 
             BufferedImage image = getBufferedImage();
@@ -94,28 +94,36 @@ public class SVGImageFigure extends SVGAttributedFigure implements SVGFigure, Im
                 if (TRANSFORM.get(this) != null) {
                     // FIXME - We should cache the transformed image.
                     //         Drawing a transformed image appears to be very slow.
-                    Graphics2D gx = (Graphics2D) graphics2D.create();
+                    Graphics2D gx = (Graphics2D) g.create();
                     
                     // Use same rendering hints like parent graphics
-                    gx.setRenderingHints(graphics2D.getRenderingHints());
+                    gx.setRenderingHints(g.getRenderingHints());
                     
                     gx.transform(TRANSFORM.get(this));
                     gx.drawImage(image, (int) rectangle.x, (int) rectangle.y, (int) rectangle.width, (int) rectangle.height, null);
                     gx.dispose();
                 } else {
-                    graphics2D.drawImage(image, (int) rectangle.x, (int) rectangle.y, (int) rectangle.width, (int) rectangle.height, null);
+                    g.drawImage(image, (int) rectangle.x, (int) rectangle.y, (int) rectangle.width, (int) rectangle.height, null);
                 }
             } else {
                 Shape shape = getTransformedShape();
-                graphics2D.setColor(Color.red);
-                graphics2D.setStroke(new BasicStroke());
-                graphics2D.draw(shape);
+                g.setColor(Color.red);
+                g.setStroke(new BasicStroke());
+                g.draw(shape);
             }
 
             if (opacity != 1d) {
-                graphics2D.setComposite(savedComposite);
+                g.setComposite(savedComposite);
             }
         }
+    }
+
+    protected void drawFill(Graphics2D g) {
+
+    }
+
+    protected void drawStroke(Graphics2D g) {
+
     }
 
     // SHAPE AND BOUNDS

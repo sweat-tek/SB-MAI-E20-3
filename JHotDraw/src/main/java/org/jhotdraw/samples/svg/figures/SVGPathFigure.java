@@ -48,7 +48,6 @@ public class SVGPathFigure extends AbstractAttributedCompositeFigure implements 
      * This cachedPath is used for drawing.
      */
     private transient GeneralPath cachedPath;
-    private static final double TOLERANCE_BASE_TO_POINT2D = 5;
    // private transient Rectangle2D.Double cachedDrawingArea;
     /**
      * This is used to perform faster hit testing.
@@ -69,14 +68,14 @@ public class SVGPathFigure extends AbstractAttributedCompositeFigure implements 
     }
 
     @FeatureEntryPoint(JHotDrawFeatures.LINE_TOOL)
-    public void draw(Graphics2D graphics2D) {
+    public void draw(Graphics2D g) {
         double opacity = OPACITY.get(this);
         opacity = Math.min(Math.max(0d, opacity), 1d);
         if (opacity != 0d) {
             if (opacity != 1d) {
                 Rectangle2D.Double drawingArea = getDrawingArea();
 
-                Rectangle2D clipBounds = graphics2D.getClipBounds();
+                Rectangle2D clipBounds = g.getClipBounds();
                 if (clipBounds != null) {
                     Rectangle2D.intersect(drawingArea, clipBounds, drawingArea);
                 }
@@ -84,23 +83,23 @@ public class SVGPathFigure extends AbstractAttributedCompositeFigure implements 
                 if (!drawingArea.isEmpty()) {
 
                     BufferedImage buf = new BufferedImage(
-                            Math.max(1, (int) ((2 + drawingArea.width) * graphics2D.getTransform().getScaleX())),
-                            Math.max(1, (int) ((2 + drawingArea.height) * graphics2D.getTransform().getScaleY())),
+                            Math.max(1, (int) ((2 + drawingArea.width) * g.getTransform().getScaleX())),
+                            Math.max(1, (int) ((2 + drawingArea.height) * g.getTransform().getScaleY())),
                             BufferedImage.TYPE_INT_ARGB);
                     Graphics2D gr = buf.createGraphics();
-                    gr.scale(graphics2D.getTransform().getScaleX(), graphics2D.getTransform().getScaleY());
+                    gr.scale(g.getTransform().getScaleX(), g.getTransform().getScaleY());
                     gr.translate((int) -drawingArea.x, (int) -drawingArea.y);
-                    gr.setRenderingHints(graphics2D.getRenderingHints());
+                    gr.setRenderingHints(g.getRenderingHints());
                     drawFigure(gr);
                     gr.dispose();
-                    Composite savedComposite = graphics2D.getComposite();
-                    graphics2D.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, (float) opacity));
-                    graphics2D.drawImage(buf, (int) drawingArea.x, (int) drawingArea.y,
+                    Composite savedComposite = g.getComposite();
+                    g.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, (float) opacity));
+                    g.drawImage(buf, (int) drawingArea.x, (int) drawingArea.y,
                             2 + (int) drawingArea.width, 2 + (int) drawingArea.height, null);
-                    graphics2D.setComposite(savedComposite);
+                    g.setComposite(savedComposite);
                 }
             } else {
-                drawFigure(graphics2D);
+                drawFigure(g);
             }
         }
     }
@@ -127,12 +126,16 @@ public class SVGPathFigure extends AbstractAttributedCompositeFigure implements 
         }
     }
 
-    public void drawFill(Graphics2D graphics2D) {
-        graphics2D.fill(getPath());
+    protected void drawChildren(Graphics2D g) {
+    // empty
     }
 
-    public void drawStroke(Graphics2D graphics2D) {
-        graphics2D.draw(getPath());
+    public void drawFill(Graphics2D g) {
+        g.fill(getPath());
+    }
+
+    public void drawStroke(Graphics2D g) {
+        g.draw(getPath());
     }
 
     @Override protected void invalidate() {
@@ -242,7 +245,7 @@ public class SVGPathFigure extends AbstractAttributedCompositeFigure implements 
     }
 
     public void setBounds(Point2D.Double anchor, Point2D.Double lead) {
-        if (getChildCount() == 1 && ((SVGBezierFigure) getChild(0)).getNodeCount() <= 2) {
+        if (getChildCount() == 1 && ((SVGBezierFigure) getChild(0)).getBezierNode().getNodeCount(getChild(0).getBezierPath()) <= 2) {
             SVGBezierFigure b = (SVGBezierFigure) getChild(0);
             b.setBounds(anchor, lead);
             invalidate();
@@ -318,7 +321,7 @@ public class SVGPathFigure extends AbstractAttributedCompositeFigure implements 
     public boolean isEmpty() {
         for (Figure child : getChildren()) {
             SVGBezierFigure b = (SVGBezierFigure) child;
-            if (b.getNodeCount() > 0) {
+            if (b.getBezierNode().getNodeCount(b.getBezierPath()) > 0) {
                 return false;
             }
         }
@@ -353,118 +356,98 @@ public class SVGPathFigure extends AbstractAttributedCompositeFigure implements 
         final ResourceBundleUtil labels = ResourceBundleUtil.getBundle("org.jhotdraw.samples.svg.Labels");
         LinkedList<Action> actions = new LinkedList<Action>();
         if (TRANSFORM.get(this) != null) {
-            addEditActions(actions, labels);
+            actions.add(new AbstractAction(labels.getString("edit.removeTransform.text")) {
+
+                public void actionPerformed(ActionEvent evt) {
+                    ResourceBundleUtil labels = ResourceBundleUtil.getBundle("org.jhotdraw.samples.svg.Labels");
+                    SVGPathFigure.this.willChange();
+                    fireUndoableEditHappened(
+                            TRANSFORM.setUndoable(SVGPathFigure.this, null));
+                    SVGPathFigure.this.changed();
+                }
+            });
+            actions.add(new AbstractAction(labels.getString("edit.flattenTransform.text")) {
+
+                public void actionPerformed(ActionEvent evt) {
+                    // CompositeEdit edit = new CompositeEdit(labels.getString("flattenTransform"));
+                    //TransformEdit edit = new TransformEdit(SVGPathFigure.this, )
+                    final Object restoreData = getTransformRestoreData();
+                    UndoableEdit edit = new AbstractUndoableEdit() {
+
+                        @Override
+                        public String getPresentationName() {
+                            return labels.getString("edit.flattenTransform.text");
+                        }
+
+                        @Override
+                        public void undo() throws CannotUndoException {
+                            super.undo();
+                            willChange();
+                            restoreTransformTo(restoreData);
+                            changed();
+                        }
+
+                        @Override
+                        public void redo() throws CannotRedoException {
+                            super.redo();
+                            willChange();
+                            restoreTransformTo(restoreData);
+                            flattenTransform();
+                            changed();
+                        }
+                    };
+                    willChange();
+                    flattenTransform();
+                    changed();
+                    fireUndoableEditHappened(edit);
+                }
+            });
         }
         if (CLOSED.get(getChild(getChildCount() - 1))) {
-            addOpenPathAction(actions, labels);
+            actions.add(new AbstractAction(labels.getString("attribute.openPath.text")) {
+
+                public void actionPerformed(ActionEvent evt) {
+                    SVGPathFigure.this.willChange();
+                    for (Figure child : getChildren()) {
+                        getDrawing().fireUndoableEditHappened(
+                                CLOSED.setUndoable(child, false));
+                    }
+                    SVGPathFigure.this.changed();
+                }
+            });
         } else {
-            addClosePathAction(actions, labels);
+            actions.add(new AbstractAction(labels.getString("attribute.closePath.text")) {
+                @FeatureEntryPoint(JHotDrawFeatures.LINE_TOOL)
+                public void actionPerformed(ActionEvent evt) {
+                    SVGPathFigure.this.willChange();
+                    for (Figure child : getChildren()) {
+                        getDrawing().fireUndoableEditHappened(
+                                CLOSED.setUndoable(child, true));
+                    }
+                    SVGPathFigure.this.changed();
+                }
+            });
         }
         if (WINDING_RULE.get(this) != WindingRule.EVEN_ODD) {
-            addEvenOddAction(actions, labels);
+            actions.add(new AbstractAction(labels.getString("attribute.windingRule.evenOdd.text")) {
+                @FeatureEntryPoint(JHotDrawFeatures.LINE_TOOL)
+                public void actionPerformed(ActionEvent evt) {
+                    SVGPathFigure.this.willChange();
+                    getDrawing().fireUndoableEditHappened(
+                            WINDING_RULE.setUndoable(SVGPathFigure.this, WindingRule.EVEN_ODD));
+                    SVGPathFigure.this.changed();
+                }
+            });
         } else {
-            addNonZeroAction(actions, labels);
+            actions.add(new AbstractAction(labels.getString("attribute.windingRule.nonZero.text")) {
+                public void actionPerformed(ActionEvent evt) {
+                    WINDING_RULE.set(SVGPathFigure.this, WindingRule.NON_ZERO);
+                    getDrawing().fireUndoableEditHappened(
+                            WINDING_RULE.setUndoable(SVGPathFigure.this, WindingRule.NON_ZERO));
+                }
+            });
         }
         return actions;
-    }
-
-    private void addNonZeroAction(LinkedList<Action> actions, final ResourceBundleUtil labels) {
-        actions.add(new AbstractAction(labels.getString("attribute.windingRule.nonZero.text")) {
-            public void actionPerformed(ActionEvent evt) {
-                WINDING_RULE.set(SVGPathFigure.this, WindingRule.NON_ZERO);
-                getDrawing().fireUndoableEditHappened(
-                        WINDING_RULE.setUndoable(SVGPathFigure.this, WindingRule.NON_ZERO));
-            }
-        });
-    }
-
-    private void addEvenOddAction(LinkedList<Action> actions, final ResourceBundleUtil labels) {
-        actions.add(new AbstractAction(labels.getString("attribute.windingRule.evenOdd.text")) {
-            @FeatureEntryPoint(JHotDrawFeatures.LINE_TOOL)
-            public void actionPerformed(ActionEvent evt) {
-                SVGPathFigure.this.willChange();
-                getDrawing().fireUndoableEditHappened(
-                        WINDING_RULE.setUndoable(SVGPathFigure.this, WindingRule.EVEN_ODD));
-                SVGPathFigure.this.changed();
-            }
-        });
-    }
-
-    private void addClosePathAction(LinkedList<Action> actions, final ResourceBundleUtil labels) {
-        actions.add(new AbstractAction(labels.getString("attribute.closePath.text")) {
-            @FeatureEntryPoint(JHotDrawFeatures.LINE_TOOL)
-            public void actionPerformed(ActionEvent evt) {
-                SVGPathFigure.this.willChange();
-                for (Figure child : getChildren()) {
-                    getDrawing().fireUndoableEditHappened(
-                            CLOSED.setUndoable(child, true));
-                }
-                SVGPathFigure.this.changed();
-            }
-        });
-    }
-
-    private void addOpenPathAction(LinkedList<Action> actions, final ResourceBundleUtil labels) {
-        actions.add(new AbstractAction(labels.getString("attribute.openPath.text")) {
-            
-            public void actionPerformed(ActionEvent evt) {
-                SVGPathFigure.this.willChange();
-                for (Figure child : getChildren()) {
-                    getDrawing().fireUndoableEditHappened(
-                            CLOSED.setUndoable(child, false));
-                }
-                SVGPathFigure.this.changed();
-            }
-        });
-    }
-
-    private void addEditActions(LinkedList<Action> actions, final ResourceBundleUtil labels) {
-        actions.add(new AbstractAction(labels.getString("edit.removeTransform.text")) {
-            
-            public void actionPerformed(ActionEvent evt) {
-                ResourceBundleUtil labels = ResourceBundleUtil.getBundle("org.jhotdraw.samples.svg.Labels");
-                SVGPathFigure.this.willChange();
-                fireUndoableEditHappened(
-                        TRANSFORM.setUndoable(SVGPathFigure.this, null));
-                SVGPathFigure.this.changed();
-            }
-        });
-        actions.add(new AbstractAction(labels.getString("edit.flattenTransform.text")) {
-            
-            public void actionPerformed(ActionEvent evt) {
-                // CompositeEdit edit = new CompositeEdit(labels.getString("flattenTransform"));
-                //TransformEdit edit = new TransformEdit(SVGPathFigure.this, )
-                final Object restoreData = getTransformRestoreData();
-                UndoableEdit edit = new AbstractUndoableEdit() {
-                    
-                    @Override
-                    public String getPresentationName() {
-                        return labels.getString("edit.flattenTransform.text");
-                    }
-                    
-                    @Override
-                    public void undo() throws CannotUndoException {
-                        super.undo();
-                        willChange();
-                        restoreTransformTo(restoreData);
-                        changed();
-                    }
-                    
-                    @Override
-                    public void redo() throws CannotRedoException {
-                        super.redo();
-                        willChange();
-                        restoreTransformTo(restoreData);
-                        flattenTransform();
-                        changed();
-                    }
-                };
-                willChange();
-                flattenTransform();
-                changed();
-                fireUndoableEditHappened(edit);
-            }
-        });
     }
     // CONNECTING
     public boolean canConnect() {
@@ -488,7 +471,7 @@ public class SVGPathFigure extends AbstractAttributedCompositeFigure implements 
         if (evt.getClickCount() == 2 && view.getHandleDetailLevel() % 2 == 0) {
             for (Figure child : getChildren()) {
                 SVGBezierFigure bf = (SVGBezierFigure) child;
-                int index = bf.findSegment(p, getToleranceFor(view));
+                int index = bf.findSegment(p, (float) (5f / view.getScaleFactor()));
                 if (index != -1) {
                     bf.handleMouseClick(p, evt, view);
                     evt.consume();
@@ -497,10 +480,6 @@ public class SVGPathFigure extends AbstractAttributedCompositeFigure implements 
             }
         }
         return false;
-    }
-
-    protected double getToleranceFor(DrawingView view){
-        return TOLERANCE_BASE_TO_POINT2D / view.getScaleFactor();
     }
 
     @Override

@@ -84,7 +84,8 @@ public class SVGBezierFigure extends BezierFigure {
 
             final int index = splitSegment(p, (float) (5f / view.getScaleFactor()));
             if (index != -1) {
-                final BezierPath.Node newNode = getNode(index);
+                final BezierPath.Node newNode = this.getBezierNode().getNode(this.path,index);
+                SVGBezierFigure fix = this;
                 fireUndoableEditHappened(new AbstractUndoableEdit() {
                     @Override
                     public String getPresentationName() {
@@ -96,7 +97,7 @@ public class SVGBezierFigure extends BezierFigure {
                     public void redo() throws CannotRedoException {
                         super.redo();
                         willChange();
-                        addNode(index, newNode);
+                        fix.getBezierNode().addNode(fix.path,index, newNode);
                         changed();
                     }
 
@@ -104,7 +105,7 @@ public class SVGBezierFigure extends BezierFigure {
                     public void undo() throws CannotUndoException {
                         super.undo();
                         willChange();
-                        removeNode(index);
+                        fix.getBezierNode().removeNode(fix.path,index);
                         changed();
                     }
                 });
@@ -194,7 +195,7 @@ public class SVGBezierFigure extends BezierFigure {
         int i = getBezierPath().findSegment(join, tolerance);
 
         if (i != -1 && i > 1) {
-            removeNode(i);
+            this.getBezierNode().removeNode(this.path, i);
             return true;
         }
         return false;
@@ -222,7 +223,7 @@ public class SVGBezierFigure extends BezierFigure {
         int i = getBezierPath().findSegment(split, tolerance);
 
         if (i != -1) {
-            addNode(i + 1, new BezierPath.Node(split));
+            this.getBezierNode().addNode(this.path,i + 1, new BezierPath.Node(split));
         }
         return i + 1;
     }

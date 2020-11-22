@@ -90,9 +90,9 @@ public interface Figure extends Cloneable, Serializable, DOMStorable {
     /**
      * Draws the figure.
      *
-     * @param graphics2D The Graphics2D to draw to.
+     * @param g The Graphics2D to draw to.
      */
-    public void draw(Graphics2D graphics2D);
+    public void draw(Graphics2D g);
 
     /**
      * Gets the layer number of the figure.

@@ -31,13 +31,8 @@ import org.jhotdraw.draw.*;
  * <br>1.0 24. November 2003  Created.
  */
 public class SendToBackAction extends AbstractSelectedAction {
-       
-       private static String ID = "edit.sendToBack";
-       
-       public static String getID() {
-           return ID;
-       }
-       
+    
+       public static String ID = "edit.sendToBack";
     /** Creates a new instance. */
     public SendToBackAction(DrawingEditor editor) {
         super(editor);

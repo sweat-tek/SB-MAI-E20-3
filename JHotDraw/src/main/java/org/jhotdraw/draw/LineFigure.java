@@ -18,7 +18,6 @@ import javax.swing.undo.*;
 import java.awt.event.*;
 import java.awt.geom.*;
 import java.util.*;
-import java.util.stream.IntStream;
 import org.jhotdraw.geom.*;
 /**
  * LineFigure.
@@ -33,8 +32,8 @@ public class LineFigure extends BezierFigure {
     
     /** Creates a new instance. */
     public LineFigure() {
-        addNode(new BezierPath.Node(new Point2D.Double(0,0)));
-        addNode(new BezierPath.Node(new Point2D.Double(0,0)));
+        this.getBezierNode().addNode(this.path, new BezierPath.Node(new Point2D.Double(0,0)));
+        this.getBezierNode().addNode(this.path, new BezierPath.Node(new Point2D.Double(0,0)));
     }
     
     // DRAWING
@@ -43,12 +42,17 @@ public class LineFigure extends BezierFigure {
     // EDITING
     @Override
     public Collection<Handle> createHandles(int detailLevel) {
-        LinkedList<Handle> handles = new LinkedList<>();
-        if (detailLevel == 0){
-            handles.add(new BezierOutlineHandle(this));
-            IntStream.range(0, path.size() - 1).forEach(i -> handles.add(new BezierNodeHandle(this, i)));
-        } else if (detailLevel == -1){
-            handles.add(new BezierOutlineHandle(this, true));
+        LinkedList<Handle> handles = new LinkedList<Handle>();
+        switch (detailLevel) {
+            case -1 : // Mouse hover handles
+                handles.add(new BezierOutlineHandle(this, true));
+                break;
+            case 0 :
+                handles.add(new BezierOutlineHandle(this));
+                for (int i=0, n = path.size(); i < n; i++) {
+                    handles.add(new BezierNodeHandle(this, i));
+                }
+                break;
         }
         return handles;
     }
@@ -69,13 +73,14 @@ public class LineFigure extends BezierFigure {
             willChange();
             final int index = splitSegment(p, (float) (5f / view.getScaleFactor()));
             if (index != -1) {
-                final BezierPath.Node newNode = getNode(index);
+                LineFigure fix = this;
+                final BezierPath.Node newNode = this.getBezierNode().getNode(this.path, index);
                 fireUndoableEditHappened(new AbstractUndoableEdit() {
                     @Override
                     public void redo() throws CannotRedoException {
                         super.redo();
                         willChange();
-                        addNode(index, newNode);
+                        fix.getBezierNode().addNode(fix.path,index, newNode);
                         changed();
                     }
 
@@ -83,7 +88,7 @@ public class LineFigure extends BezierFigure {
                     public void undo() throws CannotUndoException {
                         super.undo();
                         willChange();
-                        removeNode(index);
+                        fix.getBezierNode().removeNode(fix.path,index);
                         changed();
                     }
                     

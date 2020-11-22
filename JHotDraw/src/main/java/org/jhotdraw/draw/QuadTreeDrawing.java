@@ -65,14 +65,14 @@ public class QuadTreeDrawing extends AbstractDrawing {
     }
 
     @Override
-    public void draw(Graphics2D graphics2D) {
-        Rectangle2D clipBounds = graphics2D.getClipBounds();
+    public void draw(Graphics2D g) {
+        Rectangle2D clipBounds = g.getClipBounds();
         if (clipBounds != null) {
             Collection<Figure> c = quadTree.findIntersects(clipBounds);
             Collection<Figure> toDraw = sort(c);
-            draw(graphics2D, toDraw);
+            draw(g, toDraw);
         } else {
-            draw(graphics2D);
+            draw(g, children);
         }
     }
 
@@ -324,5 +324,15 @@ public class QuadTreeDrawing extends AbstractDrawing {
             invalidate();
             fireAreaInvalidated(e.getInvalidatedArea());
         }
+    }
+
+    @Override
+    protected void drawFill(Graphics2D g) {
+        //throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    @Override
+    protected void drawStroke(Graphics2D g) {
+        // throw new UnsupportedOperationException("Not supported yet.");
     }
 }

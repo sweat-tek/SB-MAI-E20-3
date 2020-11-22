@@ -56,7 +56,7 @@ public class BackdropBorder implements Border {
         }
     }
 
-    public boolean isBorderOpaque() { 
+    public boolean isBorderOpaque() {
         return backgroundBorder.isBorderOpaque();
     }
 

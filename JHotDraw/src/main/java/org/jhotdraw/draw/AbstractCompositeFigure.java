@@ -48,7 +48,7 @@ public abstract class AbstractCompositeFigure
      * @see #add
      * @see #removeChild
      */
-    public ArrayList<Figure> children = new ArrayList<Figure>();
+    protected ArrayList<Figure> children = new ArrayList<Figure>();
     /**
      * Cached draw cachedBounds.
      */
@@ -458,18 +458,18 @@ public abstract class AbstractCompositeFigure
         }
     }
 
-    public void draw(Graphics2D graphics2D) {
-        Rectangle2D clipBounds = graphics2D.getClipBounds();
+    public void draw(Graphics2D g) {
+        Rectangle2D clipBounds = g.getClipBounds();
         if (clipBounds != null) {
             for (Figure child : getChildren()) {
                 if (child.isVisible() && child.getDrawingArea().intersects(clipBounds)) {
-                    child.draw(graphics2D);
+                    child.draw(g);
                 }
             }
         } else {
             for (Figure child : getChildren()) {
                 if (child.isVisible()) {
-                    child.draw(graphics2D);
+                    child.draw(g);
                 }
             }
         }

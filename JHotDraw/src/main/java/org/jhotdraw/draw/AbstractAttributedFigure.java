@@ -18,7 +18,6 @@ import java.awt.*;
 import java.awt.geom.*;
 import java.util.*;
 import java.io.*;
-
 import static org.jhotdraw.draw.AttributeKeys.*;
 import org.jhotdraw.geom.*;
 import org.jhotdraw.xml.DOMInput;
@@ -39,7 +38,7 @@ import org.jhotdraw.xml.DOMOutput;
  * <br>2.0 2006-01-14 Changed to support double precision coordinates.
  * <br>1.0 2003-12-01 Derived from JHotDraw 5.4b1.
  */
-public abstract class AbstractAttributedFigure extends AbstractFigure implements DrawableFigure {
+public abstract class AbstractAttributedFigure extends AbstractFigure {
     /**
      * Holds the attributes of the figure.
      */
@@ -105,6 +104,32 @@ public abstract class AbstractAttributedFigure extends AbstractFigure implements
         return hasAttribute(key) ? key.get(attributes) : key.getDefaultValue();
     }
     
+    
+    public void draw(Graphics2D g) {
+        if (AttributeKeys.FILL_COLOR.get(this) != null) {
+            g.setColor(AttributeKeys.FILL_COLOR.get(this));
+            drawFill(g);
+        }
+        if (STROKE_COLOR.get(this) != null && STROKE_WIDTH.get(this) > 0d) {
+            g.setStroke(AttributeKeys.getStroke(this));
+            g.setColor(STROKE_COLOR.get(this));
+            
+            drawStroke(g);
+        }
+        if (TEXT_COLOR.get(this) != null) {
+            if (TEXT_SHADOW_COLOR.get(this) != null &&
+                    TEXT_SHADOW_OFFSET.get(this) != null) {
+                Dimension2DDouble d = TEXT_SHADOW_OFFSET.get(this);
+                g.translate(d.width, d.height);
+                g.setColor(TEXT_SHADOW_COLOR.get(this));
+                drawText(g);
+                g.translate(-d.width,-d.height);
+            }
+            g.setColor(TEXT_COLOR.get(this));
+            drawText(g);
+        }
+    }
+    
     public Stroke getStroke() {
         return AttributeKeys.getStroke(this);
     }
@@ -127,6 +152,29 @@ public abstract class AbstractAttributedFigure extends AbstractFigure implements
         Rectangle2D.Double r = getBounds();
         Geom.grow(r, width, width);
         return r;
+    }
+    
+    /**
+     * This method is called by method draw() to draw the fill
+     * area of the figure. AbstractAttributedFigure configures the Graphics2D
+     * object with the FILL_COLOR attribute before calling this method.
+     * If the FILL_COLOR attribute is null, this method is not called.
+     */
+    protected abstract void drawFill(java.awt.Graphics2D g);
+    /**
+     * This method is called by method draw() to draw the lines of the figure
+     *. AttributedFigure configures the Graphics2D object with
+     * the STROKE_COLOR attribute before calling this method.
+     * If the STROKE_COLOR attribute is null, this method is not called.
+     */
+    /**
+     * This method is called by method draw() to draw the text of the figure
+     * . AbstractAttributedFigure configures the Graphics2D object with
+     * the TEXT_COLOR attribute before calling this method.
+     * If the TEXT_COLOR attribute is null, this method is not called.
+     */
+    protected abstract void drawStroke(java.awt.Graphics2D g);
+    protected void drawText(java.awt.Graphics2D g) {
     }
     
     public AbstractAttributedFigure clone() {

@@ -101,13 +101,13 @@ public abstract class AbstractTool extends AbstractBean implements Tool {
         return isActive;
     }
     
-    public DrawingView getView() {
+    protected DrawingView getView() {
         return editor.getActiveView();
     }
     protected DrawingEditor getEditor() {
         return editor;
     }
-    public Drawing getDrawing() {
+    protected Drawing getDrawing() {
         return getView().getDrawing();
     }
     protected Point2D.Double viewToDrawing(Point p) {

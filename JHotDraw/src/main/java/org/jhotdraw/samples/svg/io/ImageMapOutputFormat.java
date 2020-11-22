@@ -188,8 +188,8 @@ public class ImageMapOutputFormat implements OutputFormat {
             if (path.getChildCount() == 1) {
                 BezierFigure bezier = (BezierFigure) path.getChild(0);
                 boolean isLinear = true;
-                for (int i = 0, n = bezier.getNodeCount(); i < n; i++) {
-                    if (bezier.getNode(i).getMask() != 0) {
+                for (int i = 0, n = bezier.getBezierNode().getNodeCount(bezier.getBezierPath()); i < n; i++) {
+                    if (bezier.getBezierNode().getNode(bezier.getBezierPath(), i).getMask() != 0) {
                         isLinear = false;
                         break;
                     }
@@ -198,7 +198,7 @@ public class ImageMapOutputFormat implements OutputFormat {
                     if (bezier.isClosed()) {
                         writePolygonElement(parent, path);
                     } else {
-                        if (bezier.getNodeCount() == 2) {
+                        if (bezier.getBezierNode().getNodeCount(bezier.getBezierPath()) == 2) {
                             writeLineElement(parent, path);
                         } else {
                             writePolylineElement(parent, path);

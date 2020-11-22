@@ -62,8 +62,8 @@ public class DefaultSVGFigureFactory implements SVGFigureFactory {
         SVGPathFigure figure = new SVGPathFigure();
         figure.removeAllChildren();
         SVGBezierFigure bf = new SVGBezierFigure();
-        bf.addNode(new BezierPath.Node(x1, y1));
-        bf.addNode(new BezierPath.Node(x2, y2));
+        bf.getBezierNode().addNode(bf.getBezierPath(), new BezierPath.Node(x1, y1));
+        bf.getBezierNode().addNode(bf.getBezierPath(), new BezierPath.Node(x2, y2));
         figure.add(bf);
         figure.setAttributes(a);
         return figure;
@@ -74,7 +74,7 @@ public class DefaultSVGFigureFactory implements SVGFigureFactory {
         figure.removeAllChildren();
         SVGBezierFigure bf = new SVGBezierFigure();
         for (int i=0; i < points.length; i++) {
-            bf.addNode(new BezierPath.Node(points[i].x, points[i].y));
+            bf.getBezierNode().addNode(bf.getBezierPath(),new BezierPath.Node(points[i].x, points[i].y));
         }
         figure.add(bf);
         figure.setAttributes(a);
@@ -86,7 +86,7 @@ public class DefaultSVGFigureFactory implements SVGFigureFactory {
         figure.removeAllChildren();
         SVGBezierFigure bf = new SVGBezierFigure();
         for (int i=0; i < points.length; i++) {
-            bf.addNode(new BezierPath.Node(points[i].x, points[i].y));
+            bf.getBezierNode().addNode(bf.getBezierPath(), new BezierPath.Node(points[i].x, points[i].y));
         }
         bf.setClosed(true);
         figure.add(bf);

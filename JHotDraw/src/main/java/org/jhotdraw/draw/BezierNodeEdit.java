@@ -55,7 +55,7 @@ class BezierNodeEdit extends AbstractUndoableEdit {
     public void redo() throws CannotRedoException {
         super.redo();
         owner.willChange();
-        owner.setNode(index, newValue);
+        owner.getBezierNode().setNode(owner.path,index, newValue);
         owner.changed();
         if (oldValue.mask != newValue.mask) {
         }
@@ -65,7 +65,7 @@ class BezierNodeEdit extends AbstractUndoableEdit {
     public void undo() throws CannotUndoException {
         super.undo();
         owner.willChange();
-        owner.setNode(index, oldValue);
+        owner.getBezierNode().setNode(owner.path, index, oldValue);
         owner.changed();
     }
 

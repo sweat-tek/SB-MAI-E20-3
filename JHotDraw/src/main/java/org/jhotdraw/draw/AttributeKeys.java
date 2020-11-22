@@ -33,22 +33,23 @@ import org.jhotdraw.geom.*;
  * <br>1.8 2008-05-28 Added LAYOUT_ALIGNMENT.
  * <br>1.4 2007-12-16 Added CANVAS_FILL_COLOR.
  * <br>1.3 2006-12-09 Streamlined to better support SVG.
- * <br>1.2 2006-07-09 Stroke dash factor added. 
+ * <br>1.2 2006-07-09 Stroke dash factor added.
  * <br>1.1 2006-06-07 Changed all values to double.
  * <br>1.0 23. 3. 2006 Created.
  */
 public class AttributeKeys {
-
+    
     private final static ResourceBundleUtil labels = ResourceBundleUtil.getBundle("org.jhotdraw.draw.Labels");
     /**
-     * Canvas fill color. The value of this attribute is a Color object.
-     * This attribute is used by a Drawing object to specify the fill color
-     * of the drawing. The default value is white.
+     * Canvas fill color. The value of this attribute is a Color object. This
+     * attribute is used by a Drawing object to specify the fill color of the
+     * drawing. The default value is white.
      */
     public final static AttributeKey<Color> CANVAS_FILL_COLOR = new AttributeKey<Color>("canvasFillColor", Color.class, Color.white, true, labels);
     /**
-     * Canvas fill opacity. The value of this attribute is a Double object.
-     * This is a value between 0 and 1 whereas 0 is translucent and 1 is fully opaque.
+     * Canvas fill opacity. The value of this attribute is a Double object. This
+     * is a value between 0 and 1 whereas 0 is translucent and 1 is fully
+     * opaque.
      */
     public final static AttributeKey<Double> CANVAS_FILL_OPACITY = new AttributeKey<Double>("canvasFillOpacity", Double.class, 1d, false, labels);
     /**
@@ -75,17 +76,17 @@ public class AttributeKeys {
      * Fill BezierFigure. The value of this attribute is a Boolean object.
      */
     public final static AttributeKey<Boolean> FILL_OPEN_PATH = new AttributeKey<Boolean>("fillOpenPath", Boolean.class, false, false, labels);
-
+    
     public static enum WindingRule {
 
         /**
-         * If WINDING_RULE is set to this value, an even-odd winding rule
-         * is used for determining the interior of a path.  
+         * If WINDING_RULE is set to this value, an even-odd winding rule is
+         * used for determining the interior of a path.
          */
         EVEN_ODD,
         /**
-         * If WINDING_RULE is set to this value, a non-zero winding rule
-         * is used for determining the interior of a path.  
+         * If WINDING_RULE is set to this value, a non-zero winding rule is used
+         * for determining the interior of a path.
          */
         NON_ZERO
     }
@@ -93,24 +94,24 @@ public class AttributeKeys {
      * Fill under stroke. The value of this attribute is a Boolean object.
      */
     public final static AttributeKey<WindingRule> WINDING_RULE = new AttributeKey<WindingRule>("windingRule", WindingRule.class, WindingRule.EVEN_ODD, false, labels);
-
+    
     public static enum Underfill {
 
         /**
-         * If FILL_UNDER_STROKE is set to this value, the area under the
-         * stroke will not be filled.
+         * If FILL_UNDER_STROKE is set to this value, the area under the stroke
+         * will not be filled.
          */
         NONE,
         /**
          * If FILL_UNDER_STROKE is set to this value, the area under the stroke
          * is filled to the center of the stroke. This is the default behavior
-         * of Graphics2D.fill(Shape), Graphics2D.draw(Shape) when using the
-         * same shape object.
+         * of Graphics2D.fill(Shape), Graphics2D.draw(Shape) when using the same
+         * shape object.
          */
         CENTER,
         /**
-         * If FILL_UNDER_STROKE is set to this value, the area under the
-         * stroke will be filled.
+         * If FILL_UNDER_STROKE is set to this value, the area under the stroke
+         * will be filled.
          */
         FULL
     }
@@ -123,26 +124,26 @@ public class AttributeKeys {
      */
     public final static AttributeKey<Color> STROKE_COLOR = new AttributeKey<Color>("strokeColor", Color.class, Color.black, true, labels);
     /**
-     * Stroke width. A double used to construct a BasicStroke or the
-     * outline of a DoubleStroke.
+     * Stroke width. A double used to construct a BasicStroke or the outline of
+     * a DoubleStroke.
      */
     public final static AttributeKey<Double> STROKE_WIDTH = new AttributeKey<Double>("strokeWidth", Double.class, 1d, false, labels);
     /**
-     * Factor for the stroke inner width. This is a double. The default value
-     * is 2.
+     * Factor for the stroke inner width. This is a double. The default value is
+     * 2.
      *
-     * @deprecated This is not flexible enough. Lets replace this with a 
+     * @deprecated This is not flexible enough. Lets replace this with a
      * STROKE_STRIPES_ARRAY<Double[]> and a IS_STROKE_STRIPES_FACTOR.
      */
     public final static AttributeKey<Double> STROKE_INNER_WIDTH_FACTOR = new AttributeKey<Double>("innerStrokeWidthFactor", Double.class, 2d, false, labels);
     /**
-     * Stroke join. One of the BasicStroke.JOIN_... values used to
-     * construct a BasicStroke.
+     * Stroke join. One of the BasicStroke.JOIN_... values used to construct a
+     * BasicStroke.
      */
     public final static AttributeKey<Integer> STROKE_JOIN = new AttributeKey<Integer>("strokeJoin", Integer.class, BasicStroke.JOIN_MITER, false, labels);
     /**
-     * Stroke join. One of the BasicStroke.CAP_... values used to
-     * construct a BasicStroke.
+     * Stroke join. One of the BasicStroke.CAP_... values used to construct a
+     * BasicStroke.
      */
     public final static AttributeKey<Integer> STROKE_CAP = new AttributeKey<Integer>("strokeCap", Integer.class, BasicStroke.CAP_BUTT, false, labels);
     /**
@@ -151,13 +152,12 @@ public class AttributeKeys {
      */
     public final static AttributeKey<Double> STROKE_MITER_LIMIT = new AttributeKey<Double>("strokeMiterLimitFactor", Double.class, 3d, false, labels);
     /**
-     * A boolean used to indicate whether STROKE_MITER_LIMIT is a factor of 
+     * A boolean used to indicate whether STROKE_MITER_LIMIT is a factor of
      * STROKE_WIDTH, or whether it represents an absolute value.
      */
     public final static AttributeKey<Boolean> IS_STROKE_MITER_LIMIT_FACTOR = new AttributeKey<Boolean>("isStrokeMiterLimitFactor", Boolean.class, true, false, labels);
     /**
-     * An array of doubles used to specify the dash pattern in
-     * a BasicStroke;
+     * An array of doubles used to specify the dash pattern in a BasicStroke;
      */
     public final static AttributeKey<double[]> STROKE_DASHES = new AttributeKey<double[]>("strokeDashes", double[].class, null, true, labels);
     /**
@@ -170,7 +170,7 @@ public class AttributeKeys {
      * absolute values.
      */
     public final static AttributeKey<Boolean> IS_STROKE_DASH_FACTOR = new AttributeKey<Boolean>("isStrokeDashFactor", Boolean.class, true, false, labels);
-
+    
     public static enum StrokeType {
 
         /**
@@ -181,28 +181,29 @@ public class AttributeKeys {
         /**
          * If STROKE_TYPE is set to this value, a DoubleStroke instance is used
          * for stroking.
+         *
          * @deprecated This is not flexible enough. Lets replace this with
-         * STRIPED. for example to support for striped strokes.  
+         * STRIPED. for example to support for striped strokes.
          */
         DOUBLE
     }
     /**
-     * Stroke type. The value of this attribute is either VALUE_STROKE_TYPE_BASIC
-     * or VALUE_STROKE_TYPE_DOUBLE.
-     * FIXME - Type should be an enumeration.
+     * Stroke type. The value of this attribute is either
+     * VALUE_STROKE_TYPE_BASIC or VALUE_STROKE_TYPE_DOUBLE. FIXME - Type should
+     * be an enumeration.
      */
     public final static AttributeKey<StrokeType> STROKE_TYPE = new AttributeKey<StrokeType>("strokeType", StrokeType.class, StrokeType.BASIC, false, labels);
-
+    
     public static enum StrokePlacement {
 
         /**
-         * If STROKE_PLACEMENT is set to this value, the stroke is centered
-         * on the path.
+         * If STROKE_PLACEMENT is set to this value, the stroke is centered on
+         * the path.
          */
         CENTER,
         /**
-         * If STROKE_PLACEMENT is set to this value, the stroke is placed
-         * inside of a closed path.
+         * If STROKE_PLACEMENT is set to this value, the stroke is placed inside
+         * of a closed path.
          */
         INSIDE,
         /**
@@ -213,16 +214,16 @@ public class AttributeKeys {
     }
     /**
      * Stroke placement. The value is either StrokePlacement.CENTER,
-     * StrokePlacement.INSIDE or StrokePlacement.OUTSIDE.
-     * This only has effect for closed paths. On open paths, the stroke
-     * is always centered on the path.
+     * StrokePlacement.INSIDE or StrokePlacement.OUTSIDE. This only has effect
+     * for closed paths. On open paths, the stroke is always centered on the
+     * path.
      * <p>
      * The default value is StrokePlacement.CENTER.
      */
     public final static AttributeKey<StrokePlacement> STROKE_PLACEMENT = new AttributeKey<StrokePlacement>("strokePlacement", StrokePlacement.class, StrokePlacement.CENTER, false, labels);
     /**
-     * The value of this attribute is a String object, which is used to
-     * display the text of the figure.
+     * The value of this attribute is a String object, which is used to display
+     * the text of the figure.
      */
     public final static AttributeKey<String> TEXT = new AttributeKey<String>("text", String.class, null, true, labels);
     /**
@@ -234,19 +235,28 @@ public class AttributeKeys {
      */
     public final static AttributeKey<Color> TEXT_SHADOW_COLOR = new AttributeKey<Color>("textShadowColor", Color.class, null, true, labels);
     /**
-     * Text shadow offset. The value of this attribute is a Dimension2DDouble object.
+     * Text shadow offset. The value of this attribute is a Dimension2DDouble
+     * object.
      */
     public final static AttributeKey<Dimension2DDouble> TEXT_SHADOW_OFFSET = new AttributeKey<Dimension2DDouble>("textShadowOffset", Dimension2DDouble.class, new Dimension2DDouble(1d, 1d), false, labels);
-
+    
     public static enum Alignment {
 
-        /** align on the left or the top */
+        /**
+         * align on the left or the top
+         */
         LEADING,
-        /** align on the right or the bottom */
+        /**
+         * align on the right or the bottom
+         */
         TRAILING,
-        /** align in the center */
+        /**
+         * align in the center
+         */
         CENTER,
-        /** stretch to fill horizontally, or vertically */
+        /**
+         * stretch to fill horizontally, or vertically
+         */
         BLOCK,
     }
     /**
@@ -254,8 +264,8 @@ public class AttributeKeys {
      */
     public final static AttributeKey<Alignment> TEXT_ALIGNMENT = new AttributeKey<Alignment>("textAlignment", Alignment.class, Alignment.LEADING, false, labels);
     /**
-     * The value of this attribute is a Font object, which is used as a prototype
-     * to create the font for the text.
+     * The value of this attribute is a Font object, which is used as a
+     * prototype to create the font for the text.
      */
     public final static AttributeKey<Font> FONT_FACE = new AttributeKey<Font>("fontFace", Font.class, new Font("VERDANA", Font.PLAIN, 10), false, labels);
     /**
@@ -287,28 +297,28 @@ public class AttributeKeys {
     /**
      * The value of this attribute is a Insets2D.Double object.
      * <p>
-     * This attribute can be set on a CompositeFigure, which uses
-     * a Layouter to lay out its children.
+     * This attribute can be set on a CompositeFigure, which uses a Layouter to
+     * lay out its children.
      * <p>
-     * The insets are used to determine the insets between the bounds
-     * of the CompositeFigure and its children.
+     * The insets are used to determine the insets between the bounds of the
+     * CompositeFigure and its children.
      */
     public final static AttributeKey<Insets2D.Double> LAYOUT_INSETS = new AttributeKey<Insets2D.Double>("borderInsets", Insets2D.Double.class, new Insets2D.Double(), false, labels);
     /**
      * The value of this attribute is a Alignment object.
      * <p>
-     * This attribute can be set on a CompositeFigure, which uses
-     * a Layouter to lay out its children.
+     * This attribute can be set on a CompositeFigure, which uses a Layouter to
+     * lay out its children.
      * <p>
-     * The insets are used to determine the default alignment of
-     * the children of the CompositeFigure.
+     * The insets are used to determine the default alignment of the children of
+     * the CompositeFigure.
      */
     public final static AttributeKey<Alignment> COMPOSITE_ALIGNMENT = new AttributeKey<Alignment>("layoutAlignment", Alignment.class, Alignment.BLOCK, false, labels);
     /**
      * The value of this attribute is a Alignment object.
      * <p>
-     * This attribute can be set on a child of a CompositeFigure, which uses
-     * a Layouter to lay out its children.
+     * This attribute can be set on a child of a CompositeFigure, which uses a
+     * Layouter to lay out its children.
      * <p>
      * Layouters should use this attribute, to determine the default alignment
      * of the child figures contained in the CompositeFigure which they lay out.
@@ -318,9 +328,9 @@ public class AttributeKeys {
      * Specifies the transform of a Figure.
      */
     public final static AttributeKey<AffineTransform> TRANSFORM = new AttributeKey<AffineTransform>("transform", AffineTransform.class, null, true, labels);
-
+    
     public static enum Orientation {
-
+        
         NORTH,
         NORTH_EAST,
         EAST,
@@ -339,39 +349,38 @@ public class AttributeKeys {
      */
     public final static Set<AttributeKey> supportedAttributes;
     public final static Map<String, AttributeKey> supportedAttributeMap;
-
-
+    
     static {
         HashSet<AttributeKey> as = new HashSet<AttributeKey>();
         as.addAll(Arrays.asList(new AttributeKey[]{
-                    FILL_COLOR,
-                    FILL_UNDER_STROKE,
-                    STROKE_COLOR,
-                    STROKE_WIDTH,
-                    STROKE_INNER_WIDTH_FACTOR,
-                    STROKE_JOIN,
-                    STROKE_CAP,
-                    STROKE_MITER_LIMIT,
-                    STROKE_DASHES,
-                    STROKE_DASH_PHASE,
-                    STROKE_TYPE,
-                    STROKE_PLACEMENT,
-                    TEXT,
-                    TEXT_COLOR,
-                    TEXT_SHADOW_COLOR,
-                    TEXT_SHADOW_OFFSET,
-                    TRANSFORM,
-                    FONT_FACE,
-                    FONT_SIZE,
-                    FONT_BOLD,
-                    FONT_ITALIC,
-                    FONT_UNDERLINE,
-                    BEZIER_PATH_LAYOUTER,
-                    END_DECORATION,
-                    START_DECORATION,
-                    DECORATOR_INSETS,
-                    ORIENTATION,
-                    WINDING_RULE,}));
+            FILL_COLOR,
+            FILL_UNDER_STROKE,
+            STROKE_COLOR,
+            STROKE_WIDTH,
+            STROKE_INNER_WIDTH_FACTOR,
+            STROKE_JOIN,
+            STROKE_CAP,
+            STROKE_MITER_LIMIT,
+            STROKE_DASHES,
+            STROKE_DASH_PHASE,
+            STROKE_TYPE,
+            STROKE_PLACEMENT,
+            TEXT,
+            TEXT_COLOR,
+            TEXT_SHADOW_COLOR,
+            TEXT_SHADOW_OFFSET,
+            TRANSFORM,
+            FONT_FACE,
+            FONT_SIZE,
+            FONT_BOLD,
+            FONT_ITALIC,
+            FONT_UNDERLINE,
+            BEZIER_PATH_LAYOUTER,
+            END_DECORATION,
+            START_DECORATION,
+            DECORATOR_INSETS,
+            ORIENTATION,
+            WINDING_RULE,}));
         supportedAttributes = Collections.unmodifiableSet(as);
         HashMap<String, AttributeKey> am = new HashMap<String, AttributeKey>();
         for (AttributeKey a : as) {
@@ -407,35 +416,47 @@ public class AttributeKeys {
             return STROKE_MITER_LIMIT.get(f);
         }
     }
-
-    public static Stroke getStroke(Figure f) {
-        double strokeWidth = STROKE_WIDTH.get(f);
-        float miterLimit = (float) getStrokeTotalMiterLimit(f);
-        double dashFactor = IS_STROKE_DASH_FACTOR.get(f) ? strokeWidth : 1d;
-        double dashPhase = STROKE_DASH_PHASE.get(f);
-        double[] ddashes = STROKE_DASHES.get(f);
-        float[] dashes = null;
-        boolean isAllZeroes = true;
-        if (ddashes != null) {
-            dashes = new float[ddashes.length];
-            double dashSize = 0f;
+    
+    public static boolean isAllZeroes(float[] dashes) {
+        boolean empty = true;
+        if (dashes != null) {
             for (int i = 0; i < dashes.length; i++) {
-                dashes[i] = Math.max(0f, (float) (ddashes[i] * dashFactor));
-                dashSize += dashes[i];
-                if (isAllZeroes && dashes[i] != 0) {
-                    isAllZeroes = false;
+                if (dashes[i] != 0) {
+                    empty = false;
                 }
+            }            
+        }
+        
+        return empty;
+    }
+    
+    public static void createDashes(Dashes dash) {
+        assert dash!= null : "Dashes object is null."; // Dashes object should newer be null.
+        if (dash.getDdashes() != null) {
+            dash.setDashes(new float[dash.getDdashes().length]);
+            dash.setDashSize(0f);
+            for (int i = 0; i < dash.getDashes().length; i++) {
+                dash.setIndexDashes(Math.max(0f, (float) (dash.getDdashes()[i] * dash.getDashFactor())), i);
+                dash.setDashSize(dash.getDashSize() + dash.getDashes()[i]);
             }
-            if (dashes.length % 2 == 1) {
-                dashSize *= 2;
+            if (dash.getDashes().length % 2 == 1) {
+                dash.setDashSize(dash.getDashSize() * 2);
             }
-            if (dashPhase < 0) {
-                dashPhase = dashSize + dashPhase % dashSize;
+            if (dash.getDashPhase() < 0) {
+                dash.setDashPhase(dash.getDashSize() + dash.getDashPhase() % dash.getDashSize());
             }
         }
-        if (isAllZeroes) {
+    }
+    
+    public static Stroke getStroke(Figure f) {
+        double strokeWidth = STROKE_WIDTH.get(f);
+        Dashes dash = new Dashes(IS_STROKE_DASH_FACTOR.get(f) ? strokeWidth : 1d, STROKE_DASH_PHASE.get(f), STROKE_DASHES.get(f));
+        float miterLimit = (float) getStrokeTotalMiterLimit(f);
+        
+        createDashes(dash);
+        if (isAllZeroes(dash.getDashes())) {
             // don't draw dashes, if all values are 0.
-            dashes = null;
+            dash.setDashes(null);
         }
         switch (STROKE_TYPE.get(f)) {
             case BASIC:
@@ -444,7 +465,7 @@ public class AttributeKeys {
                         STROKE_CAP.get(f),
                         STROKE_JOIN.get(f),
                         miterLimit,
-                        dashes, Math.max(0, (float) (dashPhase * dashFactor)));
+                        dash.getDashes(), Math.max(0, (float) (dash.getDashPhase() * dash.getDashFactor())));
             //not reached
 
             case DOUBLE:
@@ -454,15 +475,15 @@ public class AttributeKeys {
                         STROKE_CAP.get(f),
                         STROKE_JOIN.get(f),
                         miterLimit,
-                        dashes, Math.max(0, (float) (dashPhase * dashFactor)));
+                        dash.getDashes(), Math.max(0, (float) (dash.getDashPhase() * dash.getDashFactor())));
             //not reached
         }
     }
 
     /**
-     * Returns a stroke which is useful for hit-testing.
-     * The stroke reflects the stroke width, but not the stroke dashes
-     * attribute.
+     * Returns a stroke which is useful for hit-testing. The stroke reflects the
+     * stroke width, but not the stroke dashes attribute.
+     *
      * @param f
      * @return A stroke suited for creating a shape for hit testing.
      */
@@ -491,7 +512,7 @@ public class AttributeKeys {
             //not reached
         }
     }
-
+    
     public static Font getFont(Figure f) {
         Font prototype = FONT_FACE.get(f);
         if (prototype == null) {
@@ -503,7 +524,7 @@ public class AttributeKeys {
             return prototype.deriveFont(FONT_SIZE.get(f).floatValue());
         }
     }
-
+    
     public static int getFontStyle(Figure f) {
         int style = Font.PLAIN;
         if (FONT_BOLD.get(f)) {
@@ -516,11 +537,11 @@ public class AttributeKeys {
     }
 
     /**
-     * Returns the distance, that a Rectangle needs to grow (or shrink) to
-     * fill its shape as specified by the FILL_UNDER_STROKE and STROKE_POSITION
-     * attributes of a figure.
-     * The value returned is the number of units that need to be grown (or shrunk)
-     * perpendicular to a stroke on an outline of the shape.
+     * Returns the distance, that a Rectangle needs to grow (or shrink) to fill
+     * its shape as specified by the FILL_UNDER_STROKE and STROKE_POSITION
+     * attributes of a figure. The value returned is the number of units that
+     * need to be grown (or shrunk) perpendicular to a stroke on an outline of
+     * the shape.
      */
     public static double getPerpendicularFillGrowth(Figure f) {
         double grow;
@@ -575,15 +596,15 @@ public class AttributeKeys {
     }
 
     /**
-     * Returns the distance, that a Rectangle needs to grow (or shrink) to
-     * draw (aka stroke) its shape as specified by the FILL_UNDER_STROKE and 
-     * STROKE_POSITION attributes of a figure.
-     * The value returned is the number of units that need to be grown (or shrunk)
-     * perpendicular to a stroke on an outline of the shape.
+     * Returns the distance, that a Rectangle needs to grow (or shrink) to draw
+     * (aka stroke) its shape as specified by the FILL_UNDER_STROKE and
+     * STROKE_POSITION attributes of a figure. The value returned is the number
+     * of units that need to be grown (or shrunk) perpendicular to a stroke on
+     * an outline of the shape.
      */
     public static double getPerpendicularDrawGrowth(Figure f) {
         double grow;
-
+        
         double strokeWidth = AttributeKeys.getStrokeTotalWidth(f);
         switch (STROKE_PLACEMENT.get(f)) {
             case INSIDE:
@@ -601,11 +622,11 @@ public class AttributeKeys {
     }
 
     /**
-     * Returns the distance, that a Rectangle needs to grow (or shrink) to
-     * make hit detections on a shape as specified by the FILL_UNDER_STROKE and STROKE_POSITION
-     * attributes of a figure.
-     * The value returned is the number of units that need to be grown (or shrunk)
-     * perpendicular to a stroke on an outline of the shape.
+     * Returns the distance, that a Rectangle needs to grow (or shrink) to make
+     * hit detections on a shape as specified by the FILL_UNDER_STROKE and
+     * STROKE_POSITION attributes of a figure. The value returned is the number
+     * of units that need to be grown (or shrunk) perpendicular to a stroke on
+     * an outline of the shape.
      */
     public static double getPerpendicularHitGrowth(Figure f) {
         double grow;

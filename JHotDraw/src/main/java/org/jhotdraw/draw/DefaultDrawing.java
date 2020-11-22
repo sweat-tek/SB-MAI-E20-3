@@ -57,17 +57,17 @@ public class DefaultDrawing
 
     @Override
     @FeatureEntryPoint(JHotDrawFeatures.CANVAS)
-    public void draw(Graphics2D graphics2D) {
+    public void draw(Graphics2D g) {
         synchronized (getLock()) {
             ensureSorted();
             ArrayList<Figure> toDraw = new ArrayList<Figure>(getChildren().size());
-            Rectangle clipRect = graphics2D.getClipBounds();
+            Rectangle clipRect = g.getClipBounds();
             for (Figure f : getChildren()) {
                 if (f.getDrawingArea().intersects(clipRect)) {
                     toDraw.add(f);
                 }
             }
-            draw(graphics2D, toDraw);
+            draw(g, toDraw);
         }
     }
 
@@ -248,5 +248,15 @@ public class DefaultDrawing
         DefaultDrawing that = (DefaultDrawing) super.clone();
         that.canvasSize = (this.canvasSize == null) ? null : (Dimension2DDouble) this.canvasSize.clone();
         return that;
+    }
+
+    @Override
+    protected void drawFill(Graphics2D g) {
+        //  throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    @Override
+    protected void drawStroke(Graphics2D g) {
+        //  throw new UnsupportedOperationException("Not supported yet.");
     }
 }

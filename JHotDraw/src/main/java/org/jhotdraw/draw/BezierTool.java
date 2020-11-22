@@ -62,8 +62,6 @@ public class BezierTool extends AbstractTool {
     private Point mouseLocation;
     /** Holds the view on which we are currently creating a figure. */
     private DrawingView creationView;
-    
-    private Figure lastFigure;
 
     /** Creates a new instance. */
     public BezierTool(BezierFigure prototype) {
@@ -103,7 +101,7 @@ public class BezierTool extends AbstractTool {
             if (anchor != null && mouseLocation != null) {
                 Rectangle r = new Rectangle(anchor);
                 r.add(mouseLocation);
-                if (createdFigure.getNodeCount() > 0 && createdFigure.isClosed()) {
+                if (createdFigure.getBezierNode().getNodeCount(createdFigure.path) > 0 && createdFigure.isClosed()) {
                     r.add(getView().drawingToView(createdFigure.getStartPoint()));
                 }
                 fireAreaInvalidated(r);
@@ -141,7 +139,7 @@ public class BezierTool extends AbstractTool {
             finishWhenMouseReleased = null;
 
             createdFigure = createFigure();
-            createdFigure.addNode(new BezierPath.Node(
+            createdFigure.getBezierNode().addNode(createdFigure.path, new BezierPath.Node(
                     creationView.getConstrainer().constrainPoint(
                     creationView.viewToDrawing(anchor))));
             getDrawing().add(createdFigure);
@@ -151,7 +149,7 @@ public class BezierTool extends AbstractTool {
                         creationView.viewToDrawing(anchor)));
             }
         }
-        nodeCountBeforeDrag = createdFigure.getNodeCount();
+        nodeCountBeforeDrag = createdFigure.getBezierNode().getNodeCount(createdFigure.path);
     }
 
     @SuppressWarnings("unchecked")
@@ -175,11 +173,11 @@ public class BezierTool extends AbstractTool {
     }
 
     protected void addPointToFigure(Point2D.Double newPoint) {
-        int pointCount = createdFigure.getNodeCount();
+        int pointCount = createdFigure.getBezierNode().getNodeCount(createdFigure.path);
 
         createdFigure.willChange();
         if (pointCount < 2) {
-            createdFigure.addNode(new BezierPath.Node(newPoint));
+            createdFigure.getBezierNode().addNode(createdFigure.path, new BezierPath.Node(newPoint));
         } else {
             Point2D.Double endPoint = createdFigure.getEndPoint();
             Point2D.Double secondLastPoint = (pointCount <= 1) ? endPoint : createdFigure.getPoint(pointCount - 2, 0);
@@ -188,7 +186,7 @@ public class BezierTool extends AbstractTool {
             } else if (pointCount > 1 && Geom.lineContainsPoint(newPoint.x, newPoint.y, secondLastPoint.x, secondLastPoint.y, endPoint.x, endPoint.y, 0.9f / getView().getScaleFactor())) {
                 createdFigure.setPoint(pointCount - 1, 0, newPoint);
             } else {
-                createdFigure.addNode(new BezierPath.Node(newPoint));
+                createdFigure.getBezierNode().addNode(createdFigure.path, new BezierPath.Node(newPoint));
             }
         }
         createdFigure.changed();
@@ -199,7 +197,7 @@ public class BezierTool extends AbstractTool {
         if (createdFigure != null) {
             switch (evt.getClickCount()) {
                 case 1:
-                    if (createdFigure.getNodeCount() > 2) {
+                    if (createdFigure.getBezierNode().getNodeCount(createdFigure.path) > 2) {
                         Rectangle r = new Rectangle(getView().drawingToView(createdFigure.getStartPoint()));
                         r.grow(2, 2);
                         if (r.contains(evt.getX(), evt.getY())) {
@@ -252,7 +250,7 @@ public class BezierTool extends AbstractTool {
             System.out.println("BezierTool.mouseReleased " + evt);
         }
         isWorking = false;
-        if (createdFigure.getNodeCount() > nodeCountBeforeDrag + 1) {
+        if (createdFigure.getBezierNode().getNodeCount(createdFigure.path) > nodeCountBeforeDrag + 1) {
             createdFigure.willChange();
             BezierPath figurePath = createdFigure.getBezierPath();
             BezierPath digitizedPath = new BezierPath();
@@ -265,13 +263,12 @@ public class BezierTool extends AbstractTool {
             figurePath.addAll(fittedPath);
             createdFigure.setBezierPath(figurePath);
             createdFigure.changed();
-            nodeCountBeforeDrag = createdFigure.getNodeCount();
+            nodeCountBeforeDrag = createdFigure.getBezierNode().getNodeCount(createdFigure.path);
         }
 
         if (finishWhenMouseReleased == Boolean.TRUE) {
-            if (createdFigure.getNodeCount() > 1) {
+            if (createdFigure.getBezierNode().getNodeCount(createdFigure.path) > 1) {
                 finishCreation(createdFigure, creationView);
-                lastFigure = createdFigure;
                 createdFigure = null;
                 finishWhenMouseReleased = null;
                 return;
@@ -317,7 +314,7 @@ public class BezierTool extends AbstractTool {
             g.setColor(Color.BLACK);
             g.setStroke(new BasicStroke(1f, BasicStroke.CAP_BUTT, BasicStroke.JOIN_BEVEL, 0f, new float[]{1f, 5f}, 0f));
             g.drawLine(anchor.x, anchor.y, mouseLocation.x, mouseLocation.y);
-            if (!isWorking && createdFigure.isClosed() && createdFigure.getNodeCount() > 1) {
+            if (!isWorking && createdFigure.isClosed() && createdFigure.getBezierNode().getNodeCount(createdFigure.path) > 1) {
                 Point p = creationView.drawingToView(createdFigure.getStartPoint());
                 g.drawLine(mouseLocation.x, mouseLocation.y, p.x, p.y);
             }
@@ -331,7 +328,7 @@ public class BezierTool extends AbstractTool {
                 Rectangle r = new Rectangle(anchor);
                 r.add(mouseLocation);
                 r.add(evt.getPoint());
-                if (createdFigure.isClosed() && createdFigure.getNodeCount() > 0) {
+                if (createdFigure.isClosed() && createdFigure.getBezierNode().getNodeCount(createdFigure.path) > 0) {
                     r.add(creationView.drawingToView(createdFigure.getStartPoint()));
                 }
                 r.grow(1, 1);
@@ -351,9 +348,5 @@ public class BezierTool extends AbstractTool {
 
     public boolean isToolDoneAfterCreation() {
         return isToolDoneAfterCreation;
-    }
-    
-    public BezierFigure getLastFigure() {
-        return (BezierFigure)lastFigure;
     }
 }

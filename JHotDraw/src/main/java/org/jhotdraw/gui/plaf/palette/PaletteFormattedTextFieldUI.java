@@ -16,16 +16,10 @@ package org.jhotdraw.gui.plaf.palette;
 import java.awt.*;
 import java.awt.geom.Line2D;
 import javax.swing.*;
-import static javax.swing.SwingConstants.LEADING;
-import static javax.swing.SwingConstants.LEFT;
-import static javax.swing.SwingConstants.RIGHT;
-import static javax.swing.SwingConstants.TRAILING;
 import javax.swing.border.Border;
 import javax.swing.plaf.*;
 import javax.swing.plaf.basic.*;
 import javax.swing.text.*;
-import static javax.swing.text.View.X_AXIS;
-import static javax.swing.text.View.Y_AXIS;
 
 /**
  * PaletteFormattedTextFieldUI.
