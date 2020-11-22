@@ -573,7 +573,7 @@ public class ButtonFactory {
         popupButton.setAction(
                 new DefaultAttributeAction(editor, attributeKey, defaultAttributes),
                 new Rectangle(0, 0, 22, 22));
-       // ############################################################################# 
+      
        
         popupButton.setColumnCount(columnCount, false);
         boolean hasNullColor = false;
@@ -603,7 +603,7 @@ public class ButtonFactory {
                     editor,
                     attributes,
                     labels.getToolTipTextProperty("attribute.color.noColor"),
-        // #############################################################################
+     
                     new ColorIcon(null, labels.getToolTipTextProperty("attribute.color.noColor"), swatches.get(0).getIconWidth(), swatches.get(0).getIconHeight())));
             a.putValue(Action.SHORT_DESCRIPTION, labels.getToolTipTextProperty("attribute.color.noColor"));
         }

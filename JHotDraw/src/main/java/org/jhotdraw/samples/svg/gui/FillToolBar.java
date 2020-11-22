@@ -74,9 +74,8 @@ public class FillToolBar extends AbstractToolBar {
     @FeatureEntryPoint(JHotDrawFeatures.FILL_PALETTE)
     protected JComponent createDisclosedComponent(int state) {
         p = new JPanel(); p1 = new JPanel(new GridBagLayout()); p2 = new JPanel(new GridBagLayout()); p3 = new JPanel(new GridBagLayout());
-        labels = ResourceBundleUtil.getBundle("org.jhotdraw.samples.svg.Labels");
         if (state == 1) {
-            panelset();
+            setPanel();
         } else if (state == 2) {
            gbc = new GridBagConstraints();
             setp();
@@ -89,7 +88,7 @@ public class FillToolBar extends AbstractToolBar {
         return p;
     }
 
-    public void fillcolor(AbstractButton btn) {
+    public void selectColorButton(AbstractButton btn) {
         Map<AttributeKey, Object> defaultAttributes = new HashMap<AttributeKey, Object>();
         FILL_GRADIENT.set(defaultAttributes, null);
         btn = ButtonFactory.createSelectionColorButton(editor,
@@ -120,7 +119,7 @@ public class FillToolBar extends AbstractToolBar {
         new FigureAttributeEditorHandler<Double>(FILL_OPACITY, opacitySlider, editor);
     }
 
-    public void panelset() {
+    public void setPanel() {
         p.setOpaque(false);
         p.setBorder(new EmptyBorder(5, 5, 5, 8));
         GridBagLayout layout = new GridBagLayout();
@@ -130,7 +129,7 @@ public class FillToolBar extends AbstractToolBar {
         AbstractButton btn = ButtonFactory.createSelectionColorButton(editor, FILL_COLOR, ButtonFactory.HSV_COLORS, ButtonFactory.HSV_COLORS_COLUMN_COUNT,
                 "attribute.fillColor", labels, defaultAttributes, new Rectangle(3, 3, 10, 10));
         // Fill color   
-        fillcolor(btn);
+        selectColorButton(btn);
 
         // Opacity slider    
         opacityslider();
@@ -147,7 +146,7 @@ public class FillToolBar extends AbstractToolBar {
         colorField.setHorizontalAlignment(JTextField.LEFT);
         new FigureAttributeEditorHandler<Color>(FILL_COLOR, defaultAttributes, colorField, editor, true);
 
-        // colorfield, gbc, defaultAttributes, p1, btn  
+         
         setgbc(btn, colorField, defaultAttributes);
 
     }
@@ -196,7 +195,7 @@ public class FillToolBar extends AbstractToolBar {
         p.add(p3, gbc);
     }
 
-    public void opacityhandler(JAttributeTextField<Double> opacityField) {
+    public void createOpacityButton(JAttributeTextField<Double> opacityField) {
         gbc.gridx = 0;
         gbc.insets = new Insets(3, 0, 0, 0);
         gbc.fill = GridBagConstraints.HORIZONTAL;
@@ -243,7 +242,7 @@ public class FillToolBar extends AbstractToolBar {
         JAttributeTextField<Double> opacityField = new JAttributeTextField<Double>();
         // Opacity field with slider  
         opacityslider(opacityField);
-        opacityhandler(opacityField);
+        createOpacityButton(opacityField);
 
     }
 
