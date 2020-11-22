@@ -112,22 +112,22 @@ public class BezierFigure extends AbstractAttributedFigure {
     // COMPOSITE FIGURES
     // CLONING
     // EVENT HANDLING
-    protected void drawStroke(Graphics2D g) {
+    public void drawStroke(Graphics2D graphics2D) {
         if (isClosed()) {
             double grow = AttributeKeys.getPerpendicularDrawGrowth(this);
             if (grow == 0d) {
-                g.draw(path);
+                graphics2D.draw(path);
             } else {
                 GrowStroke gs = new GrowStroke((float) grow,
                         (float) (AttributeKeys.getStrokeTotalWidth(this) *
                         STROKE_MITER_LIMIT.get(this))
                         );
-                g.draw(gs.createStrokedShape(path));
+                graphics2D.draw(gs.createStrokedShape(path));
             }
         } else {
-            g.draw(getCappedPath());
+            graphics2D.draw(getCappedPath());
         }
-        drawCaps(g);
+        drawCaps(graphics2D);
     }
     
     protected void drawCaps(Graphics2D g) {
@@ -153,17 +153,17 @@ public class BezierFigure extends AbstractAttributedFigure {
         }
     }
     
-    protected void drawFill(Graphics2D g) {
+    public void drawFill(Graphics2D graphics2D) {
         if (isClosed() || FILL_OPEN_PATH.get(this)) {
             double grow = AttributeKeys.getPerpendicularFillGrowth(this);
             if (grow == 0d) {
-                g.fill(path);
+                graphics2D.fill(path);
             } else {
                 GrowStroke gs = new GrowStroke((float) grow,
                         (float) (AttributeKeys.getStrokeTotalWidth(this) *
                         STROKE_MITER_LIMIT.get(this))
                         );
-                g.fill(gs.createStrokedShape(path));
+                graphics2D.fill(gs.createStrokedShape(path));
             }
         }
     }
