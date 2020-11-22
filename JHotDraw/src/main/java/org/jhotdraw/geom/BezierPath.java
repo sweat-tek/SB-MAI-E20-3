@@ -17,6 +17,8 @@ import java.awt.*;
 import java.awt.geom.*;
 import java.io.Serializable;
 import java.util.*;
+import org.jhotdraw.geom.generalpathstrategy.GeneralPathFactory;
+import org.jhotdraw.geom.generalpathstrategy.GeneralPathStrategy;
 
 /**
  * BezierPath allows the construction of paths consisting of straight lines,
@@ -308,80 +310,14 @@ public class BezierPath extends ArrayList<BezierPath.Node>
             generalPath = toGeneralPath();
         }
     }
-
+    
     /** Converts the BezierPath into a GeneralPath. */
     public GeneralPath toGeneralPath() {
         GeneralPath gp = new GeneralPath();
         gp.setWindingRule(windingRule);
-        if (size() == 0) {
-            gp.moveTo(0, 0);
-            gp.lineTo(0, 0 + 1);
-        } else if (size() == 1) {
-            Node current = get(0);
-            gp.moveTo((float) current.x[0], (float) current.y[0]);
-            gp.lineTo((float) current.x[0], (float) current.y[0] + 1);
-        } else {
-            Node previous;
-            Node current;
-
-            previous = current = get(0);
-            gp.moveTo((float) current.x[0], (float) current.y[0]);
-            for (int i = 1, n = size(); i < n; i++) {
-                previous = current;
-                current = get(i);
-
-                if ((previous.mask & C2_MASK) == 0) {
-                    if ((current.mask & C1_MASK) == 0) {
-                        gp.lineTo(
-                                (float) current.x[0], (float) current.y[0]);
-                    } else {
-                        gp.quadTo(
-                                (float) current.x[1], (float) current.y[1],
-                                (float) current.x[0], (float) current.y[0]);
-                    }
-                } else {
-                    if ((current.mask & C1_MASK) == 0) {
-                        gp.quadTo(
-                                (float) previous.x[2], (float) previous.y[2],
-                                (float) current.x[0], (float) current.y[0]);
-                    } else {
-                        gp.curveTo(
-                                (float) previous.x[2], (float) previous.y[2],
-                                (float) current.x[1], (float) current.y[1],
-                                (float) current.x[0], (float) current.y[0]);
-                    }
-                }
-            }
-            if (isClosed) {
-                if (size() > 1) {
-                    previous = get(size() - 1);
-                    current = get(0);
-
-                    if ((previous.mask & C2_MASK) == 0) {
-                        if ((current.mask & C1_MASK) == 0) {
-                            gp.lineTo(
-                                    (float) current.x[0], (float) current.y[0]);
-                        } else {
-                            gp.quadTo(
-                                    (float) current.x[1], (float) current.y[1],
-                                    (float) current.x[0], (float) current.y[0]);
-                        }
-                    } else {
-                        if ((current.mask & C1_MASK) == 0) {
-                            gp.quadTo(
-                                    (float) previous.x[2], (float) previous.y[2],
-                                    (float) current.x[0], (float) current.y[0]);
-                        } else {
-                            gp.curveTo(
-                                    (float) previous.x[2], (float) previous.y[2],
-                                    (float) current.x[1], (float) current.y[1],
-                                    (float) current.x[0], (float) current.y[0]);
-                        }
-                    }
-                }
-                gp.closePath();
-            }
-        }
+        
+        GeneralPathStrategy gpStrategy = GeneralPathFactory.createGeneralPathStrategy(this);
+        gpStrategy.makePath(gp, this);
         return gp;
     }
 
@@ -475,152 +411,62 @@ public class BezierPath extends ArrayList<BezierPath.Node>
 
     public Rectangle2D.Double getBounds2D() {
         if (bounds == null) {
-            double x1, y1, x2, y2;
+            Point2D.Double lowerBound = new Point2D.Double();
+            Point2D.Double upperBound = new Point2D.Double();
             int size = size();
-            if (size == 0) {
-                x1 = y1 = x2 = y2 = 0.0f;
-            } else {
-                double x, y;
+            if (size != 0) {
 
                 // handle first node
                 Node node = get(0);
-                y1 = y2 = node.y[0];
-                x1 = x2 = node.x[0];
                 if (isClosed && (node.mask & C1_MASK) != 0) {
-                    y = node.y[1];
-                    x = node.x[1];
-                    if (x < x1) {
-                        x1 = x;
-                    }
-                    if (y < y1) {
-                        y1 = y;
-                    }
-                    if (x > x2) {
-                        x2 = x;
-                    }
-                    if (y > y2) {
-                        y2 = y;
-                    }
+                    checkAgainstBound(node.getControlPoint(1), lowerBound, upperBound);
                 }
                 if ((node.mask & C2_MASK) != 0) {
-                    y = node.y[2];
-                    x = node.x[2];
-                    if (x < x1) {
-                        x1 = x;
-                    }
-                    if (y < y1) {
-                        y1 = y;
-                    }
-                    if (x > x2) {
-                        x2 = x;
-                    }
-                    if (y > y2) {
-                        y2 = y;
-                    }
+                    checkAgainstBound(node.getControlPoint(2), lowerBound, upperBound);
                 }
                 // handle last node
                 node = get(size - 1);
-                y = node.y[0];
-                x = node.x[0];
-                if (x < x1) {
-                    x1 = x;
-                }
-                if (y < y1) {
-                    y1 = y;
-                }
-                if (x > x2) {
-                    x2 = x;
-                }
-                if (y > y2) {
-                    y2 = y;
-                }
+                checkAgainstBound(node.getControlPoint(0), lowerBound, upperBound);
+                
                 if ((node.mask & C1_MASK) != 0) {
-                    y = node.y[1];
-                    x = node.x[1];
-                    if (x < x1) {
-                        x1 = x;
-                    }
-                    if (y < y1) {
-                        y1 = y;
-                    }
-                    if (x > x2) {
-                        x2 = x;
-                    }
-                    if (y > y2) {
-                        y2 = y;
-                    }
+                    checkAgainstBound(node.getControlPoint(1), lowerBound, upperBound);
                 }
                 if (isClosed && (node.mask & C2_MASK) != 0) {
-                    y = node.y[2];
-                    x = node.x[2];
-                    if (x < x1) {
-                        x1 = x;
-                    }
-                    if (y < y1) {
-                        y1 = y;
-                    }
-                    if (x > x2) {
-                        x2 = x;
-                    }
-                    if (y > y2) {
-                        y2 = y;
-                    }
+                    checkAgainstBound(node.getControlPoint(2), lowerBound, upperBound);
                 }
 
                 // handle all other nodes
                 for (int i = 1, n = size - 1; i < n; i++) {
                     node = get(i);
-                    y = node.y[0];
-                    x = node.x[0];
-                    if (x < x1) {
-                        x1 = x;
-                    }
-                    if (y < y1) {
-                        y1 = y;
-                    }
-                    if (x > x2) {
-                        x2 = x;
-                    }
-                    if (y > y2) {
-                        y2 = y;
-                    }
+                    checkAgainstBound(node.getControlPoint(0), lowerBound, upperBound);
+                    
                     if ((node.mask & C1_MASK) != 0) {
-                        y = node.y[1];
-                        x = node.x[1];
-                        if (x < x1) {
-                            x1 = x;
-                        }
-                        if (y < y1) {
-                            y1 = y;
-                        }
-                        if (x > x2) {
-                            x2 = x;
-                        }
-                        if (y > y2) {
-                            y2 = y;
-                        }
+                        checkAgainstBound(node.getControlPoint(1), lowerBound, upperBound);
                     }
+                    
                     if ((node.mask & C2_MASK) != 0) {
-                        y = node.y[2];
-                        x = node.x[2];
-                        if (x < x1) {
-                            x1 = x;
-                        }
-                        if (y < y1) {
-                            y1 = y;
-                        }
-                        if (x > x2) {
-                            x2 = x;
-                        }
-                        if (y > y2) {
-                            y2 = y;
-                        }
+                        checkAgainstBound(node.getControlPoint(2), lowerBound, upperBound);
                     }
                 }
             }
-            bounds = new Rectangle2D.Double(x1, y1, x2 - x1, y2 - y1);
+            bounds = new Rectangle2D.Double(lowerBound.x, lowerBound.y, upperBound.x - lowerBound.x, upperBound.y - lowerBound.y);
         }
         return (Rectangle2D.Double) bounds.clone();
+    }
+    
+    private void checkAgainstBound (Point2D.Double point, Point2D.Double lowerBound, Point2D.Double upperBound) {
+        if (point.x < lowerBound.x) {
+            lowerBound.x = point.x;
+        }
+        if (point.y < lowerBound.y) {
+            lowerBound.y = point.y;
+        }
+        if (point.x > upperBound.x) {
+            upperBound.x = point.x;
+        }
+        if (point.y > upperBound.y) {
+            upperBound.y = point.y;
+        }
     }
 
     public Rectangle getBounds() {
@@ -1098,8 +944,7 @@ public class BezierPath extends ArrayList<BezierPath.Node>
      * The implementation of this method has been derived from
      * Apache Batik class org.apache.batik.ext.awt.geom.ExtendedGeneralPath#computArc
      *
-     * @param rx the x radius of the ellipse
-     * @param ry the y radius of the ellipse
+     * @param radii the radii of the ellipse
      *
      * @param xAxisRotation the angle from the x-axis of the current
      * coordinate system to the x-axis of the ellipse in degrees.
@@ -1112,18 +957,17 @@ public class BezierPath extends ArrayList<BezierPath.Node>
      * center to arc sweeps through decreasing angles otherwise it
      * sweeps through increasing angles
      *
-     * @param x the absolute x coordinate of the final point of the arc.
-     * @param y the absolute y coordinate of the final point of the arc.
+     * @param endPoint absolute coordinate of the final point of the arc.
      */
-    public void arcTo(double rx, double ry,
+    public void arcTo(Point2D.Double radii,
             double xAxisRotation,
             boolean largeArcFlag, boolean sweepFlag,
-            double x, double y) {
+            Point2D.Double endPoint) {
 
 
         // Ensure radii are valid
-        if (rx == 0 || ry == 0) {
-            lineTo(x, y);
+        if (radii.getX() == 0 || radii.getY() == 0) {
+            lineTo(endPoint.getX(), endPoint.getY());
             return;
         }
 
@@ -1132,15 +976,15 @@ public class BezierPath extends ArrayList<BezierPath.Node>
         double x0 = ((lastPoint.mask & C2_MASK) == C2_MASK) ? lastPoint.x[2] : lastPoint.x[0];
         double y0 = ((lastPoint.mask & C2_MASK) == C2_MASK) ? lastPoint.y[2] : lastPoint.y[0];
 
-        if (x0 == x && y0 == y) {
+        if (x0 == endPoint.getX() && y0 == endPoint.getY()) {
             // If the endpoints (x, y) and (x0, y0) are identical, then this
             // is equivalent to omitting the elliptical arc segment entirely.
             return;
         }
 
         // Compute the half distance between the current and the final point
-        double dx2 = (x0 - x) / 2d;
-        double dy2 = (y0 - y) / 2d;
+        double dx2 = (x0 - endPoint.getX()) / 2d;
+        double dy2 = (y0 - endPoint.getY()) / 2d;
         // Convert angle from degrees to radians
         double angle = Math.toRadians(xAxisRotation);
         double cosAngle = Math.cos(angle);
@@ -1152,19 +996,19 @@ public class BezierPath extends ArrayList<BezierPath.Node>
         double x1 = (cosAngle * dx2 + sinAngle * dy2);
         double y1 = (-sinAngle * dx2 + cosAngle * dy2);
         // Ensure radii are large enough
-        rx = Math.abs(rx);
-        ry = Math.abs(ry);
-        double Prx = rx * rx;
-        double Pry = ry * ry;
+        radii.x = Math.abs(radii.getX());
+        radii.y = Math.abs(radii.getY());
+        double Prx = radii.getX() * radii.getX();
+        double Pry = radii.getY() * radii.getY();
         double Px1 = x1 * x1;
         double Py1 = y1 * y1;
         // check that radii are large enough
         double radiiCheck = Px1 / Prx + Py1 / Pry;
         if (radiiCheck > 1) {
-            rx = Math.sqrt(radiiCheck) * rx;
-            ry = Math.sqrt(radiiCheck) * ry;
-            Prx = rx * rx;
-            Pry = ry * ry;
+            radii.x = Math.sqrt(radiiCheck) * radii.getX();
+            radii.y = Math.sqrt(radiiCheck) * radii.getY();
+            Prx = radii.getX() * radii.getX();
+            Pry = radii.getY() * radii.getY();
         }
 
         //
@@ -1174,24 +1018,24 @@ public class BezierPath extends ArrayList<BezierPath.Node>
         double sq = ((Prx * Pry) - (Prx * Py1) - (Pry * Px1)) / ((Prx * Py1) + (Pry * Px1));
         sq = (sq < 0) ? 0 : sq;
         double coef = (sign * Math.sqrt(sq));
-        double cx1 = coef * ((rx * y1) / ry);
-        double cy1 = coef * -((ry * x1) / rx);
+        double cx1 = coef * ((radii.getX() * y1) / radii.getY());
+        double cy1 = coef * -((radii.getY() * x1) / radii.getX());
 
         //
         // Step 3 : Compute (cx, cy) from (cx1, cy1)
         //
-        double sx2 = (x0 + x) / 2.0;
-        double sy2 = (y0 + y) / 2.0;
+        double sx2 = (x0 + endPoint.getX()) / 2.0;
+        double sy2 = (y0 + endPoint.getY()) / 2.0;
         double cx = sx2 + (cosAngle * cx1 - sinAngle * cy1);
         double cy = sy2 + (sinAngle * cx1 + cosAngle * cy1);
 
         //
         // Step 4 : Compute the angleStart (angle1) and the angleExtent (dangle)
         //
-        double ux = (x1 - cx1) / rx;
-        double uy = (y1 - cy1) / ry;
-        double vx = (-x1 - cx1) / rx;
-        double vy = (-y1 - cy1) / ry;
+        double ux = (x1 - cx1) / radii.getX();
+        double uy = (y1 - cy1) / radii.getY();
+        double vx = (-x1 - cx1) / radii.getX();
+        double vy = (-y1 - cy1) / radii.getY();
         double p, n;
 
         // Compute the angle start
@@ -1217,8 +1061,8 @@ public class BezierPath extends ArrayList<BezierPath.Node>
         // We can now build the resulting Arc2D in double precision
         //
         Arc2D.Double arc = new Arc2D.Double(
-                cx - rx, cy - ry,
-                rx * 2d, ry * 2d,
+                cx - radii.getX(), cy - radii.getY(),
+                radii.getX() * 2d, radii.getY() * 2d,
                 -angleStart, -angleExtent,
                 Arc2D.OPEN);
 

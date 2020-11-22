@@ -1757,7 +1757,7 @@ public class SVGInputFormat implements InputFormat {
                     }
                     p.y = tt.nval;
 
-                    path.arcTo(rx, ry, xAxisRotation, largeArcFlag, sweepFlag, p.x, p.y);
+                    path.arcTo(new Point2D.Double(rx, ry), xAxisRotation, largeArcFlag, sweepFlag, p);
 
                     nextCommand = 'A';
                     break;
@@ -1795,7 +1795,7 @@ public class SVGInputFormat implements InputFormat {
                     }
                     p.y += tt.nval;
 
-                    path.arcTo(rx, ry, xAxisRotation, largeArcFlag, sweepFlag, p.x, p.y);
+                    path.arcTo(new Point2D.Double(rx, ry), xAxisRotation, largeArcFlag, sweepFlag, p);
 
                     nextCommand = 'a';
                     break;

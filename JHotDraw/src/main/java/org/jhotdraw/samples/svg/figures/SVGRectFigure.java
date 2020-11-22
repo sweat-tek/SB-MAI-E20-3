@@ -75,18 +75,18 @@ public class SVGRectFigure extends SVGAttributedFigure implements SVGFigure {
     }
 
     // DRAWING
-    protected void drawFill(Graphics2D g) {
+    public void drawFill(Graphics2D graphics2D) {
         if (getArcHeight() == 0d && getArcWidth() == 0d) {
-            g.fill(roundrect.getBounds2D());
+            graphics2D.fill(roundrect.getBounds2D());
         } else {
-            g.fill(roundrect);
+            graphics2D.fill(roundrect);
         }
     }
 
     @FeatureEntryPoint(JHotDrawFeatures.RECTANGLE_TOOL)
-    protected void drawStroke(Graphics2D g) {
+    public void drawStroke(Graphics2D graphics2D) {
         if (roundrect.archeight == 0 && roundrect.arcwidth == 0) {
-            g.draw(roundrect.getBounds2D());
+            graphics2D.draw(roundrect.getBounds2D());
         } else {
             // We have to generate the path for the round rectangle manually,
             // because the path of a Java RoundRectangle is drawn counter clockwise
@@ -113,7 +113,7 @@ public class SVGRectFigure extends SVGAttributedFigure implements SVGFigure {
                     (float) (roundrect.x + aw*acv), (float)(roundrect.y),//
                     (float)(roundrect.x + aw), (float)(roundrect.y));
             p.closePath();
-            g.draw(p);
+            graphics2D.draw(p);
         }
     }
 
