@@ -10,10 +10,10 @@ import org.junit.Test;
 public class FigureToAlterLinesTest extends ScenarioTest<GivenFigureToAlterLines, WhenAlterFigures, ThenFiguresAreAltered> {
 
     @Test
-    public void selectingSimpleFigureAndAlteringTheirShapeTransfersThem() {
+    public void SelectingAFigureAndChangingItToHaveStrokeCaps() {
         given().aFigure();
         when().changingItToStrokeCap();
-        then().theFigureHasStrokeCap();
+        then().thenFigureHasStrokeCap();
 
     }
 }

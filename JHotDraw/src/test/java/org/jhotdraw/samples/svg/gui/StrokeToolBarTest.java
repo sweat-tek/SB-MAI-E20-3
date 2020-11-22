@@ -39,7 +39,6 @@ public class StrokeToolBarTest {
 
     @Before
     public void setUp() {
-        //TODO : Change to mocks
         editor = new DefaultDrawingEditor();
         DrawingView view = new DefaultDrawingView();
         view.setDrawing(new QuadTreeDrawing());
@@ -59,7 +58,6 @@ public class StrokeToolBarTest {
     @Test
     public void testCreateDisclosedComponent() {
 
-        //TODO : Change to mocks
         strokeToolBar.editor = editor;
 
         JComponent expResult = null;

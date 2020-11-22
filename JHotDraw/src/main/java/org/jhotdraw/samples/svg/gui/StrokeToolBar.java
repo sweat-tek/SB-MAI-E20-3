@@ -234,7 +234,7 @@ public class StrokeToolBar extends AbstractToolBar {
 
     }
 
-    void createStrokeJoinButton(ResourceBundleUtil labels, AbstractButton btn, boolean hasFields) { // rename last parameter perhaps across all that I have used it for 
+    void createStrokeJoinButton(ResourceBundleUtil labels, AbstractButton btn, boolean hasFields) {
         btn = ButtonFactory.createStrokeJoinButton(editor, labels);
         btn.setUI((PaletteButtonUI) PaletteButtonUI.createUI(btn));
         GridBagConstraints gbc = new GridBagConstraints();
@@ -250,7 +250,7 @@ public class StrokeToolBar extends AbstractToolBar {
         p.add(btn, gbc);
     }
 
-    void createStrokeCapButton(ResourceBundleUtil labels, AbstractButton btn, boolean hasFields) { // change last parameter
+    void createStrokeCapButton(ResourceBundleUtil labels, AbstractButton btn, boolean hasFields) {
         btn = ButtonFactory.createStrokeCapButton(editor, labels);
         btn.setUI((PaletteButtonUI) PaletteButtonUI.createUI(btn));
         GridBagConstraints gbc = new GridBagConstraints();
@@ -268,7 +268,6 @@ public class StrokeToolBar extends AbstractToolBar {
         dashOffsetField.setColumns(1);
         dashOffsetField.setToolTipText(labels.getString("attribute.strokeDashPhase.toolTipText"));
         dashOffsetField.setHorizontalAlignment(JAttributeTextField.LEFT);
-        //dashOffsetField.putClientProperty("Palette.Component.segmentPosition", "first");
         dashOffsetField.setUI((PaletteFormattedTextFieldUI) PaletteFormattedTextFieldUI.createUI(dashOffsetField));
         dashOffsetField.setFormatterFactory(JavaNumberFormatter.createFormatterFactory(-1000d, 1000d, 1d));
         new FigureAttributeEditorHandler<Double>(STROKE_DASH_PHASE, dashOffsetField, editor);
@@ -304,8 +303,10 @@ public class StrokeToolBar extends AbstractToolBar {
     protected int getDefaultDisclosureState() {
         return 1;
     }
-    
-    public JPanel getJPanel(){ return p;}
+
+    public JPanel getJPanel() {
+        return p;
+    }
 
     /**
      * This method is called from within the constructor to initialize the form.
