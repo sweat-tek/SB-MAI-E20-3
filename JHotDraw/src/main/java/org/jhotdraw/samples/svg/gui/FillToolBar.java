@@ -43,8 +43,7 @@ import static org.jhotdraw.samples.svg.SVGAttributeKeys.*;
 public class FillToolBar extends AbstractToolBar {
 
     private SelectionComponentDisplayer displayer;
-    JPanel p;
-    JPanel p1, p2, p3, p4;
+    JPanel p,p1, p2, p3, p4;
     ResourceBundleUtil labels;
     GridBagConstraints gbc;
 
@@ -52,7 +51,7 @@ public class FillToolBar extends AbstractToolBar {
      * Creates new instance.
      */
     public FillToolBar() {
-        ResourceBundleUtil labels = ResourceBundleUtil.getBundle("org.jhotdraw.samples.svg.Labels");
+        labels = ResourceBundleUtil.getBundle("org.jhotdraw.samples.svg.Labels");
         setName(labels.getString(getID() + ".toolbar"));
         setDisclosureStateCount(3);
     }
@@ -73,12 +72,15 @@ public class FillToolBar extends AbstractToolBar {
     @Override
     @FeatureEntryPoint(JHotDrawFeatures.FILL_PALETTE)
     protected JComponent createDisclosedComponent(int state) {
-        p = new JPanel(); p1 = new JPanel(new GridBagLayout()); p2 = new JPanel(new GridBagLayout()); p3 = new JPanel(new GridBagLayout());
+        p = new JPanel();
+        p1 = new JPanel(new GridBagLayout());
+        p2 = new JPanel(new GridBagLayout());
+        p3 = new JPanel(new GridBagLayout());
         if (state == 1) {
             setPanel();
         } else if (state == 2) {
            gbc = new GridBagConstraints();
-            setp();
+            SetPanelLayout();
             // Fill color field and button     
             colorFieldButton();
             opacity();
@@ -210,7 +212,7 @@ public class FillToolBar extends AbstractToolBar {
         new FigureAttributeEditorHandler<Double>(FILL_OPACITY, opacitySlider, editor);
     }
 
-    public void setp() {
+    public void SetPanelLayout() {
 
         p1.setOpaque(false);
         p2.setOpaque(false);
