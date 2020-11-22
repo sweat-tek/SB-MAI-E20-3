@@ -3,9 +3,12 @@ package org.jhotdraw.samples.svg.gui;
 import com.tngtech.jgiven.Stage;
 import com.tngtech.jgiven.annotation.BeforeStage;
 import com.tngtech.jgiven.annotation.ProvidedScenarioState;
+import java.awt.Color;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 import org.jhotdraw.draw.*;
+import org.jhotdraw.samples.svg.SVGAttributeKeys;
 
 /**
  *
@@ -14,10 +17,10 @@ import org.jhotdraw.draw.*;
 public class GivenFigureToAlterLines extends Stage<GivenFigureToAlterLines> {
 
     @ProvidedScenarioState
-    private DrawingEditor editor;
+    DrawingEditor editor;
 
     @ProvidedScenarioState
-    private Figure figure;
+    Figure figure;
 
     @ProvidedScenarioState
     Map<AttributeKey, Object> attribute;
@@ -28,15 +31,12 @@ public class GivenFigureToAlterLines extends Stage<GivenFigureToAlterLines> {
         DrawingView view = new DefaultDrawingView();
         view.setDrawing(new QuadTreeDrawing());
         editor.setActiveView(view);
-        attribute = new HashMap();
     }
 
     GivenFigureToAlterLines aFigure() {
-        figure = new BezierFigure();
+        figure = new LineFigure();
         editor.getActiveView().getDrawing().add(figure);
         editor.getActiveView().addToSelection(figure);
-        attribute.put(AttributeKeys.STROKE_DASHES, figure);
-
         return this;
     }
 

@@ -12,8 +12,8 @@ public class FigureToAlterLinesTest extends ScenarioTest<GivenFigureToAlterLines
     @Test
     public void selectingSimpleFigureAndAlteringTheirShapeTransfersThem() {
         given().aFigure();
-        when().changingItToDashedLines();
-        then().theFigureHasDashedLines();
+        when().changingItToStrokeCap();
+        then().theFigureHasStrokeCap();
 
     }
 }
