@@ -233,7 +233,7 @@ public class FillToolBar extends AbstractToolBar {
                 FILL_COLOR, ButtonFactory.HSV_COLORS, ButtonFactory.HSV_COLORS_COLUMN_COUNT,
                 "attribute.fillColor", labels, defaultAttributes, new Rectangle(3, 3, 10, 10));
 
-        // Metode med colorfield   
+         
         setcolorfield(btn, defaultAttributes);
 
     }
