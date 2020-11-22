@@ -13,5 +13,6 @@ public class CanvasToolBarTest extends ScenarioTestBase<GivenCanvasToolBar, When
         given().someCanvasColor();
         when().chanceColorFieldToGreen();
         then().thenBackgroundColorIsGreen();
+        
     }
 }
