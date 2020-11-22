@@ -27,8 +27,8 @@ import org.jhotdraw.samples.svg.*;
  * SVGEllipse represents a SVG ellipse and a SVG circle element.
  *
  * @author Werner Randelshofer
- * @version 2.1 2009-04-17 Method contains() takes now into account
- * whether the figure is filled.
+ * @version 2.1 2009-04-17 Method contains() takes now into account whether the
+ * figure is filled.
  * <br>2.0.3 Don't draw ellipse if widht or height is 0.
  * <br>2.0.2 2008-03-20 Fixed contains() method.
  * <br>2.0 2007-04-14 Adapted for new AttributeKeys.TRANSFORM support.
@@ -46,7 +46,9 @@ public class SVGEllipseFigure extends SVGAttributedFigure implements SVGFigure {
      */
     private transient Shape cachedHitShape;
 
-    /** Creates a new instance. */
+    /**
+     * Creates a new instance.
+     */
     public SVGEllipseFigure() {
         this(0, 0, 0, 0);
     }
@@ -125,6 +127,7 @@ public class SVGEllipseFigure extends SVGAttributedFigure implements SVGFigure {
         }
         return cachedTransformedShape;
     }
+
     private Shape getHitShape() {
         if (cachedHitShape == null) {
             if (FILL_COLOR.get(this) != null || FILL_GRADIENT.get(this) != null) {
@@ -147,39 +150,23 @@ public class SVGEllipseFigure extends SVGAttributedFigure implements SVGFigure {
         invalidate();
     }
 
+    
+
     /**
      * Transforms the figure.
      *
      * @param tx the transformation.
      */
     public void transform(AffineTransform tx) {
-        if (TRANSFORM.get(this) != null ||
-                (tx.getType() & (AffineTransform.TYPE_TRANSLATION)) != tx.getType()) {
+        if (TRANSFORM.get(this) != null
+                || (tx.getType() & (AffineTransform.TYPE_TRANSLATION)) != tx.getType()) {
             if (TRANSFORM.get(this) == null) {
                 TRANSFORM.basicSetClone(this, tx);
             } else {
-                AffineTransform t = TRANSFORM.getClone(this);
-                t.preConcatenate(tx);
-                TRANSFORM.basicSet(this, t);
+                super.tmpHolder(tx);
             }
         } else {
-            Point2D.Double anchor = getStartPoint();
-            Point2D.Double lead = getEndPoint();
-            setBounds(
-                    (Point2D.Double) tx.transform(anchor, anchor),
-                    (Point2D.Double) tx.transform(lead, lead));
-            if (FILL_GRADIENT.get(this) != null &&
-                    !FILL_GRADIENT.get(this).isRelativeToFigureBounds()) {
-                Gradient g = FILL_GRADIENT.getClone(this);
-                g.transform(tx);
-                FILL_GRADIENT.basicSet(this, g);
-            }
-            if (STROKE_GRADIENT.get(this) != null &&
-                    !STROKE_GRADIENT.get(this).isRelativeToFigureBounds()) {
-                Gradient g = STROKE_GRADIENT.getClone(this);
-                g.transform(tx);
-                STROKE_GRADIENT.basicSet(this, g);
-            }
+            super.tmpHolder2(tx);
         }
         invalidate();
     }
@@ -195,10 +182,10 @@ public class SVGEllipseFigure extends SVGAttributedFigure implements SVGFigure {
 
     public Object getTransformRestoreData() {
         return new Object[]{
-                    ellipse.clone(),
-                    TRANSFORM.getClone(this),
-                    FILL_GRADIENT.getClone(this),
-                    STROKE_GRADIENT.getClone(this),};
+            ellipse.clone(),
+            TRANSFORM.getClone(this),
+            FILL_GRADIENT.getClone(this),
+            STROKE_GRADIENT.getClone(this),};
     }
 
     // ATTRIBUTES
