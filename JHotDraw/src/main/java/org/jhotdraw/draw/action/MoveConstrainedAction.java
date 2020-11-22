@@ -39,17 +39,31 @@ public abstract class MoveConstrainedAction extends AbstractSelectedAction {
 
     public void actionPerformed(java.awt.event.ActionEvent e) {
         if (getView().getSelectionCount() > 0) {
-        
-        Rectangle2D.Double r = null;
+            Rectangle2D.Double r = null;
+            r = setBounds(r);
+
+            Point2D.Double p0 = new Point2D.Double(r.x, r.y);
+            chanceXY(r);
+
+            AffineTransform tx = new AffineTransform();
+            tx.translate(r.x - p0.x, r.y - p0.y);
+            chanceFigures(tx);
+            CompositeEdit edit;
+            fireUndoableEditHappened(new TransformEdit(getView().getSelectedFigures(), tx));
+        }
+    }
+
+    private void chanceFigures(AffineTransform tx) {
         for (Figure f : getView().getSelectedFigures()) {
-            if (r == null) {
-                r = f.getBounds();
-            } else {
-                r.add(f.getBounds());
+            if (f.isTransformable()) {
+                f.willChange();
+                f.transform(tx);
+                f.changed();
             }
         }
+    }
 
-        Point2D.Double p0 = new Point2D.Double(r.x, r.y);
+    private void chanceXY(Rectangle2D.Double r) {
         if (getView().getConstrainer() != null) {
             getView().getConstrainer().translateRectangle(r, dir);
         } else {
@@ -68,19 +82,17 @@ public abstract class MoveConstrainedAction extends AbstractSelectedAction {
                     break;
             }
         }
+    }
 
-        AffineTransform tx = new AffineTransform();
-        tx.translate(r.x - p0.x, r.y - p0.y);
+    private Rectangle2D.Double setBounds(Rectangle2D.Double r) {
         for (Figure f : getView().getSelectedFigures()) {
-            if (f.isTransformable()) {
-                f.willChange();
-                f.transform(tx);
-                f.changed();
+            if (r == null) {
+                r = f.getBounds();
+            } else {
+                r.add(f.getBounds());
             }
         }
-        CompositeEdit edit;
-        fireUndoableEditHappened(new TransformEdit(getView().getSelectedFigures(), tx));
-        }
+        return r;
     }
 
     public static class East extends MoveConstrainedAction {
