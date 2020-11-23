@@ -40,10 +40,7 @@ public class PaletteUtility implements Border, UIResource {
                 MultipleGradientPaint.LINEAR_RGB);
         g.setPaint(lgp);
         g.fillRect(position.x + 1, position.y + 1, b.getWidth() - 2, b.getHeight() - 2);
-        System.out.println("position.x " + position.x);
-        System.out.println("b.getWidth()" + b.getWidth()); 
         
-
     }
 
     protected String getSegmentPosition(Component c) {
