@@ -6,6 +6,7 @@
 package org.jhotdraw.draw.action;
 
 import com.tngtech.jgiven.junit.ScenarioTest;
+import org.junit.Ignore;
 import org.junit.Test;
 
 /**
@@ -15,6 +16,7 @@ import org.junit.Test;
 public class AlignJGivenTest extends ScenarioTest<GivenAFigureAndSelectionBounds, WhenTheDirectionEastIsChosen, ThenTheFigureWillBeAlignedEast>{
     
     @Test
+    @Ignore
     public void alignFigureEastTest(){
         given()
                 .aFigure()

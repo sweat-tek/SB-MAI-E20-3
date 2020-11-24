@@ -8,19 +8,21 @@ package org.jhotdraw.draw.action;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
+
 import static junit.framework.Assert.assertEquals;
+
 import org.jhotdraw.draw.BezierFigure;
 import org.jhotdraw.draw.Figure;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
 /**
- *
  * @author menta
  */
 public class AlignActionTest {
-    public AlignActionTest(){
-        
+    public AlignActionTest() {
+
     }
 
     private static Rectangle2D.Double rect2D;
