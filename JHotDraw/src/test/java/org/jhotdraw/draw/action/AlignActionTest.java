@@ -28,57 +28,55 @@ public class AlignActionTest {
     private static Rectangle2D.Double rect2D;
     private Figure fig1;
     private AffineTransform tx;
+        
+        @Before
+        public void setUp(){
+            tx = new AffineTransform();
+            fig1 = new BezierFigure();
+            rect2D = new Rectangle2D.Double(200, 100, 50, 150);
 
-    @Before
-    public void setUp() {
-        tx = new AffineTransform();
-        fig1 = new BezierFigure();
-        rect2D = new Rectangle2D.Double(200, 100, 50, 150);
+            fig1.setBounds(new Point2D.Double(25, 70), new Point2D.Double(120, 30));
+            
+            assert fig1 != null : "Figure does not exist";
+            assert rect2D != null : "Selected Bounds does not exist";
 
-        fig1.setBounds(new Point2D.Double(25, 70), new Point2D.Double(120, 30));
+        }
 
-        assert fig1 != null : "Figure does not exist";
-        assert rect2D != null : "Selected Bounds does not exist";
-
-    }
-
-
-    @Test
-    @Ignore
-    public void txTranslateEastTest() {
-        double x = rect2D.x + rect2D.width;
-        Rectangle2D.Double b = fig1.getBounds();
-        double expectedX = 155.0;
-
-        System.out.println("Selection bounds: " + rect2D.getBounds() + "\n");
-        System.out.println("Old figure bounds: " + fig1.getBounds());
-
-        fig1.willChange();
-        tx.translate(x - b.x - b.width, 0);
-        fig1.transform(tx);
-        fig1.changed();
-
-        System.out.println("New figure bounds: " + fig1.getBounds() + "\n");
-
-        assertEquals(expectedX, fig1.getBounds().x);
-    }
-
-    @Test
-    @Ignore
-    public void txTranslateBoundaryTest() {
-        double x = rect2D.x + rect2D.width;
-        Rectangle2D.Double b = fig1.getBounds();
-
-        System.out.println("Selection bounds: " + rect2D.getBounds() + "\n");
-        System.out.println("Old figure bounds: " + fig1.getBounds());
-
-        fig1.willChange();
-        tx.translate(-x - b.x - b.width, 0);
-        fig1.transform(tx);
-        fig1.changed();
-
-        System.out.println("New figure bounds: " + fig1.getBounds() + "\n");
-
-        assertEquals(fig1.getBounds().x, -345.0);
-    }
+        
+        @Test
+        public void txTranslateEastTest(){
+            double x = rect2D.x + rect2D.width;
+            Rectangle2D.Double b = fig1.getBounds();
+            double expectedWidth = 250.0;
+            
+            System.out.println("Selection bounds: " +rect2D.getBounds() + "\n");
+            System.out.println("Old figure bounds: " + fig1.getBounds());
+            
+            fig1.willChange();
+            tx.translate(x - b.x - b.width, 0);
+            fig1.transform(tx);
+            fig1.changed();
+            
+            System.out.println("New figure bounds: " + fig1.getBounds() + "\n");
+            
+            assertEquals(expectedWidth, fig1.getBounds().width);
+        }
+        
+        @Test
+        public void txTranslateBoundaryTest(){
+            double x = rect2D.x + rect2D.width;
+            Rectangle2D.Double b = fig1.getBounds();
+            
+            System.out.println("Selection bounds: " +rect2D.getBounds() + "\n");
+            System.out.println("Old figure bounds: " + fig1.getBounds());
+            
+            fig1.willChange();
+            tx.translate(-x - b.x - b.width, 0);
+            fig1.transform(tx);
+            fig1.changed();
+            
+            System.out.println("New figure bounds: " + fig1.getBounds() + "\n");
+            
+            assertEquals(fig1.getBounds().x, -250.0);
+        }
 }

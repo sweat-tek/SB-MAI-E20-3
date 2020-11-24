@@ -30,7 +30,7 @@ public class ThenTheFigureWillBeAlignedEast extends Stage<ThenTheFigureWillBeAli
         GivenAFigureAndSelectionBounds.fig1.transform(tx);
         GivenAFigureAndSelectionBounds.fig1.changed();
         
-        assertThat(GivenAFigureAndSelectionBounds.fig1.getBounds().x).isEqualTo(155.0);
+        assertThat(GivenAFigureAndSelectionBounds.fig1.getBounds().width).isEqualTo(250.0);
         return self();
     }
     
