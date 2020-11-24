@@ -45,7 +45,7 @@ public class AlignActionTest {
         public void txTranslateEastTest(){
             double x = rect2D.x + rect2D.width;
             Rectangle2D.Double b = fig1.getBounds();
-            double expectedX = 250.0;
+            double expectedWidth = 250.0;
             
             System.out.println("Selection bounds: " +rect2D.getBounds() + "\n");
             System.out.println("Old figure bounds: " + fig1.getBounds());
@@ -57,7 +57,7 @@ public class AlignActionTest {
             
             System.out.println("New figure bounds: " + fig1.getBounds() + "\n");
             
-            assertEquals(expectedX, fig1.getBounds().width);
+            assertEquals(expectedWidth, fig1.getBounds().width);
         }
         
         @Test
