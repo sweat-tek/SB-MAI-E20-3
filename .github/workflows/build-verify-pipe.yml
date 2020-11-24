@@ -1,4 +1,4 @@
-name: Build code base
+name: Build and test Java code base
 
 on:
   push:
