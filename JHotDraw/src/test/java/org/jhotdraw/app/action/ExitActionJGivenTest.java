@@ -7,7 +7,6 @@ package org.jhotdraw.app.action;
 
 import com.tngtech.jgiven.annotation.ScenarioState;
 import com.tngtech.jgiven.junit.ScenarioTest;
-import java.io.File;
 import org.jhotdraw.app.Application;
 import org.jhotdraw.app.DefaultSDIApplication;
 import org.jhotdraw.samples.svg.SVGApplicationModel;
@@ -18,14 +17,14 @@ import org.junit.Test;
  * @author Mikkel H
  */
 public class ExitActionJGivenTest extends ScenarioTest<GivenAView, WhenSaveViewInFile, ThenIsFileSaved> {
-
+    
     @ScenarioState
     public static Application app = new DefaultSDIApplication();
     @ScenarioState
     public static ExitAction exitAction = new ExitAction(app);
     @ScenarioState
     public static SVGApplicationModel model = new SVGApplicationModel();
-
+    
     @Test
     public void ExitActionJGivenTest() throws InterruptedException {
         app.setModel(model);
