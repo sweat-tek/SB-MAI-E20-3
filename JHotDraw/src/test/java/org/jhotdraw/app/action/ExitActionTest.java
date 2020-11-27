@@ -16,6 +16,7 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import org.junit.Before;
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Test;
 
 /**
@@ -49,20 +50,21 @@ public class ExitActionTest {
     }
 
     // Best case - It should save the file
-//    @Test
-//    public void testSaveToFile() throws InterruptedException{
-//
-//        exitAction.unsavedView = testView;
-//        testFile = new File("testfile.txt");
-//        Worker w = exitAction.saveToFile(testFile);
-//        // Since w is a worker in another thread i need to wait for it, else the test fails. 
-//        // So i created the loop to run until w is done.
-//        while (w.isRunning) {
-//            Thread.sleep(0, 1);
-//        }
-//        assertTrue(testFile.exists());
-//        testFile.delete();
-//    }
+    @Test
+    @Ignore
+    public void testSaveToFile() throws InterruptedException{
+
+        exitAction.unsavedView = testView;
+        testFile = new File("testfile.txt");
+        Worker w = exitAction.saveToFile(testFile);
+        // Since w is a worker in another thread i need to wait for it, else the test fails. 
+        // So i created the loop to run until w is done.
+        while (w.isRunning) {
+            Thread.sleep(0, 1);
+        }
+        assertTrue(testFile.exists());
+        testFile.delete();
+    }
 
     // Should pass
     @Test

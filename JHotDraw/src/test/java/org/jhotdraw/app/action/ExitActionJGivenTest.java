@@ -10,6 +10,7 @@ import com.tngtech.jgiven.junit.ScenarioTest;
 import org.jhotdraw.app.Application;
 import org.jhotdraw.app.DefaultSDIApplication;
 import org.jhotdraw.samples.svg.SVGApplicationModel;
+import org.junit.Ignore;
 import org.junit.Test;
 
 /**
@@ -26,6 +27,7 @@ public class ExitActionJGivenTest extends ScenarioTest<GivenAView, WhenSaveViewI
     public static SVGApplicationModel model = new SVGApplicationModel();
 
     @Test
+    @Ignore
     public void ExitActionJGivenTest() throws InterruptedException {
         app.setModel(model);
         given()
