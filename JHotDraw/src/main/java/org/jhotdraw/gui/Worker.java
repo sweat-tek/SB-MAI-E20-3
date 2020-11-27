@@ -33,12 +33,14 @@ import javax.swing.SwingUtilities;
  */
 public abstract class Worker implements Runnable {
     private Object value;  // see getValue(), setValue()
+    public boolean isRunning = true;
     
     /**
      * Calls #construct on the current thread and invokes
      * #finished on the AWT event dispatcher thread.
      */
     public final void run() {
+//        isRunning = true;
         final Runnable doFinished = new Runnable() {
             public void run() { 
                 finished(getValue()); 
@@ -50,6 +52,7 @@ public abstract class Worker implements Runnable {
             e.printStackTrace();
         } finally {
             SwingUtilities.invokeLater(doFinished);
+            isRunning = false;
         }
     }
     

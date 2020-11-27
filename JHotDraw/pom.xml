@@ -10,7 +10,6 @@
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
     </properties>
-    
     <repositories>
         <!--
         Repository hosting NetBeans modules, especially APIs.
@@ -58,4 +57,4 @@
             <version>0.18.2</version>
         </dependency>
     </dependencies>
- </project>
+</project>

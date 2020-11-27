@@ -1,0 +1,136 @@
+---- AspectJ Properties ---
+AspectJ Compiler 1.8.6 built on Friday Jun 5, 2015 at 23:41:42 GMT
+---- Dump Properties ---
+Dump file: ajcore.20201116.125001.144.txt
+Dump reason: java.lang.RuntimeException
+Dump on exception: true
+Dump at exit condition: abort
+---- Exception Information ---
+java.lang.RuntimeException: bad non-abstract method with no code: org.jhotdraw.beans.AbstractBean org.jhotdraw.draw.AbstractConstrainer.clone() on public abstract class org.jhotdraw.draw.AbstractConstrainer
+	at org.aspectj.weaver.bcel.LazyMethodGen.<init>(LazyMethodGen.java:216)
+	at org.aspectj.weaver.bcel.LazyClassGen.<init>(LazyClassGen.java:308)
+	at org.aspectj.weaver.bcel.BcelObjectType.getLazyClassGen(BcelObjectType.java:560)
+	at org.aspectj.weaver.bcel.BcelWeaver.weave(BcelWeaver.java:1682)
+	at org.aspectj.weaver.bcel.BcelWeaver.weaveWithoutDump(BcelWeaver.java:1633)
+	at org.aspectj.weaver.bcel.BcelWeaver.weaveAndNotify(BcelWeaver.java:1398)
+	at org.aspectj.weaver.bcel.BcelWeaver.weave(BcelWeaver.java:1184)
+	at org.aspectj.weaver.tools.WeavingAdaptor.getWovenBytes(WeavingAdaptor.java:527)
+	at org.aspectj.weaver.tools.WeavingAdaptor.weaveClass(WeavingAdaptor.java:363)
+	at org.aspectj.weaver.loadtime.Aj.preProcess(Aj.java:121)
+	at org.aspectj.weaver.loadtime.ClassPreProcessorAgentAdapter.transform(ClassPreProcessorAgentAdapter.java:54)
+	at java.instrument/java.lang.instrument.ClassFileTransformer.transform(ClassFileTransformer.java:246)
+	at java.instrument/sun.instrument.TransformerManager.transform(TransformerManager.java:188)
+	at java.instrument/sun.instrument.InstrumentationImpl.transform(InstrumentationImpl.java:563)
+	at java.base/java.lang.ClassLoader.defineClass1(Native Method)
+	at java.base/java.lang.ClassLoader.defineClass(ClassLoader.java:1016)
+	at java.base/java.security.SecureClassLoader.defineClass(SecureClassLoader.java:151)
+	at java.base/jdk.internal.loader.BuiltinClassLoader.defineClass(BuiltinClassLoader.java:825)
+	at java.base/jdk.internal.loader.BuiltinClassLoader.findClassOnClassPathOrNull(BuiltinClassLoader.java:723)
+	at java.base/jdk.internal.loader.BuiltinClassLoader.loadClassOrNull(BuiltinClassLoader.java:646)
+	at java.base/jdk.internal.loader.BuiltinClassLoader.loadClass(BuiltinClassLoader.java:604)
+	at java.base/jdk.internal.loader.ClassLoaders$AppClassLoader.loadClass(ClassLoaders.java:168)
+	at java.base/java.lang.ClassLoader.loadClass(ClassLoader.java:522)
+	at java.base/java.lang.ClassLoader.defineClass1(Native Method)
+	at java.base/java.lang.ClassLoader.defineClass(ClassLoader.java:1016)
+	at java.base/java.security.SecureClassLoader.defineClass(SecureClassLoader.java:151)
+	at java.base/jdk.internal.loader.BuiltinClassLoader.defineClass(BuiltinClassLoader.java:825)
+	at java.base/jdk.internal.loader.BuiltinClassLoader.findClassOnClassPathOrNull(BuiltinClassLoader.java:723)
+	at java.base/jdk.internal.loader.BuiltinClassLoader.loadClassOrNull(BuiltinClassLoader.java:646)
+	at java.base/jdk.internal.loader.BuiltinClassLoader.loadClass(BuiltinClassLoader.java:604)
+	at java.base/jdk.internal.loader.ClassLoaders$AppClassLoader.loadClass(ClassLoaders.java:168)
+	at java.base/java.lang.ClassLoader.loadClass(ClassLoader.java:522)
+	at org.jhotdraw.samples.svg.SVGApplicationModel.initApplication_aroundBody6(SVGApplicationModel.java:71)
+	at org.jhotdraw.samples.svg.SVGApplicationModel$AjcClosure7.run(SVGApplicationModel.java:1)
+	at dk.sdu.mmmi.featuretracer.lib.ExecutionTracer.ajc$around$dk_sdu_mmmi_featuretracer_lib_ExecutionTracer$2$fc99ac8dproceed(ExecutionTracer.aj:1)
+	at dk.sdu.mmmi.featuretracer.lib.ExecutionTracer.ajc$around$dk_sdu_mmmi_featuretracer_lib_ExecutionTracer$2$fc99ac8d(ExecutionTracer.aj:155)
+	at org.jhotdraw.samples.svg.SVGApplicationModel.initApplication(SVGApplicationModel.java:67)
+	at org.jhotdraw.app.AbstractApplication.init_aroundBody2(AbstractApplication.java:66)
+	at org.jhotdraw.app.AbstractApplication$AjcClosure3.run(AbstractApplication.java:1)
+	at dk.sdu.mmmi.featuretracer.lib.ExecutionTracer.ajc$around$dk_sdu_mmmi_featuretracer_lib_ExecutionTracer$2$fc99ac8dproceed(ExecutionTracer.aj:1)
+	at dk.sdu.mmmi.featuretracer.lib.ExecutionTracer.ajc$around$dk_sdu_mmmi_featuretracer_lib_ExecutionTracer$2$fc99ac8d(ExecutionTracer.aj:155)
+	at org.jhotdraw.app.AbstractApplication.init(AbstractApplication.java:55)
+	at org.jhotdraw.app.DefaultSDIApplication.init_aroundBody4(DefaultSDIApplication.java:69)
+	at org.jhotdraw.app.DefaultSDIApplication$AjcClosure5.run(DefaultSDIApplication.java:1)
+	at dk.sdu.mmmi.featuretracer.lib.ExecutionTracer.ajc$around$dk_sdu_mmmi_featuretracer_lib_ExecutionTracer$2$fc99ac8dproceed(ExecutionTracer.aj:1)
+	at dk.sdu.mmmi.featuretracer.lib.ExecutionTracer.ajc$around$dk_sdu_mmmi_featuretracer_lib_ExecutionTracer$2$fc99ac8d(ExecutionTracer.aj:155)
+	at org.jhotdraw.app.DefaultSDIApplication.init(DefaultSDIApplication.java:68)
+	at org.jhotdraw.app.AbstractApplication$2.run_aroundBody2(AbstractApplication.java:213)
+	at org.jhotdraw.app.AbstractApplication$2$AjcClosure3.run(AbstractApplication.java:1)
+	at dk.sdu.mmmi.featuretracer.lib.ExecutionTracer.ajc$around$dk_sdu_mmmi_featuretracer_lib_ExecutionTracer$2$fc99ac8dproceed(ExecutionTracer.aj:1)
+	at dk.sdu.mmmi.featuretracer.lib.ExecutionTracer.ajc$around$dk_sdu_mmmi_featuretracer_lib_ExecutionTracer$2$fc99ac8d(ExecutionTracer.aj:155)
+	at org.jhotdraw.app.AbstractApplication$2.run(AbstractApplication.java:213)
+	at java.desktop/java.awt.event.InvocationEvent.dispatch(InvocationEvent.java:316)
+	at java.desktop/java.awt.EventQueue.dispatchEventImpl(EventQueue.java:770)
+	at java.desktop/java.awt.EventQueue$4.run(EventQueue.java:721)
+	at java.desktop/java.awt.EventQueue$4.run(EventQueue.java:715)
+	at java.base/java.security.AccessController.doPrivileged(AccessController.java:391)
+	at java.base/java.security.ProtectionDomain$JavaSecurityAccessImpl.doIntersectionPrivilege(ProtectionDomain.java:85)
+	at java.desktop/java.awt.EventQueue.dispatchEvent(EventQueue.java:740)
+	at java.desktop/java.awt.EventDispatchThread.pumpOneEventForFilters(EventDispatchThread.java:203)
+	at java.desktop/java.awt.EventDispatchThread.pumpEventsForFilter(EventDispatchThread.java:124)
+	at java.desktop/java.awt.EventDispatchThread.pumpEventsForHierarchy(EventDispatchThread.java:113)
+	at java.desktop/java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:109)
+	at java.desktop/java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:101)
+	at java.desktop/java.awt.EventDispatchThread.run(EventDispatchThread.java:90)
+---- System Properties ---
+java.specification.version=15
+sun.cpu.isalist=amd64
+sun.jnu.encoding=Cp1252
+java.class.path=C:\Users\Mikkel H\OneDrive\SDU\5.semester\Software_Maintenance\Code\SB-MAI-E20-3\JHotDraw\target\classes;C:\Users\Mikkel H\.m2\repository\dk\sdu\mmmi\featuretracer\1.0\featuretracer-1.0.jar;C:\Users\Mikkel H\.m2\repository\org\aspectj\aspectjweaver\1.8.6\aspectjweaver-1.8.6.jar
+sun.awt.enableExtraMouseButtons=true
+java.vm.vendor=Oracle Corporation
+sun.arch.data.model=64
+user.variant=
+swing.aatext=true
+java.vendor.url=https://java.oracle.com/
+user.timezone=Europe/Copenhagen
+java.vm.specification.version=15
+os.name=Windows 10
+apple.laf.useScreenMenuBar=false
+sun.java.launcher=SUN_STANDARD
+user.country=GB
+sun.boot.library.path=C:\Program Files\Java\jdk-15\bin
+sun.java.command=org.jhotdraw.samples.svg.Main
+jdk.debug=release
+sun.cpu.endian=little
+user.home=C:\Users\Mikkel H
+user.language=en
+java.specification.vendor=Oracle Corporation
+java.version.date=2020-09-15
+java.home=C:\Program Files\Java\jdk-15
+file.separator=\
+java.vm.compressedOopsMode=Zero based
+line.separator=
+
+java.vm.specification.vendor=Oracle Corporation
+java.specification.name=Java Platform API Specification
+apple.awt.graphics.UseQuartz=false
+com.apple.macos.useScreenMenuBar=false
+user.script=
+sun.management.compiler=HotSpot 64-Bit Tiered Compilers
+java.runtime.version=15+36-1562
+user.name=Mikkel H
+path.separator=;
+os.version=10.0
+java.runtime.name=Java(TM) SE Runtime Environment
+file.encoding=Cp1252
+java.vm.name=Java HotSpot(TM) 64-Bit Server VM
+java.vendor.url.bug=https://bugreport.java.com/bugreport/
+java.io.tmpdir=C:\Users\MIKKEL~1\AppData\Local\Temp\
+java.version=15
+user.dir=C:\Users\Mikkel H\OneDrive\SDU\5.semester\Software_Maintenance\Code\SB-MAI-E20-3\JHotDraw
+os.arch=amd64
+java.vm.specification.name=Java Virtual Machine Specification
+sun.os.patch.level=
+java.library.path=C:\Program Files\Java\jdk-15\bin;C:\Windows\Sun\Java\bin;C:\Windows\system32;C:\Windows;C:\Python39\Scripts\;C:\Python39\;C:\Program Files\Common Files\Oracle\Java\javapath;C:\Program Files (x86)\Razer Chroma SDK\bin;C:\Program Files\Razer Chroma SDK\bin;C:\Program Files\AdoptOpenJDK\jdk-11.0.8.10-hotspot\bin;C:\Program Files\AdoptOpenJDK\jdk-8.0.265.01-hotspot\bin;C:\Program Files (x86)\AdoptOpenJDK\jdk-8.0.265.01-hotspot\bin;C:\Program Files\AdoptOpenJDK\jre-8.0.265.01-hotspot\bin;C:\Program Files\AdoptOpenJDK\jre-11.0.8.10-hotspot\bin;C:\Program Files (x86)\AdoptOpenJDK\jre-8.0.265.01-hotspot\bin;C:\Windows\system32;C:\Windows;C:\Windows\System32\Wbem;C:\Windows\System32\WindowsPowerShell\v1.0\;C:\Windows\System32\OpenSSH\;C:\Program Files\Microsoft VS Code\bin;C:\Users\Mikkel H\AppData\Local\Microsoft\WindowsApps;C:\Program Files (x86)\NVIDIA Corporation\PhysX\Common;C:\Program Files\NVIDIA Corporation\NVIDIA NvDLISR;C:\Program Files\Docker\Docker\resources\bin;C:\ProgramData\DockerDesktop\version-bin;C:\Program Files\Git\cmd;C:\Program Files\nodejs\;C:\ProgramData\chocolatey\bin;C:\Program Files\dotnet\;C:\Program Files\Microsoft SQL Server\130\Tools\Binn\;C:\Program Files\Microsoft SQL Server\Client SDK\ODBC\170\Tools\Binn\;C:\Program Files (x86)\Microsoft SQL Server\150\Tools\Binn\;C:\Program Files\Microsoft SQL Server\150\Tools\Binn\;C:\Program Files\Microsoft SQL Server\150\DTS\Binn\;C:\Program Files (x86)\Microsoft SQL Server\150\DTS\Binn\;C:\Program Files\Azure Data Studio\bin;C:\Program Files\mingw-w64\x86_64-8.1.0-posix-seh-rt_v6-rev0\mingw64\bin;C:\Program Files\OpenSSL-Win64\bin;C:\Users\Mikkel H\AppData\Local\GitHubDesktop\bin;C:\Users\Mikkel H\AppData\Roaming\npm;C:\Users\Mikkel H\.dotnet\tools;C:\Program Files\Azure Data Studio\bin;C:\Shortcuts;;.
+java.vm.info=mixed mode, sharing
+java.vendor=Oracle Corporation
+java.vm.version=15+36-1562
+sun.io.unicode.encoding=UnicodeLittle
+java.class.version=59.0
+---- Command Line ---
+Empty
+---- Full Classpath ---
+Empty
+---- Compiler Messages ---
+Empty
