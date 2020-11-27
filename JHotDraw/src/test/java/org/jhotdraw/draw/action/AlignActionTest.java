@@ -8,19 +8,21 @@ package org.jhotdraw.draw.action;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
+
 import static junit.framework.Assert.assertEquals;
+
 import org.jhotdraw.draw.BezierFigure;
 import org.jhotdraw.draw.Figure;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
 /**
- *
  * @author menta
  */
 public class AlignActionTest {
-    public AlignActionTest(){
-        
+    public AlignActionTest() {
+
     }
 
     private static Rectangle2D.Double rect2D;
@@ -45,7 +47,7 @@ public class AlignActionTest {
         public void txTranslateEastTest(){
             double x = rect2D.x + rect2D.width;
             Rectangle2D.Double b = fig1.getBounds();
-            double expectedX = 155.0;
+            double expectedWidth = 250.0;
             
             System.out.println("Selection bounds: " +rect2D.getBounds() + "\n");
             System.out.println("Old figure bounds: " + fig1.getBounds());
@@ -57,7 +59,7 @@ public class AlignActionTest {
             
             System.out.println("New figure bounds: " + fig1.getBounds() + "\n");
             
-            assertEquals(expectedX, fig1.getBounds().x);
+            assertEquals(expectedWidth, fig1.getBounds().width);
         }
         
         @Test
@@ -75,6 +77,6 @@ public class AlignActionTest {
             
             System.out.println("New figure bounds: " + fig1.getBounds() + "\n");
             
-            assertEquals(fig1.getBounds().x, -345.0);
+            assertEquals(fig1.getBounds().x, -250.0);
         }
 }
