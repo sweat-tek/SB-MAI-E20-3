@@ -9,14 +9,14 @@ import java.io.File;
 import org.jhotdraw.app.Application;
 import org.jhotdraw.app.DefaultSDIApplication;
 import org.jhotdraw.app.View;
-import static org.jhotdraw.app.action.ExitActionTest.exitAction;
 import org.jhotdraw.gui.Worker;
 import org.jhotdraw.samples.svg.SVGApplicationModel;
 import org.jhotdraw.samples.svg.SVGView;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import static org.junit.Assert.*;
 
 /**
  *
@@ -49,19 +49,20 @@ public class ExitActionTest {
     }
 
     // Best case - It should save the file
-    @Test
-    public void testSaveToFile() throws InterruptedException {
-        exitAction.unsavedView = testView;
-        testFile = new File("testfile.txt");
-        Worker w = exitAction.saveToFile(testFile);
-        // Since w is a worker in another thread i need to wait for it, else the test fails. 
-        // So i created the loop to run until w is done.
-        while (w.isRunning) {
-            Thread.sleep(0, 1);
-        }
-        assertTrue(testFile.exists());
-        testFile.delete();
-    }
+//    @Test
+//    public void testSaveToFile() throws InterruptedException{
+//
+//        exitAction.unsavedView = testView;
+//        testFile = new File("testfile.txt");
+//        Worker w = exitAction.saveToFile(testFile);
+//        // Since w is a worker in another thread i need to wait for it, else the test fails. 
+//        // So i created the loop to run until w is done.
+//        while (w.isRunning) {
+//            Thread.sleep(0, 1);
+//        }
+//        assertTrue(testFile.exists());
+//        testFile.delete();
+//    }
 
     // Should pass
     @Test
