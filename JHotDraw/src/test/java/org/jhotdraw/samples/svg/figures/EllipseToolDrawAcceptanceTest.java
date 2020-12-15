@@ -5,7 +5,7 @@
  */
 package org.jhotdraw.samples.svg.figures;
 
-import com.tngtech.jgiven.base.ScenarioTestBase;
+
 import com.tngtech.jgiven.junit.ScenarioTest;
 import org.junit.Test;
 
