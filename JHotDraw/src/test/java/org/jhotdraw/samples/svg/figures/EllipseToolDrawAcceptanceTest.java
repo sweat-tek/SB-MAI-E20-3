@@ -15,7 +15,6 @@ import org.junit.Test;
  */
 public class EllipseToolDrawAcceptanceTest extends ScenarioTest<GivenMousePressedAndDragged, WhenMouseIsReleased, ThenAnEllipseIsDrawn> {
     @Test
-    @Ignore
     public void EllipseToolDrawTest(){
         given().mousePressedAndDragged();
         when().mouseReleased();
