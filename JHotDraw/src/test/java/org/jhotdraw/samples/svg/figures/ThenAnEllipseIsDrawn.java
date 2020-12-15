@@ -7,6 +7,7 @@ package org.jhotdraw.samples.svg.figures;
 
 import com.tngtech.jgiven.Stage;
 import com.tngtech.jgiven.annotation.ProvidedScenarioState;
+import java.awt.geom.Rectangle2D;
 import org.jhotdraw.draw.CreationTool;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -26,8 +27,15 @@ public class ThenAnEllipseIsDrawn extends Stage<ThenAnEllipseIsDrawn> {
     public ThenAnEllipseIsDrawn figureCreated(){
         SVGEllipseFigure result = tool.getLastFigureEllipse();
         assertNotNull(result);
-        
-        assertEquals(new SVGEllipseFigure(127,408,10,10), result);
+        Rectangle2D.Double resultBounds = result.getBounds();
+        double expectedX = 127;
+        double expectedY = 408;
+        double expectedWidth = 100;
+        double expectedHeight = 0.1;
+        assertEquals(expectedX, resultBounds.x, 0.0001);
+        assertEquals(expectedY, resultBounds.y, 0.0001);
+        assertEquals(expectedWidth, resultBounds.width, 0.0001);
+        assertEquals(expectedHeight, resultBounds.height, 0.0001);
         
         return self();
     }
