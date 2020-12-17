@@ -5,21 +5,16 @@
  */
 package org.jhotdraw.draw.action;
 
-import java.awt.event.ActionEvent;
-import java.util.Collection;
-import org.jhotdraw.draw.DrawingView;
-import org.jhotdraw.draw.Figure;
-import org.junit.Before;
-import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Test;
+
 import static org.junit.Assert.*;
 
 /**
- *
  * @author s_b_k
  */
 public class BringToFrontActionTest {
-    
+
     private String failID = "fail ID for boundary test";
 
     @Test
@@ -29,6 +24,7 @@ public class BringToFrontActionTest {
         String result = BringToFrontAction.getID();
         assertEquals(expResult, result);
     }
+
     @Test
        public void testGetIDBoundary() {
         //TODO repair failing test
