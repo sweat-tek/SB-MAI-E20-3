@@ -6,11 +6,13 @@ on:
       - refactorings
       - workflow
       - master
+      - UndoRedo
   pull_request:
     branches:
       - refactorings
       - workflow
       - master
+      - UndoRedo
 
 jobs:
   build:
