@@ -156,20 +156,9 @@ public class UndoRedoManager extends UndoManager {//javax.swing.undo.UndoManager
         setHasSignificantEdits(false);
     }
 
-
-
-
-
-
-
-
-
-
-
     public void setHasSignificantEdits(boolean newValue) {
         boolean oldValue = hasSignificantEdits;
         hasSignificantEdits = newValue;
-        //firePropertyChange("hasSignificantEdits", oldValue, newValue);
         propertySupport.firePropertyChange("hasSignificantEdits", oldValue, newValue);
     }
 
@@ -253,7 +242,6 @@ public class UndoRedoManager extends UndoManager {//javax.swing.undo.UndoManager
         redoAction.putValue(Action.SHORT_DESCRIPTION, label);
     }
 
-    //TODO Remove code smell (Duplicated Code)
     /**
      * Undoes the last edit event.
      * The UndoRedoManager ignores all incoming UndoableEdit events,
@@ -314,30 +302,4 @@ public class UndoRedoManager extends UndoManager {//javax.swing.undo.UndoManager
     public void addPropertyChangeListener(PropertyChangeListener listener) {
         propertySupport.addPropertyChangeListener(listener);
     }
-
-    //TODO remove code smell (Speculative Generality)
-    /*
-    public void addPropertyChangeListener(String propertyName, PropertyChangeListener listener) {
-        propertySupport.addPropertyChangeListener( propertyName, listener);
-    }
-    public void removePropertyChangeListener(PropertyChangeListener listener) {
-        propertySupport.removePropertyChangeListener(listener);
-    }
-    public void removePropertyChangeListener(String propertyName, PropertyChangeListener listener) {
-        propertySupport.removePropertyChangeListener(propertyName, listener);
-    }
-    */
-
-    //TODO remove code smell (Middle Man)
-    /*
-    protected void firePropertyChange(String propertyName, boolean oldValue, boolean newValue) {
-        propertySupport.firePropertyChange(propertyName, oldValue, newValue);
-    }
-    protected void firePropertyChange(String propertyName, int oldValue, int newValue) {
-        propertySupport.firePropertyChange(propertyName, oldValue, newValue);
-    }
-    protected void firePropertyChange(String propertyName, Object oldValue, Object newValue) {
-        propertySupport.firePropertyChange(propertyName, oldValue, newValue);
-    }
-    */
 }

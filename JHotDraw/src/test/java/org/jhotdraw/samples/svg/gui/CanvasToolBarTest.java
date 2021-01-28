@@ -1,6 +1,6 @@
 package org.jhotdraw.samples.svg.gui;
 
-import com.tngtech.jgiven.impl.*;
+
 import com.tngtech.jgiven.junit.ScenarioTest;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -14,15 +14,9 @@ public class CanvasToolBarTest extends ScenarioTest<GivenCanvasToolBar, WhenCanv
     @Test
     @Ignore
     public void ChanceBackgroundColor(){
-        //TODO repair failing test
-        assert(true);
-//        given().someCanvasColor();
-//        when().chanceColorFieldToGreen();
-//        then().thenBackgroundColorIsGreen();
-    }
+        given().someCanvasColor();
+        when().chanceColorFieldToGreen();
+        then().thenBackgroundColorIsGreen();
 
-    @Override
-    public Scenario<GivenCanvasToolBar, WhenCanvasToolBar, ThenCanvasToolBar> getScenario() {
-        return null;
     }
 }

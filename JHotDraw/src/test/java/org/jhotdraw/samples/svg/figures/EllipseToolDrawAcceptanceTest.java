@@ -5,7 +5,6 @@
  */
 package org.jhotdraw.samples.svg.figures;
 
-import com.tngtech.jgiven.impl.*;
 import com.tngtech.jgiven.junit.ScenarioTest;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -18,15 +17,8 @@ public class EllipseToolDrawAcceptanceTest extends ScenarioTest<GivenMousePresse
     @Test
     @Ignore
     public void EllipseToolDrawTest(){
-        //TODO repair failing test
-        assert(true);
-//        given().mousePressedAndDragged();
-//        when().mouseReleased();
-//        then().figureCreated();
-    }
-
-    @Override
-    public Scenario<GivenMousePressedAndDragged, WhenMouseIsReleased, ThenAnEllipseIsDrawn> getScenario() {
-        return null;
+        given().mousePressedAndDragged();
+        when().mouseReleased();
+        then().figureCreated();
     }
 }

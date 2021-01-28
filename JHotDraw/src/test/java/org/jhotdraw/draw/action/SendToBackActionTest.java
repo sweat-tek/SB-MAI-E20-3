@@ -28,12 +28,10 @@ public class SendToBackActionTest {
     @Test
     @Ignore
     public void testGetIDBoundary() {
-        //TODO repair failing test
-        assert(true);
-//        System.out.println("getID");
-//        String expResult = "edit.sendToBack";
-//        String result = getIDFail;
-//        assertEquals(expResult, result);
+        System.out.println("getID");
+        String expResult = "edit.sendToBack";
+        String result = getIDFail;
+        assertEquals(expResult, result);
     }
 
 }

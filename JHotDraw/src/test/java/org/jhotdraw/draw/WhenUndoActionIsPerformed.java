@@ -14,13 +14,12 @@ public class WhenUndoActionIsPerformed extends Stage<WhenUndoActionIsPerformed> 
     @ExpectedScenarioState
     protected ArgumentList argumentList;
 
-    private HashMap<AttributeKey, Object> map;
     private CreationTool creationTool;
     private MouseEvent mouseEvent;
 
     @BeforeStage
     private void prepare() {
-        map = new HashMap<>();
+        HashMap<AttributeKey, Object> map = new HashMap<>();
         mouseEvent = mock(MouseEvent.class);
         creationTool = new CreationTool(argumentList.svgBezierFigure, map);
         creationTool.createdFigure = argumentList.svgBezierFigure;
@@ -28,7 +27,6 @@ public class WhenUndoActionIsPerformed extends Stage<WhenUndoActionIsPerformed> 
     }
 
     public WhenUndoActionIsPerformed undo_action_is_performed() {
-        List <Figure> list = argumentList.svgBezierFigure.getDrawing().getChildren();
         creationTool.mouseReleased(mouseEvent);
         return self();
     }
