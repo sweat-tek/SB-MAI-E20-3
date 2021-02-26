@@ -5,8 +5,8 @@
  */
 package org.jhotdraw.samples.svg.figures;
 
+
 import com.tngtech.jgiven.junit.ScenarioTest;
-import org.junit.Ignore;
 import org.junit.Test;
 
 /**
@@ -15,7 +15,6 @@ import org.junit.Test;
  */
 public class EllipseToolDrawAcceptanceTest extends ScenarioTest<GivenMousePressedAndDragged, WhenMouseIsReleased, ThenAnEllipseIsDrawn> {
     @Test
-    @Ignore
     public void EllipseToolDrawTest(){
         given().mousePressedAndDragged();
         when().mouseReleased();

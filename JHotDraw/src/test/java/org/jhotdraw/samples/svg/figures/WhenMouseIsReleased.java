@@ -29,7 +29,7 @@ public class WhenMouseIsReleased extends Stage<WhenMouseIsReleased> {
     int xAxis;
     
     public WhenMouseIsReleased mouseReleased() {
-        tool.mouseReleased(getMouseEvent(yAxis + 10, yAxis + 10));
+        tool.mouseReleased(getMouseEvent(xAxis + 10, yAxis + 10));
         return self();
     }
     
